@@ -7,7 +7,11 @@ const userSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        validate: value => {
+            if (!validator.isLength(value, { max: 10 })) 
+                throw new Error('Oops! Your name too long.')
+        }
     },
     email: {
         type: String,
@@ -15,18 +19,42 @@ const userSchema = mongoose.Schema({
         unique: true,
         lowercase: true,
         validate: value => {
-            if (!validator.isEmail(value)) {
-                throw new Error({error: 'Invalid Email address'})
-            }
+            if (!validator.isEmail(value))
+                throw new Error('Oops! Invalid Email address.')
         }
     },
     password: {
         type: String,
         required: true
     },
-    created_on: {
-        type: Date,
-        default: Date.now()
+    username: {
+        type: String,
+        lowercase: true,
+        trim: true
+    },
+    state: {
+        online: {
+            type: Boolean,
+            default: false
+        },
+        available: {
+            type: Boolean,
+            default: true
+        }
+    },
+    logs: {
+        created_at: {
+            type: Date,
+            default: Date.now()
+        },
+        last_login: {
+            type: Date,
+            default: null
+        },
+        last_password_reset: {
+            type: Date,
+            default: null
+        }
     },
     tokens: [{
         token: {
@@ -34,14 +62,6 @@ const userSchema = mongoose.Schema({
             required: true
         }
     }]
-})
-
-userSchema.pre('save', async function(next) {
-    const user = this
-    if (user.isModified('password')) {
-        user.password = await bcrypt.hash(user.password, 10)
-    }
-    next()
 })
 
 userSchema.methods.generateAuthToken = async function() {
