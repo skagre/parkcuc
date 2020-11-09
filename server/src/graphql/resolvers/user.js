@@ -8,17 +8,14 @@ module.exports = {
     register: async args => {
         try {
             const isUserExists = await User.findOne({ email: args.input.email })
-            if (isUserExists) throw new Error('Email đã được đăng ký !')
+            if (isUserExists) throw new Error('Oops! This Email address is already registered.')
 
             const hashedPassword = await bcrypt.hash(args.input.password, 10)
 
             const user = new User({
                 name: args.input.name,
                 email: args.input.email,
-                password: hashedPassword,
-                logs: {
-                    created_at: Date.now()
-                }
+                password: hashedPassword
             })
 
             const result = await user.save()
@@ -27,8 +24,20 @@ module.exports = {
             throw err
         }
     },
-    login: async (_, args) => {
-        console.log(_)
-        return User.findOne(args)
+    login: async args => {
+        const user = await User.findOne({
+            $or: [
+                { email: args.emailOrSomething },
+                { username: args.emailOrSomething }
+            ]
+        })
+        if (!user) throw new Error('Oops! Invalid login credentials.')
+        
+        const isPasswordMatch = await bcrypt.compare(args.password, user.password)
+        if (!isPasswordMatch) throw new Error('Oops! Invalid login credentials.')
+
+        const token = await user.generateAuthToken()
+        console.log(token)
+        return 1
     }
 }

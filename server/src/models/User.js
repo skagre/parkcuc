@@ -39,7 +39,7 @@ const userSchema = mongoose.Schema({
         },
         available: {
             type: Boolean,
-            default: true
+            default: false
         }
     },
     logs: {
