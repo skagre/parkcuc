@@ -27,7 +27,8 @@ module.exports = buildSchema(`
 
     type RootMutation {
         register(input: UserInput): User
-        login(emailOrSomething: String!, password: String!): User
+        login(emailOrSomething: String!, password: String!): Auth!
+        logout(token: String!): Boolean!
     }
 
     schema {

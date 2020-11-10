@@ -36,8 +36,13 @@ module.exports = {
         const isPasswordMatch = await bcrypt.compare(args.password, user.password)
         if (!isPasswordMatch) throw new Error('Oops! Invalid login credentials.')
 
-        const token = await user.generateAuthToken()
-        console.log(token)
-        return 1
+        const token = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_KEY)
+        user.tokens = user.tokens.concat({ token })
+        await user.save()
+
+        return { userID: user._id, token: token }
+    },
+    logout: async args => {
+        
     }
 }
