@@ -57,6 +57,7 @@ const userSchema = mongoose.Schema({
         }
     },
     tokens: [{
+        _id: false,
         token: {
             type: String,
             required: true
