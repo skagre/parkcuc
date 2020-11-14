@@ -58,7 +58,7 @@ const userSchema = mongoose.Schema({
         }
     },
     friends: {
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'Friend'
     },
     tokens: [{
