@@ -40,7 +40,7 @@ module.exports = {
     
             const token = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_KEY)
     
-            user.tokens = user.tokens.concat({ token })
+            user.tokens = user.tokens.concat({ token: token })
             await user.save()
     
             return { user_id: user._id, token: token }
@@ -71,5 +71,5 @@ module.exports = {
         } catch (err) {
             throw err
         }
-    }
+    },
 }

@@ -3,6 +3,7 @@ const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+const Schema = mongoose.Schema;
 const userSchema = mongoose.Schema({
     name: {
         type: String,
@@ -55,6 +56,10 @@ const userSchema = mongoose.Schema({
             type: Date,
             default: null
         }
+    },
+    friends: {
+        type: String,
+        ref: 'Friend'
     },
     tokens: [{
         _id: false,
