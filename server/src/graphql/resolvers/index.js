@@ -3,5 +3,5 @@ const friendResolvers = require('./friend')
 
 module.exports = {
     ...userResolvers,
-    ...friendResolvers
+    //...friendResolvers
 }

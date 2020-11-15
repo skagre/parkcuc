@@ -44,10 +44,6 @@ const userSchema = mongoose.Schema({
         }
     },
     logs: {
-        created_at: {
-            type: Date,
-            default: Date.now()
-        },
         last_login: {
             type: Date,
             default: null
@@ -58,8 +54,18 @@ const userSchema = mongoose.Schema({
         }
     },
     friends: {
-        type: Schema.Types.ObjectId,
-        ref: 'Friend'
+        accept: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }],
+        pending: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }],
+        sent: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }]
     },
     tokens: [{
         _id: false,
@@ -68,26 +74,6 @@ const userSchema = mongoose.Schema({
             required: true
         }
     }]
-})
-
-userSchema.methods.generateAuthToken = async function() {
-    const user = this
-    const token = jwt.sign({_id: user._id}, process.env.JWT_KEY)
-    user.tokens = user.tokens.concat({token})
-    await user.save()
-    return token
-}
-
-userSchema.statics.findByCredentials = async (email, password) => {
-    const user = await User.findOne({ email })
-    if (!user) {
-        throw new Error('Invalid login credentials')
-    }
-    const isPasswordMatch = await bcrypt.compare(password, user.password)
-    if (!isPasswordMatch) {
-        throw new Error('Invalid login credentials')
-    }
-    return user
-}
+}, { timestamps: true })
 
 module.exports = mongoose.model('User', userSchema)

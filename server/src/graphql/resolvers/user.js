@@ -72,4 +72,165 @@ module.exports = {
             throw err
         }
     },
+    sendFriendRequest: async (args, req) => {
+        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
+
+        if (req.user._id.toString() === args.id.toString()) throw new Error('Oops! Can\'t send a friend request to yourself.')
+
+        try {
+            const userA = req.user._id
+            const userB = args.id
+
+            const isExistsRequest = await User.findOne({ 
+                $and: [
+                    { $or: [
+                        { _id: userA }
+                    ] },
+                    { $or: [
+                        { 'friends.accept': args.id },
+                        { 'friends.pending': args.id },
+                        { 'friends.sent': args.id }
+                    ] }
+                ]
+            })
+            if (isExistsRequest) throw new Error('Oops ! Failed to send a friend request.')
+
+            await User.findOneAndUpdate(
+                { _id: userA }, 
+                { $addToSet: { 'friends.sent': userB } }
+            )
+                
+            await User.findOneAndUpdate(
+                { _id: userB }, 
+                { $addToSet: { 'friends.pending': userA } }
+            )
+
+            return 'success'
+        } catch (err) {
+            throw err
+        }
+    },
+    acceptFriendRequest: async (args, req) => {
+        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
+
+        try {
+            const userA = req.user._id
+            const userB = args.id
+
+            const isPendingRequest = await User.findOne({
+                $and: [
+                    { $or: [
+                        { _id: userA }
+                    ] },
+                    { $or: [
+                        { 'friends.pending': args.id }
+                    ] }
+                ]
+            })
+            if (!isPendingRequest) throw new Error('Oops ! Failed to accept friend request.')
+
+            await User.findOneAndUpdate(
+                { _id: userA }, 
+                { $pull: { 'friends.pending': userB } }
+            )
+
+            await User.findOneAndUpdate(
+                { _id: userA }, 
+                { $addToSet: { 'friends.accept': userB } }
+            )
+
+            await User.findOneAndUpdate(
+                { _id: userB }, 
+                { $pull: { 'friends.sent': userA } }
+            )
+
+            await User.findOneAndUpdate(
+                { _id: userB }, 
+                { $addToSet: { 'friends.accept': userA } }
+            )
+
+            return 'success'
+        } catch (err) {
+            throw err
+        }
+    },
+    deleteFriendRequest: async (args, req) => {
+        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
+
+        try {
+            const userA = req.user._id
+            const userB = args.id
+
+            const isExistsRequest = await User.findOne({ 
+                $and: [
+                    { $or: [
+                        { _id: userA }
+                    ] },
+                    { $or: [
+                        { 'friends.pending': args.id },
+                        { 'friends.sent': args.id }
+                    ] }
+                ]
+            })
+            if (!isExistsRequest) throw new Error('Oops ! Failed to delete friend request.')
+
+            await User.findOneAndUpdate(
+                { _id: userA }, 
+                { $pull: { 'friends.pending': userB } }
+            )
+
+            await User.findOneAndUpdate(
+                { _id: userA }, 
+                { $pull: { 'friends.sent': userB } }
+            )
+
+            await User.findOneAndUpdate(
+                { _id: userB }, 
+                { $pull: { 'friends.pending': userA } }
+            )
+
+            await User.findOneAndUpdate(
+                { _id: userB }, 
+                { $pull: { 'friends.sent': userA } }
+            )
+
+            return 'success'
+        } catch (err) {
+            throw err
+        }
+    },
+    unfriend: async (args, req) => {
+        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
+
+        try {
+            const userA = req.user._id
+            const userB = args.id
+
+            const isFriend = await User.findOne({ 
+                $and: [
+                    { $or: [
+                        { _id: userA }
+                    ] },
+                    { $or: [
+                        { 'friends.accept': args.id }
+                    ] }
+                ]
+            })
+            if (!isFriend) throw new Error('Oops ! Failed to unfriend.')
+
+            await User.findOneAndUpdate(
+                { _id: userA }, 
+                { $pull: { 'friends.accept': userB } }
+            )
+
+            await User.findOneAndUpdate(
+                { _id: userB }, 
+                { $pull: { 'friends.accept': userA } }
+            )
+
+            return 'success'
+        } catch (err) {
+            throw err
+        }
+    }
 }

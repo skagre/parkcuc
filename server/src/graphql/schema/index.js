@@ -30,7 +30,10 @@ module.exports = buildSchema(`
         login(emailOrSomething: String!, password: String!): Auth
         logout: String
         logoutAll: String
-        addFriend(id: String!): String
+        sendFriendRequest(id: String!): String
+        acceptFriendRequest(id: String!): String
+        deleteFriendRequest(id: String!): String
+        unfriend(id: String!): String
     }
 
     schema {
