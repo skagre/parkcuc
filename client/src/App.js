@@ -1,6 +1,6 @@
 import React from 'react';
 import MainNav from './components/LeftSidebar/MainNav'
-import {withStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -11,16 +11,38 @@ import RecordVoiceOverIcon from '@material-ui/icons/RecordVoiceOver';
 import SettingsIcon from '@material-ui/icons/Settings';
 
 
+const useStyles = makeStyles({
+    leftSidebar: {
+        minWidth: '300px',
+        maxWidth: '480px',
+        flexBasis: '25%',
+        backgroundColor: 'red'
+    },
+    mainContent: {
+        flex: 1,
+        backgroundColor: 'green'
+    },
+    rightSidebar: {
+        minWidth: '280px',
+        maxWidth: '360px',
+        flexBasis: '25%',
+        backgroundColor: 'blue'
+    }
+})
+
 const App = props => {
+
+    const classes = useStyles()
+
     return (
         <Grid container>
-            <Grid item lg={3} md={3} style={{display: 'flex'}}>
+            <Grid item className={classes.leftSidebar}>
                 <MainNav />
             </Grid>
-            <Grid item lg={6} md={9}>
+            <Grid item className={classes.mainContent}>
 
             </Grid>
-            <Grid item lg={3}>
+            <Grid item className={classes.rightSidebar}>
 
             </Grid>
         </Grid>
