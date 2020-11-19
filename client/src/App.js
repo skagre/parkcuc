@@ -1,5 +1,6 @@
 import React from 'react';
 import MainNav from './components/LeftSidebar/MainNav'
+import Contacts from './components/LeftSidebar/Contacts'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import MenuList from '@material-ui/core/MenuList';
@@ -16,7 +17,7 @@ const useStyles = makeStyles({
         minWidth: '300px',
         maxWidth: '480px',
         flexBasis: '25%',
-        backgroundColor: 'red'
+        display: 'flex'
     },
     mainContent: {
         flex: 1,
@@ -40,7 +41,7 @@ const App = props => {
                 <MainNav />
             </Grid>
             <Grid item className={classes.mainContent}>
-
+                
             </Grid>
             <Grid item className={classes.rightSidebar}>
 

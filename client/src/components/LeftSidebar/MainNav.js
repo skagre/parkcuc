@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+
+import Contacts from './Contacts'
+
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
@@ -7,7 +10,6 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Avatar from '@material-ui/core/Avatar'
 import Tooltip from '@material-ui/core/Tooltip'
-import Divider from '@material-ui/core/Divider'
 
 import SettingsTwoToneIcon from '@material-ui/icons/SettingsTwoTone'
 import NotificationsTwoToneIcon from '@material-ui/icons/NotificationsTwoTone'
@@ -28,36 +30,38 @@ const TabPanel = props => {
             hidden={value !== index}
             id={`vertical-tabpanel-${index}`}
             aria-labelledby={`vertical-tab-${index}`}
+            style={{width: 'calc(100% - 80px)'}}
             {...other}
         >
         {value === index && (
-            <Box p={3}>
-                <Typography>{children}</Typography>
-            </Box>
+            <>
+                {children}
+            </>
         )}
         </div>
     )
 }
-  
+
 TabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.any.isRequired,
     value: PropTypes.any.isRequired,
 }
-  
+
 const a11yProps = index => {
     return {
         id: `vertical-tab-${index}`,
         'aria-controls': `vertical-tabpanel-${index}`,
     }
 }
-  
+
 const theme = createMuiTheme({
     overrides: {
         MuiTabs: {
             root: {
                 width: 80,
-                height: '100vh'
+                height: '100vh',
+                overflow: 'unset !important'
             }
         },
         MuiTab: {
@@ -67,16 +71,6 @@ const theme = createMuiTheme({
                 '@media (min-width: 600px)': {
                     minWidth: 0
                 }
-            }
-        },
-        MuiDivider: {
-            root: {
-                backgroundColor: blue[900]
-            }
-        },
-        PrivateTabIndicator: {
-            root: {
-                backgroundColor: blue[900]
             }
         },
         MuiSvgIcon: {
@@ -133,7 +127,7 @@ const MainNav = props => {
                 Profile
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Item Two asd
+                <Contacts />
             </TabPanel>
             <TabPanel value={value} index={2}>
                 Item Three
