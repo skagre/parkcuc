@@ -10,13 +10,14 @@ import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import PeopleIcon from '@material-ui/icons/People';
 import RecordVoiceOverIcon from '@material-ui/icons/RecordVoiceOver';
 import SettingsIcon from '@material-ui/icons/Settings';
+import Friends from './components/LeftSidebar/Friends';
 
 
 const useStyles = makeStyles({
     leftSidebar: {
         minWidth: '300px',
         maxWidth: '480px',
-        flexBasis: '25%',
+        flexBasis: '27%',
         display: 'flex'
     },
     mainContent: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles({
     rightSidebar: {
         minWidth: '280px',
         maxWidth: '360px',
-        flexBasis: '25%',
+        flexBasis: '23%',
         backgroundColor: 'blue'
     }
 })
@@ -41,7 +42,7 @@ const App = props => {
                 <MainNav />
             </Grid>
             <Grid item className={classes.mainContent}>
-                
+                <Friends />
             </Grid>
             <Grid item className={classes.rightSidebar}>
 

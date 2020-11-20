@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Contacts from './Contacts'
 
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
@@ -19,6 +19,7 @@ import RecordVoiceOverTwoToneIcon from '@material-ui/icons/RecordVoiceOverTwoTon
 import SmsTwoToneIcon from '@material-ui/icons/SmsTwoTone'
 
 import { orange, pink, green, blue } from "@material-ui/core/colors"
+import Friends from './Friends'
 
 
 const TabPanel = props => {
@@ -30,7 +31,7 @@ const TabPanel = props => {
             hidden={value !== index}
             id={`vertical-tabpanel-${index}`}
             aria-labelledby={`vertical-tab-${index}`}
-            style={{width: 'calc(100% - 80px)'}}
+            style={{width: 'calc(100% - 70px)'}}
             {...other}
         >
         {value === index && (
@@ -59,9 +60,10 @@ const theme = createMuiTheme({
     overrides: {
         MuiTabs: {
             root: {
-                width: 80,
+                width: 70,
                 height: '100vh',
-                overflow: 'unset !important'
+                overflow: 'unset !important',
+                borderRight: '1px solid #00000015'
             }
         },
         MuiTab: {
@@ -82,8 +84,15 @@ const theme = createMuiTheme({
     }
 })
 
+const useStyles = makeStyles((theme) => ({
+    indicator: {
+        color: 'red'
+    }
+}))
+
 const MainNav = props => {
 
+    const classes = useStyles();
     const [value, setValue] = useState(0)
 
     const handleChange = (event, newValue) => {
@@ -97,9 +106,8 @@ const MainNav = props => {
                 variant="scrollable"
                 value={value}
                 onChange={handleChange}
-                aria-label="Main Navigation"
                 indicatorColor="primary"
-                centered
+                classes={{indicator: classes.indicator}}
             >
                 <Tooltip title="Profile" placement="right" arrow>
                     <Tab icon={<Avatar>B</Avatar>} {...a11yProps(0)} />
@@ -130,10 +138,10 @@ const MainNav = props => {
                 <Contacts />
             </TabPanel>
             <TabPanel value={value} index={2}>
-                Item Three
+                <Friends />
             </TabPanel>
             <TabPanel value={value} index={3}>
-                Item Four
+                <Friends />
             </TabPanel>
             <TabPanel value={value} index={4}>
                 Item Five

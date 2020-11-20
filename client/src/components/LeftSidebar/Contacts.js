@@ -12,9 +12,18 @@ import { orange, pink, green, blue } from "@material-ui/core/colors"
 
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
+    list: {
     },
+    listItem: {
+        borderBottom: '1px solid #00000015',
+        '&:hover': {
+            cursor: 'pointer',
+            backgroundColor: '#eff7fe70'
+        }
+    },
+    text: {
+        color: '#0000008A'
+    }
 }));
 
 
@@ -23,72 +32,27 @@ const Contacts = props => {
     const classes = useStyles();
 
     return (
-        <List className={classes.root}>
-            <ListItem alignItems="flex-start">
+        <List className={classes.list}>
+            <ListItem className={classes.listItem} alignItems="flex-start">
                 <ListItemAvatar>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                    <Avatar alt="Remy Sharp" />
                 </ListItemAvatar>
                 <ListItemText
                     primary="Brunch this weekend?"
                     secondary={
                     <>
-                    <Typography 
+                    <Typography
+                        className={classes.text}
                         variant="body2"
                         noWrap
-                        color="textPrimary"
                     >
-                        I'll be in your neighborhood doing errasdasd asdasdasdasdasdas a asd asd asd asd asd asd asd asd asdas das  ands this…
+                        I'll be in your neighborhood doing errasdasd asdasdasdasdasdas
                     </Typography >
-                    
                     </>
                 }
                 />
             </ListItem>
-            <Divider variant="inset" component="li" />
-            <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-                </ListItemAvatar>
-                <ListItemText
-                primary="Summer BBQ"
-                secondary={
-                    <React.Fragment>
-                    <Typography
-                        component="span"
-                        variant="body2"
-                        className={classes.inline}
-                        color="textPrimary"
-                    >
-                        to Scott, Alex, Jennifer
-                    </Typography>
-                    {" — Wish I could come, but I'm out of town this…"}
-                    </React.Fragment>
-                }
-                />
-            </ListItem>
-            <Divider variant="inset" component="li" />
-            <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-                </ListItemAvatar>
-                <ListItemText
-                primary="Oui Oui"
-                secondary={
-                    <React.Fragment>
-                    <Typography
-                        component="span"
-                        variant="body2"
-                        className={classes.inline}
-                        color="textPrimary"
-                    >
-                        Sandra Adams
-                    </Typography>
-                    {' — Do you have Paris recommendations? Have you ever…'}
-                    </React.Fragment>
-                }
-                />
-            </ListItem>
-            </List>
+        </List>
     )
 }
 
