@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import Contacts from './Contacts'
+import Notification from './Notifications'
 
 import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles'
 import Tabs from '@material-ui/core/Tabs'
@@ -10,6 +11,7 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Avatar from '@material-ui/core/Avatar'
 import Tooltip from '@material-ui/core/Tooltip'
+import Badge from '@material-ui/core/Badge'
 
 import SettingsTwoToneIcon from '@material-ui/icons/SettingsTwoTone'
 import NotificationsTwoToneIcon from '@material-ui/icons/NotificationsTwoTone'
@@ -18,7 +20,7 @@ import Brightness4TwoToneIcon from '@material-ui/icons/Brightness4TwoTone'
 import RecordVoiceOverTwoToneIcon from '@material-ui/icons/RecordVoiceOverTwoTone'
 import SmsTwoToneIcon from '@material-ui/icons/SmsTwoTone'
 
-import { orange, pink, green, blue } from "@material-ui/core/colors"
+import { green } from '@material-ui/core/colors'
 import Friends from './Friends'
 
 
@@ -78,7 +80,7 @@ const theme = createMuiTheme({
         MuiSvgIcon: {
             root: {
                 fontSize: 28,
-                color: blue[900],
+                color: green[600],
             }
         }
     }
@@ -93,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
 const MainNav = props => {
 
     const classes = useStyles();
-    const [value, setValue] = useState(0)
+    const [value, setValue] = useState(1)
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -122,7 +124,14 @@ const MainNav = props => {
                     <Tab icon={<PeopleAltTwoToneIcon />} {...a11yProps(2)} />
                 </Tooltip>
                 <Tooltip title="Notification" placement="right" arrow>
-                    <Tab icon={<NotificationsTwoToneIcon />} {...a11yProps(3)} />
+                    <Tab 
+                        icon={
+                            <Badge badgeContent={2} max={99} color="secondary">
+                                <NotificationsTwoToneIcon />
+                            </Badge>
+                        } 
+                        {...a11yProps(3)} 
+                    />
                 </Tooltip>
                 <Tooltip title="Dark Mode" placement="right" arrow>
                     <Tab icon={<Brightness4TwoToneIcon />} {...a11yProps(4)} />
@@ -144,7 +153,7 @@ const MainNav = props => {
                 <Friends />
             </TabPanel>
             <TabPanel value={value} index={4}>
-                Item Five
+                <Notification />
             </TabPanel>
             <TabPanel value={value} index={5}>
                 Item Six

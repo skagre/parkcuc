@@ -1,11 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect
+} from "react-router-dom";
+
+import Login from './Login'
+import Register from './Register'
+import Messenger from './Messenger'
+
+import './style.css';
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <Router history={history}>
+        <Switch>
+            <PrivateRoute exact path="/" component={Messenger} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            <Redirect from="*" to="/" />
+        </Switch>
+    </Router>,
+    document.getElementById('root')
 );
