@@ -16,9 +16,9 @@ import './style.css';
 
 
 ReactDOM.render(
-    <Router history={history}>
+    <Router>
         <Switch>
-            <PrivateRoute exact path="/" component={Messenger} />
+            <Route exact path="/" component={Messenger} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Redirect from="*" to="/" />

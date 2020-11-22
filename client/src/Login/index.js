@@ -1,5 +1,7 @@
 import React from 'react'
 
+import {Link} from "react-router-dom";
+
 import {
     Box, 
     Button, 
@@ -35,7 +37,9 @@ const Login = props => {
                 required
                 variant="outlined"
             />
-            <Typography className={classes.link}>Don't have an account? Register</Typography>
+            <Link className={classes.link} to="/register">
+                <Typography>Don't have an account? Register</Typography>
+            </Link>
             <Button className={classes.button}>Login</Button>
         </Box>
         </Container>

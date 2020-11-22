@@ -59,8 +59,8 @@ const Register = props => {
                         variant="outlined"
                     />
                 </div>
-                <Link to="/login">
-                    <Typography className={classes.link}>Already have an account? Login</Typography>
+                <Link className={classes.link} to="/login">
+                    <Typography>Already have an account? Login</Typography>
                 </Link>
                 <Button className={classes.button}>Register</Button>
             </Box>

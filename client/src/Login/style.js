@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     },
     link: {
         color: green[500],
+        textDecoration: 'none',
         '&:hover': {
             cursor: 'pointer',
             color: green[800],

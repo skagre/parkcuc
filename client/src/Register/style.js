@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
         margin: 10
     },
     button: {
-        marginTop: 10,
+        margin: 10,
         backgroundColor: green[200],
         '&:hover': {
             backgroundColor: green[300]
@@ -43,6 +43,8 @@ const useStyles = makeStyles((theme) => ({
     },
     link: {
         color: green[500],
+        textDecoration: 'none',
+        marginLeft: 10,
         '&:hover': {
             cursor: 'pointer',
             color: green[800],
