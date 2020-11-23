@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 
 const useStyles = makeStyles((theme) => ({
-    container: {
+    form: {
         height: '100vh',
         maxWidth: 'unset !important',
         backgroundColor: green[100]
@@ -29,7 +29,23 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     input: {
-        margin: '10px 0'
+        margin: '10px 0',
+        '& input:valid:hover + fieldset': {
+            borderColor: green[200],
+        },
+        '& input:valid + fieldset': {
+            borderColor: green[400],
+            borderWidth: 2,
+        },
+        '& input:invalid + fieldset': {
+            borderColor: 'red',
+            borderWidth: 2,
+        },
+        '& input:valid:focus + fieldset': {
+            borderColor: green[400],
+            borderLeftWidth: 6,
+            padding: '4px !important', // override inline-style
+        },
     },
     button: {
         marginTop: 10,

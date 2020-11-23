@@ -1,8 +1,8 @@
 import React from 'react';
-import MainNav from '../components/LeftSidebar/MainNav'
+import MainNav from '../../components/LeftSidebar/MainNav'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid';
-import Friends from '../components/LeftSidebar/Friends'
+import Friends from '../../components/LeftSidebar/Friends'
 
 
 const useStyles = makeStyles({

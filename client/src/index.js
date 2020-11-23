@@ -8,9 +8,9 @@ import {
     Redirect
 } from "react-router-dom";
 
-import Login from './Login'
-import Register from './Register'
-import Messenger from './Messenger'
+import Login from './features/Auth/pages/Login'
+import Register from './features/Auth/pages/Register'
+import Messenger from './features/Messenger'
 
 import './style.css';
 
