@@ -31,21 +31,17 @@ const useStyles = makeStyles((theme) => ({
     input: {
         margin: '10px 0',
         '& input:valid:hover + fieldset': {
-            borderColor: green[200],
+            borderColor: green[200]
         },
         '& input:valid + fieldset': {
             borderColor: green[400],
-            borderWidth: 2,
-        },
-        '& input:invalid + fieldset': {
-            borderColor: 'red',
-            borderWidth: 2,
+            borderWidth: 2
         },
         '& input:valid:focus + fieldset': {
             borderColor: green[400],
             borderLeftWidth: 6,
-            padding: '4px !important', // override inline-style
-        },
+            padding: '4px !important'
+        }
     },
     button: {
         marginTop: 10,
@@ -61,6 +57,10 @@ const useStyles = makeStyles((theme) => ({
             cursor: 'pointer',
             color: green[800],
         }
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
     }
 }))
 

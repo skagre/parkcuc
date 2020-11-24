@@ -1,5 +1,7 @@
 import React from 'react'
 
+import {useForm} from 'react-hook-form'
+
 import {Link} from 'react-router-dom'
 
 import {
@@ -17,8 +19,14 @@ import useStyles from './style'
 
 const Register = props => {
     const classes = useStyles()
+    const { register, handleSubmit, errors } = useForm()
+
+    const onSubmit = data => {
+        console.log(data)
+    }
+
     return (
-        <Container className={classes.container}>
+        <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
             <Box className={classes.box}>
                 <Typography className={classes.icon}>
                     <TextsmsOutlinedIcon />
@@ -28,8 +36,9 @@ const Register = props => {
                     <TextField
                         className={classes.input}
                         label="Your Name"
-                        required
                         variant="outlined"
+                        name="name"
+                        inputRef={register({ required: "Oops! This field may not be blank." })}
                     />
                     <TextField
                         className={classes.input}
@@ -40,31 +49,34 @@ const Register = props => {
                 <TextField
                     className={classes.input}
                     label="Email Or Something"
-                    required
                     variant="outlined"
+                    name="email"
+                    inputRef={register({ required: "Oops! This field may not be blank." })}
                 />
                 <div className={classes.group}>
                     <TextField
                         className={classes.input}
                         label="Password"
                         type="password"
-                        required
                         variant="outlined"
+                        name="password"
+                        inputRef={register({ required: "Oops! This field may not be blank." })}
                     />
                     <TextField
                         className={classes.input}
                         label="Confirm Password"
                         type="password"
-                        required
                         variant="outlined"
+                        name="confirm-password"
+                        inputRef={register({ required: "Oops! This field may not be blank." })}
                     />
                 </div>
                 <Link className={classes.link} to="/login">
                     <Typography>Already have an account? Login</Typography>
                 </Link>
-                <Button className={classes.button}>Register</Button>
+                <Button className={classes.button} type="submit">Register</Button>
             </Box>
-        </Container>
+        </form>
     )
 }
 

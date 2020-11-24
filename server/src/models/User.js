@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema({
         required: true,
         trim: true,
         validate: value => {
-            if (!validator.isLength(value, { max: 10 })) 
+            if (!validator.isLength(value, { max: 30 })) 
                 throw new Error('Oops! Your name too long.')
         }
     },

@@ -2,30 +2,43 @@ import React from 'react'
 
 import {useForm} from 'react-hook-form'
 
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 
 import {
     Box, 
     Button,
     TextField, 
-    Typography
+    Typography,
+    Backdrop,
+    CircularProgress
 } from '@material-ui/core'
 
 import TextsmsOutlinedIcon from '@material-ui/icons/TextsmsOutlined'
 
 import useStyles from './style'
-import { SpaRounded } from '@material-ui/icons'
 
 
 const Login = props => {
     const classes = useStyles()
-    const { register, handleSubmit, errors } = useForm()
+    const { register, handleSubmit, errors, formState: { isSubmitting } } = useForm()
+    const history = useHistory()
     
     const onSubmit = data => {
-        console.log(data)
+        return new Promise(resolve => {
+            setTimeout(() => {
+                history.push('/')
+                resolve(true)
+            }, 2000)
+        })
     }
 
     return (
+        <>
+        {isSubmitting && 
+            <Backdrop className={classes.backdrop} open>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+        }
         <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
             <Box className={classes.box}>
                 <Typography className={classes.icon}>
@@ -55,6 +68,7 @@ const Login = props => {
                 <Button className={classes.button} type="submit">Login</Button>
             </Box>
         </form>
+        </>
     )
 }
 
