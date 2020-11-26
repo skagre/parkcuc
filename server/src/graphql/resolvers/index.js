@@ -1,7 +1,7 @@
 const userResolvers = require('./user')
-const friendResolvers = require('./friend')
+const conversationResolvers = require('./conversation')
 
 module.exports = {
     ...userResolvers,
-    //...friendResolvers
+    ...conversationResolvers
 }

@@ -1,9 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
 
-const Schema = mongoose.Schema;
 const userSchema = mongoose.Schema({
     name: {
         type: String,
@@ -55,15 +52,15 @@ const userSchema = mongoose.Schema({
     },
     friends: {
         accept: [{
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }],
         pending: [{
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }],
         sent: [{
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }]
     },

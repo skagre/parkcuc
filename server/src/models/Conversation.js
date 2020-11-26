@@ -4,11 +4,14 @@ const conversationSchema = mongoose.Schema({
     name: {
         type: String
     },
-    members: [],
-    created_at: {
-        type: Date,
-        default: Date.now()
-    }
-})
+    conversation_type: {
+        type: String,
+        required: true
+    },
+    paticipants: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+}, { timestamps: true })
 
 module.exports = mongoose.model('Conversation', conversationSchema)
