@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const User = require('../../models/User')
-
+const Conversation = require('../../models/Conversation')
 
 module.exports = {
     register: async args => {
@@ -147,6 +147,16 @@ module.exports = {
             await User.findOneAndUpdate(
                 { _id: userB }, 
                 { $addToSet: { 'friends.accept': userA } }
+            )
+
+            await Conversation.findOneAndUpdate({
+                paticipants: { 
+                    $all: [
+                    { $elemMatch: { $eq: userA }},
+                    { $elemMatch: { $eq: userB }}
+                ] }
+                { $setOnInsert },
+                { upsert: true } 
             )
 
             return 'success'
