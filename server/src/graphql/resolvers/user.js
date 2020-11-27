@@ -148,14 +148,20 @@ module.exports = {
                 { _id: userB }, 
                 { $addToSet: { 'friends.accept': userA } }
             )
-
-            await Conversation.findOneAndUpdate({
-                paticipants: { 
-                    $all: [
-                    { $elemMatch: { $eq: userA }},
-                    { $elemMatch: { $eq: userB }}
-                ] }
-                { $setOnInsert },
+            
+            await Conversation.findOneAndUpdate(
+                {
+                    $and: [
+                        { $or: [
+                            { conversation_type: 'chat' }
+                        ] },
+                        { $or: [
+                            { paticipants: [userA, userB] },
+                            { paticipants: [userB, userA] }
+                        ] }
+                    ]
+                },
+                { conversation_type: 'chat', $addToSet: { paticipants: [userA, userB] } },
                 { upsert: true } 
             )
 
