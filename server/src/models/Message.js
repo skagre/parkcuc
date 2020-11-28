@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
 
 const messageSchema = mongoose.Schema({
-    conversation: [{
+    conversation: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Conversation'
-    }],
-    sender: [{
+    },
+    sender: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    }],
+    },
     body: {
         type: String
     },

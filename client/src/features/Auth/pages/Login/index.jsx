@@ -1,4 +1,5 @@
 import React from 'react'
+import {useDispatch} from 'react-redux'
 
 import {useForm} from 'react-hook-form'
 
@@ -22,8 +23,9 @@ const Login = props => {
     const classes = useStyles()
     const { register, handleSubmit, errors, formState: { isSubmitting } } = useForm()
     const history = useHistory()
+    const dispatch = useDispatch()
     
-    const onSubmit = data => {
+    const onSubmit = async () => {
         return new Promise(resolve => {
             setTimeout(() => {
                 history.push('/')

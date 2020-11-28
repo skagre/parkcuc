@@ -3,37 +3,44 @@ const { buildSchema } = require('graphql')
 
 module.exports = buildSchema(`
     type User {
-        _id: ID!
-        name: String!
-        email: String!
+        _id: ID
+        name: String
+        email: String
         password: String
         username: String
     }
 
     type Auth {
-        user_id: ID!
-        token: String!
+        user_id: ID
+        token: String
     }
 
-    input UserInput {
-        name: String!
-        email: String!
-        password: String
+    type Message {
+        _id: ID
+        conversation: String
+        sender: String
+        body: String
     }
 
     type RootQuery {
-        users: [User]!
+        fetchMessage(conversation_id: String!): [Message]
     }
 
     type RootMutation {
-        register(input: UserInput): User
+        register(name: String!, email: String!, password: String): User
         login(emailOrSomething: String!, password: String!): Auth
         logout: String
         logoutAll: String
-        sendFriendRequest(id: String!): String
-        acceptFriendRequest(id: String!): String
-        deleteFriendRequest(id: String!): String
-        unfriend(id: String!): String
+        sendFriendRequest(user_id: String!): String
+        acceptFriendRequest(user_id: String!): String
+        deleteFriendRequest(user_id: String!): String
+        unfriend(user_id: String!): String
+
+
+        createConversation(user_id: String!): String
+
+
+        sendMessage(conversation_id: String!, body: String!): String
     }
 
     schema {

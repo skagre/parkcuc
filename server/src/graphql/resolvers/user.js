@@ -75,11 +75,12 @@ module.exports = {
     sendFriendRequest: async (args, req) => {
         if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
 
-        if (req.user._id.toString() === args.id.toString()) throw new Error('Oops! Can\'t send a friend request to yourself.')
-
         try {
             const userA = req.user._id
-            const userB = args.id
+            const userB = args.user_id
+
+            
+            if (userA.toString() === userB.toString()) throw new Error('Oops! Can\'t send a friend request to yourself.')
 
             const isExistsRequest = await User.findOne({ 
                 $and: [
@@ -87,9 +88,9 @@ module.exports = {
                         { _id: userA }
                     ] },
                     { $or: [
-                        { 'friends.accept': args.id },
-                        { 'friends.pending': args.id },
-                        { 'friends.sent': args.id }
+                        { 'friends.accept': userB },
+                        { 'friends.pending': userB },
+                        { 'friends.sent': userB }
                     ] }
                 ]
             })
@@ -115,7 +116,7 @@ module.exports = {
 
         try {
             const userA = req.user._id
-            const userB = args.id
+            const userB = args.user_id
 
             const isPendingRequest = await User.findOne({
                 $and: [
@@ -123,7 +124,7 @@ module.exports = {
                         { _id: userA }
                     ] },
                     { $or: [
-                        { 'friends.pending': args.id }
+                        { 'friends.pending': userB }
                     ] }
                 ]
             })
@@ -148,22 +149,6 @@ module.exports = {
                 { _id: userB }, 
                 { $addToSet: { 'friends.accept': userA } }
             )
-            
-            await Conversation.findOneAndUpdate(
-                {
-                    $and: [
-                        { $or: [
-                            { conversation_type: 'chat' }
-                        ] },
-                        { $or: [
-                            { paticipants: [userA, userB] },
-                            { paticipants: [userB, userA] }
-                        ] }
-                    ]
-                },
-                { conversation_type: 'chat', $addToSet: { paticipants: [userA, userB] } },
-                { upsert: true } 
-            )
 
             return 'success'
         } catch (err) {
@@ -175,7 +160,7 @@ module.exports = {
 
         try {
             const userA = req.user._id
-            const userB = args.id
+            const userB = args.user_id
 
             const isExistsRequest = await User.findOne({ 
                 $and: [
@@ -183,8 +168,8 @@ module.exports = {
                         { _id: userA }
                     ] },
                     { $or: [
-                        { 'friends.pending': args.id },
-                        { 'friends.sent': args.id }
+                        { 'friends.pending': userB },
+                        { 'friends.sent': userB }
                     ] }
                 ]
             })
@@ -220,7 +205,7 @@ module.exports = {
 
         try {
             const userA = req.user._id
-            const userB = args.id
+            const userB = args.user_id
 
             const isFriend = await User.findOne({ 
                 $and: [
@@ -228,7 +213,7 @@ module.exports = {
                         { _id: userA }
                     ] },
                     { $or: [
-                        { 'friends.accept': args.id }
+                        { 'friends.accept': userB }
                     ] }
                 ]
             })

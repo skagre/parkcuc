@@ -1,13 +1,27 @@
-import {createSlice} from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
+import authApi from 'api/authApi'
 
-const initialState = {}
+
+const login = createAsyncThunk('auth/login', async (params, thunkAPI) => {
+    return await authApi.login(params)
+})
 
 const authSlice = createSlice({
     name: 'auth',
-    initialState,
-    reducers: {
-        login(state, action) {
-            
+    initialState: {
+        userInfo: {},
+        error: ''
+    },
+    reducers: {},
+    extraReducers: {
+        [login.fulfilled]: (state, action) => {
+            state.userInfo = action.payload
+        },
+        [login.rejected]: (state, action) => {
+            state.error = action.error
         }
     }
 })
+
+const { reducers: authReducer } = authSlice
+export default authReducer
