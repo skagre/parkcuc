@@ -27,7 +27,7 @@ module.exports = buildSchema(`
     }
 
     type RootMutation {
-        register(name: String!, email: String!, password: String): User
+        register(name: String!, email: String!, password: String!): User
         login(emailOrSomething: String!, password: String!): Auth
         logout: String
         logoutAll: String

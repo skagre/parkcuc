@@ -2,8 +2,12 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import authApi from 'api/authApi'
 
 
-const login = createAsyncThunk('auth/login', async (params, thunkAPI) => {
-    return await authApi.login(params)
+export const authLogin = createAsyncThunk('auth/login', async (params, thunkAPI) => {
+    return await authApi.login({ params })
+})
+
+export const authRegister = createAsyncThunk('auth/register', async (params, thunkAPI) => {
+    return await authApi.register({ params })
 })
 
 const authSlice = createSlice({
@@ -14,14 +18,20 @@ const authSlice = createSlice({
     },
     reducers: {},
     extraReducers: {
-        [login.fulfilled]: (state, action) => {
+        [authLogin.fulfilled]: (state, action) => {
             state.userInfo = action.payload
         },
-        [login.rejected]: (state, action) => {
+        [authLogin.rejected]: (state, action) => {
+            state.error = action.error
+        },
+        [authRegister.fulfilled]: (state, action) => {
+            state.userInfo = action.payload
+        },
+        [authRegister.rejected]: (state, action) => {
             state.error = action.error
         }
     }
 })
 
-const { reducers: authReducer } = authSlice
+const { reducer: authReducer } = authSlice
 export default authReducer

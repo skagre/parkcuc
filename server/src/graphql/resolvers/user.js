@@ -2,19 +2,18 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const User = require('../../models/User')
-const Conversation = require('../../models/Conversation')
 
 module.exports = {
     register: async args => {
         try {
-            const isUserExists = await User.findOne({ email: args.input.email })
+            const isUserExists = await User.findOne({ email: args.email })
             if (isUserExists) throw new Error('Oops! This Email address is already registered.')
 
-            const hashedPassword = await bcrypt.hash(args.input.password, 10)
+            const hashedPassword = await bcrypt.hash(args.password, 10)
 
             const user = new User({
-                name: args.input.name,
-                email: args.input.email,
+                name: args.name,
+                email: args.email,
                 password: hashedPassword
             })
 

@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex'
     },
     input: {
-        margin: 10,
+        margin: '10px 5px',
         '& input:valid:hover + fieldset': {
             borderColor: green[200]
         },
@@ -61,6 +61,10 @@ const useStyles = makeStyles((theme) => ({
             cursor: 'pointer',
             color: green[800],
         }
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
     }
 }))
 

@@ -61,6 +61,18 @@ const useStyles = makeStyles((theme) => ({
     backdrop: {
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff',
+    },
+    alert: {
+        color: 'red',
+        fontSize: 14,
+        marginTop: -5,
+        '&:last-of-type': {
+            marginBottom: 5
+        },
+        '&::before': {
+            display: 'inline',
+            content: '"⚠ "'
+        }
     }
 }))
 
