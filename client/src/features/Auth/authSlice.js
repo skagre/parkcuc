@@ -2,11 +2,11 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import authApi from 'api/authApi'
 
 
-export const authLogin = createAsyncThunk('auth/login', async (params, thunkAPI) => {
+export const authLogin = createAsyncThunk('authLogin', async (params, thunkAPI) => {
     return await authApi.login({ params })
 })
 
-export const authRegister = createAsyncThunk('auth/register', async (params, thunkAPI) => {
+export const authRegister = createAsyncThunk('authRegister', async (params, thunkAPI) => {
     return await authApi.register({ params })
 })
 
