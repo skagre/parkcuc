@@ -36,14 +36,6 @@ const authApi = {
             }
         }
         return axiosClient.post(url, data)
-    },
-    imStatus: () => {
-        const data = {
-            query: 
-            `mutation imStatus`,
-            variables: {}
-        }
-        return axiosClient.post(url, data)
     }
 }
 

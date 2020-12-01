@@ -8,6 +8,7 @@ import useStyles from './style'
 
 const Messenger = props => {
     const auth = useSelector(state => state.auth)
+    console.log(auth)
     const classes = useStyles()
     return (
         <Grid container>
@@ -21,7 +22,7 @@ const Messenger = props => {
 
             </Grid>
         </Grid>
-    );
+    )
 }
 
 export default Messenger

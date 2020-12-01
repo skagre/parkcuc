@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form'
 import { Link, useHistory } from 'react-router-dom'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { authLogin } from 'features/Auth/authSlice'
-import axios from 'axios'
 
 import {
     Box, 
@@ -47,8 +46,6 @@ const Login = props => {
                 setAlert({ state: 'error', msg: loginStatus })
             } else {
                 setAlert({ state: 'success', msg: 'Logged in successfully!"' })
-                const token = loginStatus.data.login.token
-                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 history.push('/')
             }
         } catch (err) {

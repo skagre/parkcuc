@@ -4,7 +4,7 @@
 const isAuth = store => next => action => {
     
     console.log(store.getState())
-    return "asd"
+    next(action)
 }
 
 export default isAuth
