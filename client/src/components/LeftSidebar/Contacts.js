@@ -63,7 +63,7 @@ const Contacts = props => {
                 />
                 <ListItemSecondaryAction>
                     <IconButton edge="end" className={classes.icon}>
-                        <Tooltip title="Delete" placement="bottom" arrow>
+                        <Tooltip title="Action" placement="bottom" arrow>
                             <MoreVertIcon />
                         </Tooltip>
                     </IconButton>

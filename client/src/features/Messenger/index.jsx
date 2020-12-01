@@ -1,11 +1,13 @@
-import React from 'react';
+import React from 'react'
+import { useSelector } from 'react-redux'
 import MainNav from 'components/LeftSidebar/MainNav'
-import Grid from '@material-ui/core/Grid';
+import Grid from '@material-ui/core/Grid'
 
 import useStyles from './style'
 
 
 const Messenger = props => {
+    const auth = useSelector(state => state.auth)
     const classes = useStyles()
     return (
         <Grid container>
