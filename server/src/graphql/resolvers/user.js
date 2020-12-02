@@ -71,6 +71,9 @@ module.exports = {
             throw err
         }
     },
+    imStatus: async (args, req) => {
+        return !req.isAuth ? false : true
+    },
     sendFriendRequest: async (args, req) => {
         if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
 
@@ -229,6 +232,20 @@ module.exports = {
             )
 
             return 'success'
+        } catch (err) {
+            throw err
+        }
+    },
+    fetchFriendList: async (args, req) => {
+        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
+
+        try {
+            const { offset, limit } = args
+            const users =  await User.find({ _id: { $in: req.user.friends.accept } }).skip(offset).limit(limit) 
+            const a = users.map(user => {
+                return { id: user._id, name: user.name, email: user.email }
+            })
+            console.log(a)
         } catch (err) {
             throw err
         }

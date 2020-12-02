@@ -31,16 +31,19 @@ module.exports = buildSchema(`
         login(emailOrSomething: String!, password: String!): Auth
         logout: String
         logoutAll: String
+        imStatus: Boolean!
         sendFriendRequest(user_id: String!): String
         acceptFriendRequest(user_id: String!): String
         deleteFriendRequest(user_id: String!): String
         unfriend(user_id: String!): String
-
+        fetchFriendList: String
 
         createConversation(user_id: String!): String
 
 
-        sendMessage(conversation_id: String!, body: String!): String
+        sendMessage(conversation_id: String!, body: String!): Message
+
+        
     }
 
     schema {
