@@ -236,18 +236,46 @@ module.exports = {
             throw err
         }
     },
-    fetchFriendList: async (args, req) => {
+    fetchFriendLists: async (args, req) => {
         if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
 
         try {
-            const { offset, limit } = args
-            const users =  await User.find({ _id: { $in: req.user.friends.accept } }).skip(offset).limit(limit) 
-            const a = users.map(user => {
-                return { id: user._id, name: user.name, email: user.email }
-            })
-            console.log(a)
+            const { offset = 0, limit = 20 } = args
+            const users =  await User.find({ _id: { $in: req.user.friends.accept } }).skip(offset).limit(limit)
+
+            return [...users.map(user => {
+                return { _id: user._id, name: user.name, email: user.email }
+            })]
         } catch (err) {
             throw err
+        }
+    },
+    fetchPendingRequests: async (args, req) => {
+        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
+
+        try {
+            const { offset = 0, limit = 20 } = args
+            const users =  await User.find({ _id: { $in: req.user.friends.pending } }).skip(offset).limit(limit)
+
+            return [...users.map(user => {
+                return { _id: user._id, name: user.name, email: user.email }
+            })]
+        } catch (err) {
+            throw err
+        }
+    },
+    fetchSentRequests: async (args, req) => {
+            if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
+    
+            try {
+                const { offset = 0, limit = 20 } = args
+                const users =  await User.find({ _id: { $in: req.user.friends.sent } }).skip(offset).limit(limit)
+
+                return [...users.map(user => {
+                    return { _id: user._id, name: user.name, email: user.email }
+                })]
+            } catch (err) {
+                throw err
         }
     }
 }
