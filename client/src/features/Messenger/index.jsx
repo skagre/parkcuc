@@ -1,9 +1,10 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import MainNav from 'components/LeftSidebar/MainNav'
 import Grid from '@material-ui/core/Grid'
 
 import useStyles from './style'
+
+import LeftSidebar from './components/LeftSidebar'
 
 
 const Messenger = props => {
@@ -13,7 +14,7 @@ const Messenger = props => {
     return (
         <Grid container>
             <Grid item className={classes.leftSidebar}>
-                <MainNav />
+                <LeftSidebar />
             </Grid>
             <Grid item className={classes.mainContent}>
                 

@@ -16,13 +16,13 @@ const authSlice = createSlice({
     reducers: {},
     extraReducers: {
         [authLogin.fulfilled]: (state, action) => {
-            state.userInfo = action.payload
+            state.currentUser = action.payload
         },
         [authLogin.rejected]: (state, action) => {
             state.error = action.error
         },
         [authRegister.fulfilled]: (state, action) => {
-            state.userInfo = action.payload
+            state.currentUser = action.payload
         },
         [authRegister.rejected]: (state, action) => {
             state.error = action.error

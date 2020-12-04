@@ -26,7 +26,7 @@ const Notifications = props => {
                     primary="Xuân Bắc"
                     secondary="sent you a friend request."
                 />
-                <Typography variant="body2">1 day ago</Typography>
+                <Typography variant="body2">1d ago</Typography>
                 <Box className={classes.box}>
                     <Button variant="outlined">Accept</Button>
                     <Button variant="outlined">Cancel</Button>
@@ -40,7 +40,7 @@ const Notifications = props => {
                     primary="Xuân Bắc"
                     secondary="accepted your friend request."
                 />
-                <Typography variant="body2">1 day ago</Typography>
+                <Typography variant="body2">1d ago</Typography>
             </ListItem>
         </List>
     )

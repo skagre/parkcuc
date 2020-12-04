@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Friends = props => {
+const FriendLists = props => {
   const classes = useStyles();
 
     return (
@@ -42,7 +42,7 @@ const Friends = props => {
                 </ListItemAvatar>
                 <ListItemText
                     primary="Xuân Bắc"
-                    secondary="30 minutes ago"
+                    secondary="Active 30m ago"
                 />
                 <ListItemSecondaryAction>
                     <IconButton>
@@ -61,4 +61,4 @@ const Friends = props => {
     );
 }
 
-export default Friends
+export default FriendLists

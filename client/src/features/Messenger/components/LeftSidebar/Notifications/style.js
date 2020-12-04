@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         '& > button': {
             margin: '5px 10px',
+            padding: '5px 20px',
             '&:first-child': {
                 color: green[300]
             },
