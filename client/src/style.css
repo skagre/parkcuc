@@ -3,3 +3,18 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.custom-scroll {
+  scroll-behavior: smooth;
+}
+.custom-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgba(28,157,234,0.15);
+}
+.custom-scroll::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px #eff1f2;
+  box-shadow: inset 0 0 6px #eff1f2;
+}

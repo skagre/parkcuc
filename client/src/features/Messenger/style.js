@@ -1,3 +1,4 @@
+import { green } from '@material-ui/core/colors'
 import { makeStyles } from '@material-ui/core/styles'
 
 
@@ -10,13 +11,13 @@ const useStyles = makeStyles({
     },
     mainContent: {
         flex: 1,
-        backgroundColor: 'green'
+        //backgroundColor: green[50],
+        position: 'relative'
     },
     rightSidebar: {
         minWidth: '280px',
         maxWidth: '360px',
-        flexBasis: '23%',
-        backgroundColor: 'blue'
+        flexBasis: '23%'
     }
 })
 

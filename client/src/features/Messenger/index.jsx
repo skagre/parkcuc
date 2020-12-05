@@ -4,8 +4,8 @@ import Grid from '@material-ui/core/Grid'
 
 import useStyles from './style'
 
-import LeftSidebar from './components/LeftSidebar'
-
+import LeftSidebar from './components/_LeftSidebar'
+import MainContent from './components/_MainContent'
 
 const Messenger = props => {
     const auth = useSelector(state => state.auth)
@@ -17,7 +17,7 @@ const Messenger = props => {
                 <LeftSidebar />
             </Grid>
             <Grid item className={classes.mainContent}>
-                
+                <MainContent />
             </Grid>
             <Grid item className={classes.rightSidebar}>
 

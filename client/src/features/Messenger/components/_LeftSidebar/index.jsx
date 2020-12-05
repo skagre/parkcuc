@@ -17,11 +17,14 @@ import SettingsTwoToneIcon from '@material-ui/icons/SettingsTwoTone'
 import SmsTwoToneIcon from '@material-ui/icons/SmsTwoTone'
 import NotificationsTwoToneIcon from '@material-ui/icons/NotificationsTwoTone'
 
-import FriendLists from './FriendLists'
-import Notifications from './Notifications'
-import RecentChat from './RecentChat'
+import FriendLists from './_FriendLists'
+import Notifications from './_Notifications'
+import RecentChat from './_RecentChat'
+import SentRequests from './_SentRequests'
+import Profile from './_Profile'
 
 import useStyles from './style'
+
 
 const TabPanel = props => {
     const { children, value, index, ...other } = props
@@ -59,7 +62,6 @@ const a11yProps = index => {
 }
 
 const LeftSidebar = props => {
-
     const classes = useStyles();
     const [value, setValue] = useState(1)
 
@@ -111,7 +113,7 @@ const LeftSidebar = props => {
                 </Tooltip>
             </Tabs>
             <TabPanel value={value} index={0}>
-                Profile
+                <Profile />
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <RecentChat />
@@ -123,7 +125,7 @@ const LeftSidebar = props => {
                 <FriendLists />
             </TabPanel>
             <TabPanel value={value} index={4}>
-                Sent Requests
+                <SentRequests />
             </TabPanel>
             <TabPanel value={value} index={5}>
                 <Notifications />

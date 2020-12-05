@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     tabPanel: {
-        width: 'calc(100% - 70px)'
+        width: 'calc(100% - 70px)',
     },
     icon: {
         fontSize: 28,

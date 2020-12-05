@@ -17,7 +17,7 @@ import MuiAlert from '@material-ui/lab/Alert'
 import TextsmsOutlinedIcon from '@material-ui/icons/TextsmsOutlined'
 
 import useStyles from './style'
-import Loading from 'components/Loading'
+import Loading from 'components/_Loading'
 
 
 const Register = props => {

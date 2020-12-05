@@ -12,12 +12,12 @@ import {
 } from "react-router-dom"
 
 import './style.css'
-import Loading from 'components/Loading'
+import Loading from 'components/_Loading'
 
-const Login = lazy(() => import('features/Auth/pages/Login'))
-const Register = lazy(() => import('features/Auth/pages/Register'))
+const Login = lazy(() => import('features/Auth/pages/_Login'))
+const Register = lazy(() => import('features/Auth/pages/_Register'))
 const Messenger = lazy(() => import('features/Messenger'))
-const NotFound = lazy(() => import('components/NotFound'))
+const NotFound = lazy(() => import('components/_NotFound'))
 
 ReactDOM.render(
     <Provider store={store}>
