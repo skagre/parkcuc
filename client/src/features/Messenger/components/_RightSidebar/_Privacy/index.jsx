@@ -10,39 +10,34 @@ import {
     ListItemText
 } from '@material-ui/core';
 
-import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import EditTwoToneIcon from '@material-ui/icons/EditTwoTone'
-import ThumbUpTwoToneIcon from '@material-ui/icons/ThumbUpTwoTone'
-import AdjustTwoToneIcon from '@material-ui/icons/AdjustTwoTone'
+import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone'
+import VisibilityOffTwoToneIcon from '@material-ui/icons/VisibilityOffTwoTone'
+import RemoveCircleTwoToneIcon from '@material-ui/icons/RemoveCircleTwoTone'
 
 import useStyles from './style';
 
-const Actions = props => {
+const Privacy = props => {
     const classes = useStyles()
     const [expanded, setExpanded] = useState(true)
     return (
         <Accordion className={classes.accordion} expanded={expanded}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}  onClick={()=> setExpanded(!expanded)}>
-                <Typography className={classes.heading}>MORE ACTIONS</Typography>
+                <Typography className={classes.heading}>PRIVACY</Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.accordionDetails}>
                 <List className={classes.list}>
                     <ListItem className={classes.listItem} button>
-                        <ListItemText primary="Search in conversation" />
-                        <SearchTwoToneIcon className={classes.icon} />
+                        <ListItemText primary="Block messages" />
+                        <RemoveCircleTwoToneIcon className={classes.icon} />
                     </ListItem>
                     <ListItem className={classes.listItem} button>
-                        <ListItemText primary="Edit nicknames" />
-                        <EditTwoToneIcon className={classes.icon} />
+                        <ListItemText primary="Hide conversation" />
+                        <VisibilityOffTwoToneIcon className={classes.icon} />
                     </ListItem>
                     <ListItem className={classes.listItem} button>
-                        <ListItemText primary="Change theme" />
-                        <AdjustTwoToneIcon className={classes.icon} />
-                    </ListItem>
-                    <ListItem className={classes.listItem} button>
-                        <ListItemText primary="Change emoji" />
-                        <ThumbUpTwoToneIcon className={classes.icon} />
+                        <ListItemText primary="Delete conversation" />
+                        <DeleteTwoToneIcon className={classes.icon} />
                     </ListItem>
                 </List>
             </AccordionDetails>
@@ -50,4 +45,4 @@ const Actions = props => {
     )
 }
 
-export default Actions
+export default Privacy

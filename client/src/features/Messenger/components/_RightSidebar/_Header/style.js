@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
         flexFlow: 'column',
         alignItems: 'center',
         gap: 10,
-        padding: '30px 0',
+        paddingBottom: 30,
         borderBottom: '1px solid #00000020'
     },
     avatar: {
