@@ -1,0 +1,31 @@
+import React from 'react'
+
+import CallTwoToneIcon from '@material-ui/icons/CallTwoTone'
+import VideocamTwoToneIcon from '@material-ui/icons/VideocamTwoTone'
+import NotificationsOffTwoToneIcon from '@material-ui/icons/NotificationsOffTwoTone'
+
+import useStyles from './style';
+import { Avatar, Typography } from '@material-ui/core';
+
+
+const Header = props => {
+    const classes = useStyles()
+    return (
+        <div className={classes.headerWrap}>
+            <Avatar 
+                className={classes.avatar}
+                alt="alt"
+                src="https://material-ui.com/static/images/avatar/1.jpg"
+            />
+            <Typography className={classes.text}>Xuân Bắc</Typography>
+            <Typography className={classes.text}>Active</Typography>
+            <div className={classes.iconGroup}>
+                <CallTwoToneIcon className={classes.icon} />
+                <VideocamTwoToneIcon className={classes.icon} />
+                <NotificationsOffTwoToneIcon className={classes.icon} />
+            </div>
+        </div>
+    );
+}
+
+export default Header

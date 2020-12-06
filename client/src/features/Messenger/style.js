@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core/styles'
 
 
 const useStyles = makeStyles({
+    container: {
+        overflow: 'hidden'
+    },
     leftSidebar: {
         minWidth: '300px',
         maxWidth: '480px',
@@ -11,7 +14,7 @@ const useStyles = makeStyles({
     },
     mainContent: {
         flex: 1,
-        //backgroundColor: green[50],
+        backgroundColor: green[50],
         position: 'relative'
     },
     rightSidebar: {

@@ -14,7 +14,9 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         gap: 10,
-        padding: '0 30px'
+        padding: '0 30px',
+        zIndex: 1,
+        boxShadow: '0 -30px 0px 0px #e8f5e9'
     },
     avatar: {
         width: 60,

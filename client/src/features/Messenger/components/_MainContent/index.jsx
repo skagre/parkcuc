@@ -7,7 +7,7 @@ import ChatInput from './_ChatInput'
 const MainContent = props => {
     return (
         <> 
-            {/* <ChatHeader /> */}
+            <ChatHeader />
             <ChatContent />
             <ChatInput />
         </>

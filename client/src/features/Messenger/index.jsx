@@ -6,13 +6,15 @@ import useStyles from './style'
 
 import LeftSidebar from './components/_LeftSidebar'
 import MainContent from './components/_MainContent'
+import RightSidebar from './components/_RightSidebar'
+
 
 const Messenger = props => {
     const auth = useSelector(state => state.auth)
     console.log(auth)
     const classes = useStyles()
     return (
-        <Grid container>
+        <Grid container className={classes.container}>
             <Grid item className={classes.leftSidebar}>
                 <LeftSidebar />
             </Grid>
@@ -20,7 +22,7 @@ const Messenger = props => {
                 <MainContent />
             </Grid>
             <Grid item className={classes.rightSidebar}>
-
+                <RightSidebar />
             </Grid>
         </Grid>
     )
