@@ -1,4 +1,5 @@
 const Conversation = require('../../models/Conversation')
+const User = require('../../models/User')
 
 module.exports = {
     createConversation: async (args, req) => {

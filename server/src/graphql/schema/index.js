@@ -30,6 +30,7 @@ module.exports = buildSchema(`
 
     type RootQuery {
         fetchMessage(conversation_id: String!): [Message]
+        init: String
     }
 
     type RootMutation {
@@ -51,8 +52,6 @@ module.exports = buildSchema(`
 
 
         sendMessage(conversation_id: String!, body: String!): Message
-
-        
     }
 
     schema {
