@@ -28,6 +28,10 @@ module.exports = buildSchema(`
         email: String
     }
 
+    type Conversation {
+        _id: ID
+    }
+
     type RootQuery {
         fetchMessage(conversation_id: String!): [Message]
         init: String
@@ -48,7 +52,7 @@ module.exports = buildSchema(`
         fetchPendingRequests(offset: Int, limit: Int): [Friend]
         fetchSentRequests(offset: Int, limit: Int): [Friend]
 
-        createConversation(user_id: String!): String
+        createConversation(participant_id: [String!]): Conversation
 
 
         sendMessage(conversation_id: String!, body: String!): Message

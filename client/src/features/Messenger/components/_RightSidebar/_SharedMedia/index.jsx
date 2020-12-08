@@ -4,9 +4,7 @@ import {
     Accordion, 
     AccordionDetails, 
     AccordionSummary, 
-    Typography,
-    GridList,
-    GridListTile
+    Typography
 } from '@material-ui/core';
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'

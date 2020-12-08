@@ -8,7 +8,7 @@ const conversationSchema = mongoose.Schema({
         type: String, // chat | group
         required: true
     },
-    paticipants: [{
+    participants: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
