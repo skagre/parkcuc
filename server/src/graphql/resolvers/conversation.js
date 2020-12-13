@@ -1,5 +1,4 @@
 const Conversation = require('../../models/Conversation')
-const User = require('../../models/User')
 
 module.exports = {
     createConversation: async (args, req) => {
@@ -45,6 +44,19 @@ module.exports = {
             result = await conversation.save()
             return result._id
 
+        } catch (err) {
+            throw err
+        }
+    },
+    fetchConversationLists: async (args, req) => {
+        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
+
+        try {
+            const conversationLists = await Conversation.find(
+                { participants: { $in: req.user._id } }
+            )
+
+            console.log(conversationLists)
         } catch (err) {
             throw err
         }

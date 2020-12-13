@@ -22,18 +22,22 @@ module.exports = buildSchema(`
         body: String
     }
 
+    type Conversation {
+        _id: ID
+        name: String
+        type: String
+        participants: [Friend]
+    }
+
     type Friend {
         _id: ID
         name: String
         email: String
     }
 
-    type Conversation {
-        _id: ID
-    }
-
     type RootQuery {
         fetchMessage(conversation_id: String!): [Message]
+        fetchConversationLists: [Conversation]
         init: String
     }
 
