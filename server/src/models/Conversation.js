@@ -2,10 +2,11 @@ const mongoose = require('mongoose')
 
 const conversationSchema = mongoose.Schema({
     name: {
-        type: String
+        type: String,
+        default: null
     },
     conversation_type: {
-        type: String, // chat | group / myself
+        type: String, // chat | group | myself
         required: true
     },
     participants: [{

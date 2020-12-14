@@ -1,4 +1,5 @@
 const Conversation = require('../../models/Conversation')
+const User = require('../../models/User')
 
 module.exports = {
     createConversation: async (args, req) => {
@@ -52,11 +53,33 @@ module.exports = {
         if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
 
         try {
+            const { offset = 0, limit = 20 } = args
             const conversationLists = await Conversation.find(
                 { participants: { $in: req.user._id } }
-            )
+            ).skip(offset).limit(limit)
 
-            console.log(conversationLists)
+            let obj = {}
+
+            conversationLists.forEach(async element => {
+                obj = [{ _id: element._id, name: element.name, type: element.conversation_type }]
+                
+                let cc = await Promise.all(element.participants.map(async p => {
+                    return obj.push({ participants: await User.findOne({ _id: { $in: p } }).select({ _id: 1, name: 1, email: 1 }) })
+                    
+                }))
+
+                console.log(obj)
+            })
+            //console.log(obj)
+            return [...conversationLists.map(conversation => {
+                return { 
+                    _id: conversation._id, 
+                    name: conversation.name, 
+                    type: conversation.conversation_type, 
+                    participants: conversation.participants
+                }
+            })]
+        
         } catch (err) {
             throw err
         }

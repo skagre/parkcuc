@@ -37,7 +37,12 @@ module.exports = buildSchema(`
 
     type RootQuery {
         fetchMessage(conversation_id: String!): [Message]
-        fetchConversationLists: [Conversation]
+        fetchConversationLists(offset: Int, limit: Int): [Conversation]
+
+        fetchFriendLists(offset: Int, limit: Int): [Friend]
+        fetchPendingRequests(offset: Int, limit: Int): [Friend]
+        fetchSentRequests(offset: Int, limit: Int): [Friend]
+
         init: String
     }
 
@@ -52,9 +57,7 @@ module.exports = buildSchema(`
         deleteFriendRequest(user_id: String!): String
         unfriend(user_id: String!): String
 
-        fetchFriendLists(offset: Int, limit: Int): [Friend]
-        fetchPendingRequests(offset: Int, limit: Int): [Friend]
-        fetchSentRequests(offset: Int, limit: Int): [Friend]
+        
 
         createConversation(participant_id: [String!]): Conversation
 
