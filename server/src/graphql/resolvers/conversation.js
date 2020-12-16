@@ -58,27 +58,39 @@ module.exports = {
                 { participants: { $in: req.user._id } }
             ).skip(offset).limit(limit)
 
-            let obj = {}
 
-            conversationLists.forEach(async element => {
-                obj = [{ _id: element._id, name: element.name, type: element.conversation_type }]
-                
-                let cc = await Promise.all(element.participants.map(async p => {
-                    return obj.push({ participants: await User.findOne({ _id: { $in: p } }).select({ _id: 1, name: 1, email: 1 }) })
+
+            // conversationLists.forEach(async element => {
+            //     obj = [{ _id: element._id, name: element.name, type: element.conversation_type }]
+            //     console.log(obj)
+            //     let cc = await Promise.all(element.participants.map(async p => {
                     
-                }))
+            //         return obj.push({ participants: await User.findOne({ _id: { $in: p } }).select({ _id: 1, name: 1, email: 1 }) })
+            //     }))
+            //     //console.log(obj)
+            //     console.log(cc)
+            // })
 
-                console.log(obj)
-            })
-            //console.log(obj)
-            return [...conversationLists.map(conversation => {
-                return { 
-                    _id: conversation._id, 
-                    name: conversation.name, 
-                    type: conversation.conversation_type, 
-                    participants: conversation.participants
-                }
-            })]
+            
+            let ax = await Promise.all(conversationLists.map(async conversation => {
+                let obj = { _id: conversation._id, name: conversation.name, type: conversation.conversation_type }
+                const a = await User.find({
+                    _id: { $in: conversation.participants }
+                }).select({ _id: 1, name: 1, email: 1 })
+                obj.participants = a[0].name
+                return obj
+            }))
+            console.log(ax)
+            return ax
+            //
+            // return [...conversationLists.map(conversation => {
+            //     return { 
+            //         _id: conversation._id, 
+            //         name: conversation.name, 
+            //         type: conversation.conversation_type, 
+            //         participants: obj
+            //     }
+            // })]
         
         } catch (err) {
             throw err
