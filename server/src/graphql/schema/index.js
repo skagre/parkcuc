@@ -25,7 +25,7 @@ module.exports = buildSchema(`
     type Conversation {
         _id: ID
         name: String
-        type: String
+        conversation_type: String
         participants: [Friend]
     }
 

@@ -16,7 +16,7 @@ import Loading from 'components/_Loading'
 
 const Login = lazy(() => import('features/Auth/pages/_Login'))
 const Register = lazy(() => import('features/Auth/pages/_Register'))
-const Messenger = lazy(() => import('features/Messenger'))
+const Messenger = lazy(() => import('features/Parkcuc'))
 const NotFound = lazy(() => import('components/_NotFound'))
 
 ReactDOM.render(

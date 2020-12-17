@@ -90,7 +90,7 @@ module.exports = {
                         { _id: userA }
                     ] },
                     { $or: [
-                        { 'friends.accept': userB },
+                        { 'friends.accepted': userB },
                         { 'friends.pending': userB },
                         { 'friends.sent': userB }
                     ] }
@@ -130,7 +130,7 @@ module.exports = {
                     ] }
                 ]
             })
-            if (!isPendingRequest) throw new Error('Oops ! Failed to accept friend request.')
+            if (!isPendingRequest) throw new Error('Oops ! Failed to accepted friend request.')
 
             await User.findOneAndUpdate(
                 { _id: userA }, 
@@ -139,7 +139,7 @@ module.exports = {
 
             await User.findOneAndUpdate(
                 { _id: userA }, 
-                { $addToSet: { 'friends.accept': userB } }
+                { $addToSet: { 'friends.accepted': userB } }
             )
 
             await User.findOneAndUpdate(
@@ -149,7 +149,7 @@ module.exports = {
 
             await User.findOneAndUpdate(
                 { _id: userB }, 
-                { $addToSet: { 'friends.accept': userA } }
+                { $addToSet: { 'friends.accepted': userA } }
             )
 
             return 'success'
@@ -215,7 +215,7 @@ module.exports = {
                         { _id: userA }
                     ] },
                     { $or: [
-                        { 'friends.accept': userB }
+                        { 'friends.accepted': userB }
                     ] }
                 ]
             })
@@ -223,12 +223,12 @@ module.exports = {
 
             await User.findOneAndUpdate(
                 { _id: userA }, 
-                { $pull: { 'friends.accept': userB } }
+                { $pull: { 'friends.accepted': userB } }
             )
 
             await User.findOneAndUpdate(
                 { _id: userB }, 
-                { $pull: { 'friends.accept': userA } }
+                { $pull: { 'friends.accepted': userA } }
             )
 
             return 'success'
@@ -241,7 +241,7 @@ module.exports = {
 
         try {
             const { offset = 0, limit = 20 } = args
-            const users =  await User.find({ _id: { $in: req.user.friends.accept } }).skip(offset).limit(limit)
+            const users =  await User.find({ _id: { $in: req.user.friends.accepted } }).skip(offset).limit(limit)
 
             return [...users.map(user => {
                 return { _id: user._id, name: user.name, email: user.email }

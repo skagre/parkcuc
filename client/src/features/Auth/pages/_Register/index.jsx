@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { unwrapResult } from '@reduxjs/toolkit'
-import { authRegister } from 'features/Auth/authSlice'
+import { registerAPI } from 'features/Auth/authSlice'
 
 import {
     Box, 
@@ -41,8 +41,8 @@ const Register = props => {
             else if (!password) return setAlert({ state: 'warning', msg: "Oops! Password field may not be blank." })
             else if (password !== confirm_password) return setAlert({ state: 'warning', msg: "Oops! Password field don't match." })
 
-            const actionResult = await dispatch(authRegister({ name, email, password }))
-            const registerStatus = unwrapResult(actionResult);
+            const actionResult = await dispatch(registerAPI({ name, email, password }))
+            const registerStatus = unwrapResult(actionResult)
             if (registerStatus.errors) {
                 setAlert({ state: 'error', msg: registerStatus })
             } else {

@@ -1,4 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { fetchConversationListsAPI } from 'features/Parkcuc/parkcucSlice'
 
 import {
     List,
@@ -22,14 +25,31 @@ import useStyles from './style'
 
 const RecentChat = props => {
     const classes = useStyles()
+    const dispatch = useDispatch()
+    const [recentChat, setRecentChat] = useState([])
+
+    useEffect(() => {
+        async function fetchConversationLists() {
+            try {
+                const actionResult = await dispatch(fetchConversationListsAPI({ limit: 20, offset: 0 }))
+                const fetchStatus = unwrapResult(actionResult)
+                setRecentChat(fetchStatus.data.fetchConversationLists)
+            } catch (err) {
+                console.log("Oops! Failed to fetchConversationLists.")
+            }
+        }
+        fetchConversationLists()
+    }, [])
+    
     return (
         <>
             <TabHeading text={"Recent Chat"} subtext={"Start New Conversation"}/>
             <TabHeadingSeach />
             <List className={`${classes.list} custom-scroll`}>
+                {recentChat && recentChat.map(rc => 
                 <ListItem className={classes.listItem} alignItems="flex-start">
                     <ListItemAvatar>
-                        <Avatar alt="Remy Sharp" />
+                        <Avatar src={rc.participants[1].name} alt={rc.participants[1].name} />
                     </ListItemAvatar>
                     <ListItemText
                         primary={
@@ -37,7 +57,7 @@ const RecentChat = props => {
                                 className={classes.text}
                                 noWrap
                             >
-                                Xuân Bắc asda sdas ds 
+                            {rc.participants[1].name}
                             </Typography>
                         }
                         secondary={
@@ -58,6 +78,7 @@ const RecentChat = props => {
                         </IconButton>
                     </ListItemSecondaryAction>
                 </ListItem>
+                )}
             </List>
         </>
     )

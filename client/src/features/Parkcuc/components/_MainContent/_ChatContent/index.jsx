@@ -39,16 +39,16 @@ const ChatContent = props => {
                 
                     <li className={`${classes.msgHasMedia} ${classes.msgHasMediaMine}`}>
                         <GridList cellHeight={200} className={classes.gridList} cols={3} >
-                            <GridListTile cols="1">
+                            <GridListTile cols={1}>
                                 <img src="https://material-ui.com/static/images/grid-list/honey.jpg" alt="alt" />
                             </GridListTile>
-                            <GridListTile cols="1">
+                            <GridListTile cols={1}>
                                 <img src="https://material-ui.com/static/images/grid-list/honey.jpg" alt="alt" />
                             </GridListTile>
-                            <GridListTile cols="1">
+                            <GridListTile cols={1}>
                                 <img src="https://material-ui.com/static/images/grid-list/honey.jpg" alt="alt" />
                             </GridListTile>
-                            <GridListTile cols="1">
+                            <GridListTile cols={1}>
                                 <video className={classes.video}>
                                     <source src="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4" type="video/mp4" />
                                 </video>
@@ -82,16 +82,16 @@ const ChatContent = props => {
                 
                     <li className={`${classes.msgHasMedia}`}>
                         <GridList cellHeight={200} className={classes.gridList} cols={3} >
-                            <GridListTile cols="1">
+                            <GridListTile cols={1}>
                                 <img src="https://material-ui.com/static/images/grid-list/honey.jpg" alt="alt" />
                             </GridListTile>
-                            <GridListTile cols="1">
+                            <GridListTile cols={1}>
                                 <img src="https://material-ui.com/static/images/grid-list/honey.jpg" alt="alt" />
                             </GridListTile>
-                            <GridListTile cols="1">
+                            <GridListTile cols={1}>
                                 <img src="https://material-ui.com/static/images/grid-list/honey.jpg" alt="alt" />
                             </GridListTile>
-                            <GridListTile cols="1">
+                            <GridListTile cols={1}>
                                 <video className={classes.video}>
                                     <source src="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4" type="video/mp4" />
                                 </video>

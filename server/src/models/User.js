@@ -51,7 +51,7 @@ const userSchema = mongoose.Schema({
         }
     },
     friends: {
-        accept: [{
+        accepted: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }],

@@ -1,5 +1,4 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import Grid from '@material-ui/core/Grid'
 
 import useStyles from './style'
@@ -9,9 +8,7 @@ import MainContent from './components/_MainContent'
 import RightSidebar from './components/_RightSidebar'
 
 
-const Messenger = props => {
-    const auth = useSelector(state => state.auth)
-    console.log(auth)
+const Parkcuc = props => {
     const classes = useStyles()
     return (
         <Grid container className={classes.container}>
@@ -28,4 +25,4 @@ const Messenger = props => {
     )
 }
 
-export default Messenger
+export default Parkcuc

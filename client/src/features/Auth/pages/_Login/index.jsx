@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { Link, useHistory } from 'react-router-dom'
 import { unwrapResult } from '@reduxjs/toolkit'
-import { authLogin } from 'features/Auth/authSlice'
+import { loginAPI } from 'features/Auth/authSlice'
 
 import {
     Box, 
@@ -40,8 +40,8 @@ const Login = props => {
             if (!emailOrSomething) return setAlert({ state: 'warning', msg: "Oops! emailOrSomething field may not be blank." })
             else if (!password) return setAlert({ state: 'warning', msg: "Oops! Password field may not be blank." })
 
-            const actionResult = await dispatch(authLogin({ emailOrSomething, password }))
-            const loginStatus = unwrapResult(actionResult);
+            const actionResult = await dispatch(loginAPI({ emailOrSomething, password }))
+            const loginStatus = unwrapResult(actionResult)
             if (loginStatus.errors) {
                 setAlert({ state: 'error', msg: loginStatus })
             } else {
