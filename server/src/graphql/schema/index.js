@@ -6,6 +6,7 @@ module.exports = buildSchema(`
         _id: ID
         name: String
         email: String
+        avatar: String
         password: String
         username: String
     }
@@ -36,6 +37,7 @@ module.exports = buildSchema(`
     }
 
     type RootQuery {
+        fetchUserInfo: User
         fetchMessage(conversation_id: String!): [Message]
         fetchConversationLists(offset: Int, limit: Int): [Conversation]
 

@@ -29,9 +29,6 @@ const useStyles = makeStyles((theme) => ({
         '&:hover::before': {
             cursor: 'pointer',
             display: 'block'
-        },
-        '&:hover + svg': {
-            display: 'block'
         }
     },
     icon: {
@@ -51,6 +48,24 @@ const useStyles = makeStyles((theme) => ({
         '& > *': {
             textAlign: 'center'
         }
+    },
+    label: {
+        display: 'block',
+        width: 100,
+        height: 100,
+        margin: '30px auto 0 auto',
+        backgroundColor: 'red',
+        borderRadius: '50%',
+        '& > input': {
+            display: 'none'
+        },
+        '&:hover > svg': {
+            display: 'block'
+        }
+    },
+    progress: {
+        width: 100,
+        margin: '10px auto 0 auto'
     }
 }))
 

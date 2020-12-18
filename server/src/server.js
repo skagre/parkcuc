@@ -22,20 +22,21 @@ app.use('/api',isAuth , graphqlHTTP({
     graphiql: true
 }))
 
-let conn = mongoose.createConnection(process.env.MONGO_URL, {
+mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
-    useCreateIndex: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
     useFindAndModify: false
 })
 
 const db = mongoose.connection
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
+let conn = mongoose.createConnection(process.env.MONGO_URL)
 let gfs
 conn.once('open', () => {
     gfs = Grid(conn.db, mongoose.mongo)
-    gfs.collection('uploads')
+    gfs.collection('attachments')
 })
 
 let storage = new GridFsStorage({
@@ -50,7 +51,7 @@ let storage = new GridFsStorage({
                     const filename = buf.toString('hex') + path.extname(file.originalname)
                     const fileInfo = {
                         filename: filename,
-                        bucketName: 'uploads'
+                        bucketName: 'attachments'
                     };
                     resolve(fileInfo)
                 })
@@ -61,7 +62,6 @@ let storage = new GridFsStorage({
 const upload = multer({ storage })
 
 app.post('/upload', upload.single('file'), (req, res) => {
-    console.log(req.file)
     res.json({ file: req.file })
 })
 
@@ -107,11 +107,11 @@ app.get('/files/:filename', (req, res) => {
 })
 
 app.delete('/files/:id', (req, res) => {
-    gfs.remove({ _id: req.params.id, root: 'uploads' }, (err, gridStore) => {
+    gfs.remove({ _id: req.params.id, root: 'attachments' }, (err, gridStore) => {
         if (err) {
             return res.status(404).json({ err: err })
         }
     })
-  })
+})
 
 module.exports = app

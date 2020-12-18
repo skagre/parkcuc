@@ -27,9 +27,7 @@ const Register = props => {
     const [alert, setAlert] = useState(null)
 
     const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return
-        }
+        if (reason === 'clickaway') return
         setAlert(null)
     }
 

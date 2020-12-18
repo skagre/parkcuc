@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
         gap: 10,
         padding: '0 30px',
         zIndex: 1,
-        boxShadow: '0 -30px 0px 30px #e8f5e9'
+        boxShadow: '0 -30px 0px 25px #e8f5e9'
     },
     avatar: {
         width: 60,

@@ -2,13 +2,13 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const User = require('../../models/User')
+const Conversation = require('../../models/Conversation')
 
 module.exports = {
     register: async args => {
         try {
             const isUserExists = await User.findOne({ email: args.email })
             if (isUserExists) throw new Error('Oops! This Email address is already registered.')
-
             const hashedPassword = await bcrypt.hash(args.password, 10)
 
             const user = new User({
@@ -16,7 +16,6 @@ module.exports = {
                 email: args.email,
                 password: hashedPassword
             })
-
             const result = await user.save()
 
             return { ...result._doc, password: null }
@@ -73,6 +72,18 @@ module.exports = {
     },
     imStatus: async (args, req) => {
         return !req.isAuth ? false : true
+    },
+    fetchUserInfo: async (args, req) => {
+        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
+
+        try {
+            const userInfo = await User.findOne({
+                _id: req.user._id
+            }).select({ _id: 1, email: 1, name: 1, username: 1, avatar: 1 })
+            return userInfo
+        } catch (err) {
+            throw err
+        }
     },
     sendFriendRequest: async (args, req) => {
         if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')

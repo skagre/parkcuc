@@ -28,6 +28,12 @@ const userSchema = mongoose.Schema({
     username: {
         type: String,
         lowercase: true,
+        default: null,
+        trim: true
+    },
+    avatar: {
+        type: String,
+        default: null,
         trim: true
     },
     state: {
