@@ -43,38 +43,28 @@ const Profile = props => {
         fetchUserInfo()
     }, [])
 
-    const uploadAvatar = async () => {
-        const fileUploader = document.getElementById('file')
-        
+    const onChangeHandler = async event => {
         const reader = new FileReader()
-        fileUploader.addEventListener('change', async event => {
-            const file = event.target.files[0]
-            if (!file) return
+        const file = event.target.files[0]
 
-            console.log(file)
+        const size = file.size
+        if (size > 4 * 1024 * 1024) {
+            setAlert(true)
+            return
+        }
 
-            setSelectedFile(event.target.files[0])
-            const size = file.size
-            if (size > 4 * 1024 * 1024) {
-                setAlert(true)
-                return
-            }
+        const formData = new FormData()
+        formData.append('file', file, file.name)
 
-            console.log(selectedFile)
+        console.log(formData)
 
-            const formData = new FormData()
-            formData.append('file', selectedFile, selectedFile.name)
-
-            const actionResult = await dispatch(uploadAvatarAPI(formData))
-            const fetchStatus = unwrapResult(actionResult)
-            console.log(fetchStatus)
-                
-            reader.readAsDataURL(file)
-            reader.addEventListener('load', event => {
-                setImgUrl(event.target.result)
-            })
-     
+        const actionResult = await dispatch(uploadAvatarAPI(formData))
+        const fetchStatus = unwrapResult(actionResult)
+        console.log(fetchStatus)
             
+        reader.readAsDataURL(file)
+        reader.addEventListener('load', event => {
+            setImgUrl(event.target.result)
         })
     }
 
@@ -99,9 +89,8 @@ const Profile = props => {
                     <Avatar
                         className={classes.avatar}
                         src={imgUrl ? imgUrl : userInfo.avatar}
-                        alt={userInfo.name} 
-                        onClick={()=> uploadAvatar()}/>
-                    <input type="file" id="file" accept="image/*"/>
+                        alt={userInfo.name}/>
+                    <input type="file" id="file" name="file" accept="image/*" onChange={e => onChangeHandler(e)} />
                     <AddAPhotoTwoToneIcon className={classes.icon}/>
                 </label>
                 <LinearProgress color="secondary" className={classes.progress}/>

@@ -13,6 +13,7 @@ const isAuth = require('./middlewares/auth')
 
 const app = express()
 
+app.use(isAuth)
 app.use(express.json())
 app.use(cors())
 app.options('*', cors())
@@ -62,6 +63,9 @@ let storage = new GridFsStorage({
 const upload = multer({ storage })
 
 app.post('/upload', upload.single('file'), (req, res) => {
+    if (!req.isAuth) return res.status(401).json({
+        err: 'Oops! Not authorized to access this resource.'
+    })
     res.json({ file: req.file })
 })
 
@@ -107,6 +111,9 @@ app.get('/files/:filename', (req, res) => {
 })
 
 app.delete('/files/:id', (req, res) => {
+    if (!req.isAuth) return res.status(401).json({
+        err: 'Oops! Not authorized to access this resource.'
+    })
     gfs.remove({ _id: req.params.id, root: 'attachments' }, (err, gridStore) => {
         if (err) {
             return res.status(404).json({ err: err })

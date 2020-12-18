@@ -9,7 +9,7 @@ export const fetchConversationListsAPI = createAsyncThunk('conversation/fetchCon
 
 
 export const uploadAvatarAPI = createAsyncThunk('user/uploadAvatarAPI', async (params, thunkAPI) => {
-    return await userApi.fetchUserInfo({ params })
+    return await userApi.uploadAvatar({ params })
 })
 export const fetchUserInfoAPI = createAsyncThunk('user/fetchUserInfoAPI', async (params, thunkAPI) => {
     return await userApi.fetchUserInfo()
