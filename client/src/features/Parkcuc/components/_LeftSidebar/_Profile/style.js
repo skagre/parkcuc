@@ -54,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
         width: 100,
         height: 100,
         margin: '30px auto 0 auto',
-        backgroundColor: 'red',
         borderRadius: '50%',
         '& > input': {
             display: 'none'

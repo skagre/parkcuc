@@ -28,7 +28,7 @@ const Profile = props => {
     const [userInfo, setUserInfo] = useState(null)
     const [imgUrl, setImgUrl] = useState(null)
     const [alert, setAlert] = useState(false)
-    const [selectedFile, setSelectedFile] = useState(null)
+    const [progressUpload, setProgressUpload] = useState(false)
     
     useEffect(() => {
         async function fetchUserInfo() {
@@ -44,28 +44,26 @@ const Profile = props => {
     }, [])
 
     const onChangeHandler = async event => {
+        setProgressUpload(true)
         const reader = new FileReader()
         const file = event.target.files[0]
 
         const size = file.size
         if (size > 4 * 1024 * 1024) {
             setAlert(true)
+            setProgressUpload(false)
             return
         }
 
         const formData = new FormData()
         formData.append('file', file, file.name)
 
-        console.log(formData)
-
-        const actionResult = await dispatch(uploadAvatarAPI(formData))
-        const fetchStatus = unwrapResult(actionResult)
-        console.log(fetchStatus)
-            
+        await dispatch(uploadAvatarAPI(formData))
         reader.readAsDataURL(file)
         reader.addEventListener('load', event => {
             setImgUrl(event.target.result)
         })
+        setProgressUpload(false)
     }
 
     const handleClose = (event, reason) => {
@@ -88,12 +86,12 @@ const Profile = props => {
                 <label className={classes.label}>
                     <Avatar
                         className={classes.avatar}
-                        src={imgUrl ? imgUrl : userInfo.avatar}
+                        src={imgUrl ? imgUrl : `${process.env.REACT_APP_BASE_URL}/image/${userInfo.avatar}`}
                         alt={userInfo.name}/>
                     <input type="file" id="file" name="file" accept="image/*" onChange={e => onChangeHandler(e)} />
                     <AddAPhotoTwoToneIcon className={classes.icon}/>
                 </label>
-                <LinearProgress color="secondary" className={classes.progress}/>
+                <LinearProgress color="secondary" className={classes.progress} style={{display: progressUpload ? 'block': 'none'}}/>
             </div>
             <div className={classes.info}>
                 <Typography>{userInfo.name}</Typography>

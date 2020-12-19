@@ -21,7 +21,7 @@ const userApi = {
     },
     uploadAvatar: ({ params }) => {
         const data = params
-        return axiosClient.post(process.env.REACT_APP_UPLOAD_URL, data)
+        return axiosClient.post(process.env.REACT_APP_UPLOAD_URL + '/avatar', data)
     },
     fetchFriendLists: ({ params }) => {
         const { limit = 20, offset = 0 } = params
@@ -29,9 +29,13 @@ const userApi = {
             query: 
             `query fetchFriendLists($limit: Int, $offset: Int) {
                 fetchFriendLists(limit: $limit, offset: $offset) {
-                    _id
-                    name
-                    email
+                    count
+                    data {
+                        _id
+                        name
+                        email
+                        avatar
+                    }
                 }
             }`,
             variables: {
@@ -47,9 +51,13 @@ const userApi = {
             query: 
             `query fetchSentRequests($limit: Int, $offset: Int) {
                 fetchSentRequests(limit: $limit, offset: $offset) {
-                    _id
-                    name
-                    email
+                    count
+                    data {
+                        _id
+                        name
+                        email
+                        avatar
+                    }
                 }
             }`,
             variables: {
@@ -65,9 +73,13 @@ const userApi = {
             query: 
             `query fetchPendingRequests($limit: Int, $offset: Int) {
                 fetchPendingRequests(limit: $limit, offset: $offset) {
-                    _id
-                    name
-                    email
+                    count
+                    data {
+                        _id
+                        name
+                        email
+                        avatar
+                    }
                 }
             }`,
             variables: {
@@ -82,6 +94,18 @@ const userApi = {
             query: 
             `mutation unfriend($user_id: String!) {
                 unfriend(user_id: $user_id)
+            }`,
+            variables: {
+                user_id: params.user_id
+            }
+        }
+        return axiosClient.post(url, data)
+    },
+    deleteFriendRequest: ({ params }) => {
+        const data = {
+            query: 
+            `mutation deleteFriendRequest($user_id: String!) {
+                deleteFriendRequest(user_id: $user_id)
             }`,
             variables: {
                 user_id: params.user_id

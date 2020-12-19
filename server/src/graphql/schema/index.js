@@ -13,6 +13,7 @@ module.exports = buildSchema(`
 
     type Auth {
         user_id: ID
+        avatar: String
         token: String
     }
 
@@ -30,10 +31,16 @@ module.exports = buildSchema(`
         participants: [Friend]
     }
 
+    type List {
+        count: Int,
+        data: [Friend]
+    }
+
     type Friend {
         _id: ID
         name: String
         email: String
+        avatar: String
     }
 
     type RootQuery {
@@ -41,9 +48,9 @@ module.exports = buildSchema(`
         fetchMessage(conversation_id: String!): [Message]
         fetchConversationLists(offset: Int, limit: Int): [Conversation]
 
-        fetchFriendLists(offset: Int, limit: Int): [Friend]
-        fetchPendingRequests(offset: Int, limit: Int): [Friend]
-        fetchSentRequests(offset: Int, limit: Int): [Friend]
+        fetchFriendLists(offset: Int, limit: Int): List
+        fetchPendingRequests(offset: Int, limit: Int): List
+        fetchSentRequests(offset: Int, limit: Int): List
 
         init: String
     }

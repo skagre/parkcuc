@@ -80,7 +80,7 @@ const LeftSidebar = props => {
                 className={classes.tabs}
             >
                 <Tooltip title="Profile" placement="right" arrow>
-                    <Tab className={classes.tab} icon={<Avatar>B</Avatar>} {...a11yProps(0)} />
+                    <Tab className={classes.tab} icon={<Avatar src="" alt="avatar"/>} {...a11yProps(0)} />
                 </Tooltip>
                 <Tooltip title="Recent Chat" placement="right" arrow>
                     <Tab className={classes.tab} icon={<SmsTwoToneIcon className={classes.icon} />} {...a11yProps(1)} />

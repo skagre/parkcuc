@@ -40,7 +40,7 @@ module.exports = {
             user.tokens = user.tokens.concat({ token: token })
             await user.save()
     
-            return { user_id: user._id, token: token }
+            return { user_id: user._id, avatar: user.avatar, token: token }
         } catch (err) {
             throw err
         }
@@ -251,11 +251,14 @@ module.exports = {
 
         try {
             const { offset = 0, limit = 20 } = args
+            const count = await User.countDocuments({ _id: { $in: req.user.friends.accepted } })
             const users =  await User.find({ _id: { $in: req.user.friends.accepted } }).skip(offset).limit(limit)
-
-            return [...users.map(user => {
-                return { _id: user._id, name: user.name, email: user.email }
-            })]
+            return {
+                count,
+                data: [...users.map(user => {
+                    return { _id: user._id, name: user.name, email: user.email, avatar: user.avatar }
+                })]
+            }
         } catch (err) {
             throw err
         }
@@ -265,27 +268,35 @@ module.exports = {
 
         try {
             const { offset = 0, limit = 20 } = args
+            const count = await User.countDocuments({ _id: { $in: req.user.friends.pending } })
             const users =  await User.find({ _id: { $in: req.user.friends.pending } }).skip(offset).limit(limit)
 
-            return [...users.map(user => {
-                return { _id: user._id, name: user.name, email: user.email }
-            })]
+            return {
+                count,
+                data: [...users.map(user => {
+                    return { _id: user._id, name: user.name, email: user.email, avatar: user.avatar }
+                })]
+            }
         } catch (err) {
             throw err
         }
     },
     fetchSentRequests: async (args, req) => {
-            if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
-    
-            try {
-                const { offset = 0, limit = 20 } = args
-                const users =  await User.find({ _id: { $in: req.user.friends.sent } }).skip(offset).limit(limit)
+        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
 
-                return [...users.map(user => {
-                    return { _id: user._id, name: user.name, email: user.email }
+        try {
+            const { offset = 0, limit = 20 } = args
+            const count = await User.countDocuments({ _id: { $in: req.user.friends.sent } })
+            const users =  await User.find({ _id: { $in: req.user.friends.sent } }).skip(offset).limit(limit)
+
+            return {
+                count,
+                data: [...users.map(user => {
+                    return { _id: user._id, name: user.name, email: user.email, avatar: user.avatar }
                 })]
-            } catch (err) {
-                throw err
+            }
+        } catch (err) {
+            throw err
         }
     }
 }

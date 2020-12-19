@@ -2,6 +2,8 @@
     "env": {
         "PORT": 8000,
         "MONGO_URL": "mongodb://localhost:27017/parkcucDB",
-        "JWT_KEY": "skagre"
+        "JWT_KEY": "skagre",
+        "SOCKET_IO": 3004,
+        "CLIENT_CORS": "http://localhost:3000"
     }
 }

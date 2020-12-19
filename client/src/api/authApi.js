@@ -9,6 +9,7 @@ const authApi = {
             `mutation login($emailOrSomething: String!, $password: String!) {
                 login(emailOrSomething: $emailOrSomething, password: $password) {
                     user_id
+                    avatar
                     token
                 }
             }`,
