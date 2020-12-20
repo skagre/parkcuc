@@ -16,12 +16,14 @@ import RecordVoiceOverTwoToneIcon from '@material-ui/icons/RecordVoiceOverTwoTon
 import SettingsTwoToneIcon from '@material-ui/icons/SettingsTwoTone'
 import SmsTwoToneIcon from '@material-ui/icons/SmsTwoTone'
 import NotificationsTwoToneIcon from '@material-ui/icons/NotificationsTwoTone'
+import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone'
 
 import FriendLists from './_FriendLists'
 import Notifications from './_Notifications'
 import RecentChat from './_RecentChat'
 import SentRequests from './_SentRequests'
 import Profile from './_Profile'
+import FindFriend from './_FindFriend'
 
 import useStyles from './style'
 
@@ -106,7 +108,7 @@ const LeftSidebar = props => {
                     />
                 </Tooltip>
                 <Tooltip title="Dark Mode" placement="right" arrow>
-                    <Tab className={classes.tab} icon={<Brightness4TwoToneIcon className={classes.icon} />} {...a11yProps(6)} />
+                    <Tab className={classes.tab} icon={<SearchTwoToneIcon className={classes.icon} />} {...a11yProps(6)} />
                 </Tooltip>
                 <Tooltip title="Settings" placement="right" arrow>
                     <Tab className={classes.tab} icon={<SettingsTwoToneIcon className={classes.icon} />} {...a11yProps(7)} />
@@ -131,7 +133,7 @@ const LeftSidebar = props => {
                 <Notifications />
             </TabPanel>
             <TabPanel value={value} index={6}>
-                Darkmode
+                <FindFriend />
             </TabPanel>
             <TabPanel value={value} index={7}>
                 Settings

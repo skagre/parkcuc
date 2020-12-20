@@ -298,5 +298,38 @@ module.exports = {
         } catch (err) {
             throw err
         }
-    }
+    },
+    findFriend: async (args, req) => {
+        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
+
+        try {
+            if (args.search === '') return []
+            const { offset = 0, limit = 20 } = args
+            const users =  await User.find({
+                $and: [
+                    { $or: [
+                        { _id: { $ne: req.user._id } }
+                    ] },
+                    { $or: [
+                        { name: { $regex: args.search, $options: 'i' } },
+                        { username: args.search },
+                        { email: args.search }
+                    ] }
+                ]
+            }).skip(offset).limit(limit)
+
+            return [...users.map(user => {
+                let status = 'new'
+                if (user.friends.pending.includes(req.user._id))
+                    status = 'sent'
+                else if (user.friends.accepted.includes(req.user._id))
+                    status = 'friend'
+
+                return { _id: user._id, name: user.name, email: user.email, avatar: user.avatar, status: status }
+            })]
+
+        } catch (err) {
+            throw err
+        }
+    },
 }

@@ -41,6 +41,7 @@ module.exports = buildSchema(`
         name: String
         email: String
         avatar: String
+        status: String
     }
 
     type RootQuery {
@@ -51,6 +52,8 @@ module.exports = buildSchema(`
         fetchFriendLists(offset: Int, limit: Int): List
         fetchPendingRequests(offset: Int, limit: Int): List
         fetchSentRequests(offset: Int, limit: Int): List
+
+        findFriend(search: String!, offset: Int, limit: Int): [Friend]
 
         init: String
     }

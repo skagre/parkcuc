@@ -113,6 +113,39 @@ const userApi = {
         }
         return axiosClient.post(url, data)
     },
+    findFriend: ({ params }) => {
+        const { limit = 20, offset = 0, search } = params
+        const data = {
+            query: 
+            `query findFriend($search: String!, $limit: Int, $offset: Int) {
+                findFriend(search: $search, limit: $limit, offset: $offset) {
+                    _id
+                    name
+                    email
+                    avatar
+                    status
+                }
+            }`,
+            variables: {
+                search: search,
+                limit: limit,
+                offset: offset
+            }
+        }
+        return axiosClient.post(url, data)
+    },
+    sendFriendRequest: ({ params }) => {
+        const data = {
+            query: 
+            `mutation sendFriendRequest($user_id: String!) {
+                sendFriendRequest(user_id: $user_id)
+            }`,
+            variables: {
+                user_id: params.user_id
+            }
+        }
+        return axiosClient.post(url, data)
+    },
 }
 
 export default userApi

@@ -8,6 +8,9 @@ export const fetchConversationListsAPI = createAsyncThunk('conversation/fetchCon
 })
 
 
+export const findFriendAPI = createAsyncThunk('user/findFriendAPI', async (params, thunkAPI) => {
+    return await userApi.findFriend({ params })
+})
 export const uploadAvatarAPI = createAsyncThunk('user/uploadAvatarAPI', async (params, thunkAPI) => {
     return await userApi.uploadAvatar({ params })
 })
@@ -26,6 +29,10 @@ export const unfriendAPI = createAsyncThunk('user/unfriend', async (params, thun
 export const deleteFriendRequestAPI = createAsyncThunk('user/deleteFriendRequest', async (params, thunkAPI) => {
     return await userApi.deleteFriendRequest({ params })
 })
+export const sendFriendRequestAPI = createAsyncThunk('user/sendFriendRequest', async (params, thunkAPI) => {
+    return await userApi.sendFriendRequest({ params })
+})
+
 
 const parkcucSlice = createSlice({
     name: 'parkcuc',
@@ -37,6 +44,14 @@ const parkcucSlice = createSlice({
         },
         [fetchConversationListsAPI.fulfilled]: (state, action) => {
             state.conversationLists = action.payload
+            state.loading = false
+        },
+
+        [findFriendAPI.pending]: (state, action) => {
+            state.loading = true
+        },
+        [findFriendAPI.fulfilled]: (state, action) => {
+            state.findFriend = action.payload
             state.loading = false
         },
 
@@ -83,6 +98,13 @@ const parkcucSlice = createSlice({
             state.loading = true
         },
         [deleteFriendRequestAPI.fulfilled]: (state, action) => {
+            state.loading = false
+        },
+
+        [sendFriendRequestAPI.pending]: (state, action) => {
+            state.loading = true
+        },
+        [sendFriendRequestAPI.fulfilled]: (state, action) => {
             state.loading = false
         }
     }

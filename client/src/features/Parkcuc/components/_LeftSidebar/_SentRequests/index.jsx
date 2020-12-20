@@ -101,7 +101,7 @@ const SentRequests = props => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{`Are you sure delete ${selectedUser ? selectedUser.name : ''} from sent requests`}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{`Are you sure delete ${selectedUser ? selectedUser.name : ''} from sent requests ?`}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         This action can not be undone.
