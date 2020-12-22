@@ -35,7 +35,12 @@ module.exports = {
             const isPasswordMatch = await bcrypt.compare(args.password, user.password)
             if (!isPasswordMatch) throw new Error('Oops! Invalid login credentials.')
     
-            const token = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_KEY)
+            const token = jwt.sign({ 
+                _id: user._id, 
+                email: user.email,
+                name: user.name,
+                avatar: user.avatar
+            }, process.env.JWT_KEY)
     
             user.tokens = user.tokens.concat({ token: token })
             await user.save()
@@ -312,8 +317,8 @@ module.exports = {
                     ] },
                     { $or: [
                         { name: { $regex: args.search, $options: 'i' } },
-                        { username: args.search },
-                        { email: args.search }
+                        { username: { $regex: args.search, $options: 'i' } },
+                        { email: { $regex: args.search, $options: 'i' } }
                     ] }
                 ]
             }).skip(offset).limit(limit)

@@ -22,6 +22,15 @@ module.exports = buildSchema(`
         conversation: String
         sender: String
         body: String
+        attachments: [Attachment]
+        createdAt: String
+    }
+
+    type Attachment {
+        _id: ID
+        name: String
+        size: Int
+        type: String
     }
 
     type Conversation {
@@ -46,7 +55,7 @@ module.exports = buildSchema(`
 
     type RootQuery {
         fetchUserInfo: User
-        fetchMessage(conversation_id: String!): [Message]
+        fetchMessages(user_id: String!, offset: Int, limit: Int): [Message]
         fetchConversationLists(offset: Int, limit: Int): [Conversation]
 
         fetchFriendLists(offset: Int, limit: Int): List

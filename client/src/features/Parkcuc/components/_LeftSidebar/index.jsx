@@ -1,32 +1,25 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-
 import {
-    Tabs,
-    Tab,
     Avatar,
-    Tooltip,
-    Badge
+    Badge, Tab, Tabs,
+    Tooltip
 } from '@material-ui/core'
-
-import Brightness4TwoToneIcon from '@material-ui/icons/Brightness4TwoTone'
 import HowToRegTwoToneIcon from '@material-ui/icons/HowToRegTwoTone'
+import NotificationsTwoToneIcon from '@material-ui/icons/NotificationsTwoTone'
 import PeopleAltTwoToneIcon from '@material-ui/icons/PeopleAltTwoTone'
 import RecordVoiceOverTwoToneIcon from '@material-ui/icons/RecordVoiceOverTwoTone'
+import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone'
 import SettingsTwoToneIcon from '@material-ui/icons/SettingsTwoTone'
 import SmsTwoToneIcon from '@material-ui/icons/SmsTwoTone'
-import NotificationsTwoToneIcon from '@material-ui/icons/NotificationsTwoTone'
-import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone'
-
+import PropTypes from 'prop-types'
+import React, { useState } from 'react'
+import useStyles from './style'
+import FindFriend from './_FindFriend'
 import FriendLists from './_FriendLists'
 import Notifications from './_Notifications'
+import PendingRequests from './_PendingRequests'
+import Profile from './_Profile'
 import RecentChat from './_RecentChat'
 import SentRequests from './_SentRequests'
-import Profile from './_Profile'
-import FindFriend from './_FindFriend'
-
-import useStyles from './style'
-
 
 const TabPanel = props => {
     const { children, value, index, ...other } = props
@@ -87,14 +80,14 @@ const LeftSidebar = props => {
                 <Tooltip title="Recent Chat" placement="right" arrow>
                     <Tab className={classes.tab} icon={<SmsTwoToneIcon className={classes.icon} />} {...a11yProps(1)} />
                 </Tooltip>
-                <Tooltip title="Friends Online" placement="right" arrow>
-                    <Tab className={classes.tab} icon={<RecordVoiceOverTwoToneIcon className={classes.icon} />} {...a11yProps(2)} />
-                </Tooltip>
                 <Tooltip title="Friends" placement="right" arrow>
-                    <Tab className={classes.tab} icon={<PeopleAltTwoToneIcon className={classes.icon} />} {...a11yProps(3)} />
+                    <Tab className={classes.tab} icon={<PeopleAltTwoToneIcon className={classes.icon} />} {...a11yProps(2)} />
                 </Tooltip>
                 <Tooltip title="Sent Requests" placement="right" arrow>
-                    <Tab className={classes.tab} icon={<HowToRegTwoToneIcon className={classes.icon} />} {...a11yProps(4)} />
+                    <Tab className={classes.tab} icon={<HowToRegTwoToneIcon className={classes.icon} />} {...a11yProps(3)} />
+                </Tooltip>
+                <Tooltip title="Pending Requests" placement="right" arrow>
+                    <Tab className={classes.tab} icon={<RecordVoiceOverTwoToneIcon className={classes.icon} />} {...a11yProps(4)} />
                 </Tooltip>
                 <Tooltip title="Notifications" placement="right" arrow>
                     <Tab 
@@ -107,7 +100,7 @@ const LeftSidebar = props => {
                         {...a11yProps(5)} 
                     />
                 </Tooltip>
-                <Tooltip title="Dark Mode" placement="right" arrow>
+                <Tooltip title="Find Friends" placement="right" arrow>
                     <Tab className={classes.tab} icon={<SearchTwoToneIcon className={classes.icon} />} {...a11yProps(6)} />
                 </Tooltip>
                 <Tooltip title="Settings" placement="right" arrow>
@@ -121,13 +114,13 @@ const LeftSidebar = props => {
                 <RecentChat />
             </TabPanel>
             <TabPanel value={value} index={2}>
-                Friends Online
-            </TabPanel>
-            <TabPanel value={value} index={3}>
                 <FriendLists />
             </TabPanel>
-            <TabPanel value={value} index={4}>
+            <TabPanel value={value} index={3}>
                 <SentRequests />
+            </TabPanel>
+            <TabPanel value={value} index={4}>
+                <PendingRequests />
             </TabPanel>
             <TabPanel value={value} index={5}>
                 <Notifications />

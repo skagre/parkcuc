@@ -1,33 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { unwrapResult } from '@reduxjs/toolkit'
-import { fetchFriendListsAPI, unfriendAPI } from 'features/Parkcuc/parkcucSlice'
-
 import {
-    List,
-    ListItem,
-    ListItemText,
-    ListItemAvatar,
-    ListItemSecondaryAction,
     Avatar,
-    IconButton,
-    Tooltip,
-    Dialog,
+    Button, Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
-    Button
+    DialogTitle, IconButton, List,
+    ListItem,
+    ListItemAvatar,
+    ListItemSecondaryAction, ListItemText,
+    Tooltip
 } from '@material-ui/core'
-
 import DeleteForeverTwoToneIcon from '@material-ui/icons/DeleteForeverTwoTone'
 import ToysTwoToneIcon from '@material-ui/icons/ToysTwoTone'
-
+import { unwrapResult } from '@reduxjs/toolkit'
+import Loading from 'components/_Loading'
 import TabHeading from 'components/_TabHeading'
 import TabHeadingSeach from 'components/_TabHeadingSearch'
-
+import { fetchFriendListsAPI, unfriendAPI, activeConversationInfo } from 'features/Parkcuc/parkcucSlice'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './style'
-import Loading from 'components/_Loading'
 
 
 const FriendLists = props => {
@@ -70,6 +62,10 @@ const FriendLists = props => {
         }
     }
 
+    const setActiveConversationInfo = id => {
+        dispatch(activeConversationInfo(id))
+    }
+
     const handleShowDialog = user => {
         setOpenDialog(true)
         setSelectedUser(user)
@@ -87,7 +83,7 @@ const FriendLists = props => {
             <TabHeadingSeach />
             <List className={`${classes.list} custom-scroll`}>
                 {friendLists.data && friendLists.data.map(friend => 
-                    <ListItem className={classes.listItem} key={friend._id}>
+                    <ListItem className={classes.listItem} key={friend._id} onClick={() => setActiveConversationInfo(friend)}>
                         <ListItemAvatar>
                             <Avatar src={`${process.env.REACT_APP_BASE_URL}/image/${friend.avatar}`} alt={friend.name}/>
                         </ListItemAvatar>

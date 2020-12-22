@@ -7,50 +7,63 @@ import {
     DialogTitle, List,
     ListItem,
     ListItemAvatar,
-    ListItemSecondaryAction, ListItemText
+    ListItemSecondaryAction, ListItemText,
+    Typography,
+    Box
 } from '@material-ui/core'
 import { unwrapResult } from '@reduxjs/toolkit'
 import Loading from 'components/_Loading'
 import TabHeading from 'components/_TabHeading'
-import { deleteFriendRequestAPI, fetchSentRequestsAPI } from 'features/Parkcuc/parkcucSlice'
+import { deleteFriendRequestAPI, fetchPendingRequestsAPI, acceptFriendRequestAPI } from 'features/Parkcuc/parkcucSlice'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './style'
 
 
-const SentRequests = props => {
+const PendingRequests = props => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const f = useSelector(state => state.parkcuc)
-    const [sentRequests, setSentRequests] = useState()
+    const [pendingRequests, setPendingRequests] = useState()
     const [openDialog, setOpenDialog] = useState(false)
     const [selectedUser, setSelectedUser] = useState(null)
     const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
-        if (sentRequests) {
+        if (pendingRequests) {
             setLoaded(true) 
         }
-    }, [sentRequests])
+    }, [pendingRequests])
 
     useEffect(() => {
-        fetchSentRequests()
+        fetchPendingRequests()
     }, [])
 
-    const fetchSentRequests = async () => {
+    const fetchPendingRequests = async () => {
         try {
-            const actionResult = await dispatch(fetchSentRequestsAPI({ limit: 20, offset: 0 }))
+            const actionResult = await dispatch(fetchPendingRequestsAPI({ limit: 20, offset: 0 }))
             const fetchStatus = unwrapResult(actionResult)
-            setSentRequests(fetchStatus.data.fetchSentRequests)
+            setPendingRequests(fetchStatus.data.fetchPendingRequests)
         } catch (err) {
             console.log("Oops! Failed to fetchSentRequests.")
         }
     }
 
+    const acceptFriendRequest = async user_id => {
+        try {
+            await dispatch(acceptFriendRequestAPI({ user_id }))
+            document.getElementById(user_id).remove()
+        } catch (err) {
+            console.log("Oops! Failed to acceptFriendRequest.")
+        } finally {
+            setOpenDialog(false)
+        }
+    } 
+
     const deleteFriendRequest = async user_id => {
         try {
             await dispatch(deleteFriendRequestAPI({ user_id }))
-            document.getElementById(user_id).parentElement.remove()
+            document.getElementById(user_id).remove()
         } catch (err) {
             console.log("Oops! Failed to deleteFriendRequest.")
         } finally {
@@ -71,25 +84,27 @@ const SentRequests = props => {
         <>
             {f.loading && <Loading />}
             {loaded && <>
-            <TabHeading text={"Sent Requests"} subtext={`${sentRequests.count} sent ${sentRequests.count > 1 ? 'requests' : 'request'}`}/>
+            <TabHeading text={"Pending Requests"} subtext={`${pendingRequests.count} pending ${pendingRequests.count > 1 ? 'requests' : 'request'}`}/>
             <List className={`${classes.list} custom-scroll`}>
-                {sentRequests.data && sentRequests.data.map(request => 
+                {pendingRequests.data && pendingRequests.data.map(request =>
                 <ListItem className={classes.listItem} key={request._id} id={request._id}>
                     <ListItemAvatar>
                         <Avatar src={`${process.env.REACT_APP_BASE_URL}/image/${request.avatar}`} alt={request.name}/>
                     </ListItemAvatar>
                     <ListItemText
                         primary={request.name}
-                        secondary="Sent 3d ago"
+                        secondary="sent you a friend request."
                     />
-                    <ListItemSecondaryAction>
-                        <Button color="secondary" onClick={() => handleShowDialog(request)}>Cancel</Button>
-                    </ListItemSecondaryAction>
+                    <Typography variant="body2">1d ago</Typography>
+                    <Box className={classes.box}>
+                        <Button variant="outlined" onClick={() => acceptFriendRequest(request._id)}>Accept</Button>
+                        <Button variant="outlined" onClick={() => deleteFriendRequest(request._id)}>Cancel</Button>
+                    </Box>
                 </ListItem>
                 )}
             </List>
             </>}
-            <Dialog
+            {/* <Dialog
                 open={openDialog}
                 onClose={handleCloseDialog}
                 aria-labelledby="alert-dialog-title"
@@ -109,9 +124,9 @@ const SentRequests = props => {
                         OK
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </Dialog> */}
         </>
     )
 }
 
-export default SentRequests
+export default PendingRequests

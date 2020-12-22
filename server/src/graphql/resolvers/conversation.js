@@ -74,7 +74,7 @@ module.exports = {
             const { offset = 0, limit = 20 } = args
             const conversationLists = await Conversation.find(
                 { participants: { $in: req.user._id } }
-            ) .skip(offset) .limit(limit).populate('participants')
+            ).skip(offset).limit(limit).populate('participants')
             
             return conversationLists   
         } catch (err) {

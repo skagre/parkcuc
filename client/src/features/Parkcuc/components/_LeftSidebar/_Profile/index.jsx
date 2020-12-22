@@ -1,25 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { unwrapResult } from '@reduxjs/toolkit'
-import { fetchUserInfoAPI, uploadAvatarAPI } from 'features/Parkcuc/parkcucSlice'
-
 import {
     Avatar,
-    Typography,
-    TextField,
-    InputAdornment,
     LinearProgress,
-    Snackbar
+    Snackbar, Typography
 } from '@material-ui/core'
-import MuiAlert from '@material-ui/lab/Alert'
-
 import AddAPhotoTwoToneIcon from '@material-ui/icons/AddAPhotoTwoTone'
-import LocalOfferTwoToneIcon from '@material-ui/icons/LocalOfferTwoTone'
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone'
-
-import useStyles from './style'
+import MuiAlert from '@material-ui/lab/Alert'
+import { unwrapResult } from '@reduxjs/toolkit'
 import Loading from 'components/_Loading'
-
+import { fetchUserInfoAPI, uploadAvatarAPI } from 'features/Parkcuc/parkcucSlice'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import useStyles from './style'
 
 const Profile = props => {
     const classes = useStyles()
@@ -94,15 +86,11 @@ const Profile = props => {
                 <LinearProgress color="secondary" className={classes.progress} style={{display: progressUpload ? 'block': 'none'}}/>
             </div>
             <div className={classes.info}>
-                <Typography>{userInfo.name}</Typography>
-                <Typography>@{!userInfo.username ? "change_your_username" : userInfo.username}<EditTwoToneIcon fontSize="small"/></Typography>
-                <TextField
-                    className={classes.textField}
-                    color="secondary"
-                    InputProps={{
-                        startAdornment: <InputAdornment position="start"><LocalOfferTwoToneIcon color="secondary"/></InputAdornment>,
-                    }}
-                />
+                <Typography variant="h6">{userInfo.name}</Typography>
+                <Typography className={classes.username}>
+                    @{!userInfo.username ? "change_your_username" : userInfo.username}
+                    <EditTwoToneIcon fontSize="small"/>
+                </Typography>
             </div>
             </> }
         </>

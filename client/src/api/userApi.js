@@ -146,6 +146,18 @@ const userApi = {
         }
         return axiosClient.post(url, data)
     },
+    acceptFriendRequest: ({ params }) => {
+        const data = {
+            query: 
+            `mutation acceptFriendRequest($user_id: String!) {
+                acceptFriendRequest(user_id: $user_id)
+            }`,
+            variables: {
+                user_id: params.user_id
+            }
+        }
+        return axiosClient.post(url, data)
+    },
 }
 
 export default userApi

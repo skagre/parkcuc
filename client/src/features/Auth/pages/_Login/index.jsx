@@ -44,6 +44,7 @@ const Login = props => {
                 setAlert({ state: 'error', msg: loginStatus })
             } else {
                 setAlert({ state: 'success', msg: 'Logged in successfully!"' })
+                localStorage.setItem('jwt', loginStatus.data.login.token)
                 history.push('/')
             }
         } catch (err) {

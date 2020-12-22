@@ -1,4 +1,3 @@
-import { green } from '@material-ui/core/colors'
 import { makeStyles } from '@material-ui/core/styles'
 
 
@@ -65,6 +64,15 @@ const useStyles = makeStyles((theme) => ({
     progress: {
         width: 100,
         margin: '10px auto 0 auto'
+    },
+    username: {
+        '&:hover': {
+            cursor: 'pointer',
+            textDecoration: 'underline'
+        },
+        '& > svg': {
+            verticalAlign: 'text-bottom'
+        }
     }
 }))
 

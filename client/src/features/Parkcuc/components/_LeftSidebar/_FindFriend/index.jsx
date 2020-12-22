@@ -1,44 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { unwrapResult } from '@reduxjs/toolkit'
-import { sendFriendRequestAPI } from 'features/Parkcuc/parkcucSlice'
-
 import {
-    List,
-    ListItem,
-    ListItemText,
-    ListItemAvatar,
-    ListItemSecondaryAction,
     Avatar,
-    Typography,
-    Tooltip,
-    IconButton,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Button
+    Button, IconButton, List,
+    ListItem,
+    ListItemAvatar,
+    ListItemSecondaryAction, ListItemText,
+    Tooltip, Typography
 } from '@material-ui/core'
-
 import PersonAddTwoToneIcon from '@material-ui/icons/PersonAddTwoTone'
 import TextsmsTwoToneIcon from '@material-ui/icons/TextsmsTwoTone'
-
 import TabHeading from 'components/_TabHeading'
 import TabHeadingSeach from 'components/_TabHeadingSearch'
-
+import { deleteFriendRequestAPI, sendFriendRequestAPI } from 'features/Parkcuc/parkcucSlice'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './style'
-
 
 const FindFriend = props => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const f = useSelector(state => state.parkcuc)
     const [users, setUsers] = useState([])
-    const [openDialog, setOpenDialog] = useState(false)
-    const [selectedUser, setSelectedUser] = useState(null)
-    const [add, setAdd] = useState(false)
-    const [cancel, setCancel] = useState(false)
 
     useEffect(() => {
         if (f.findFriend) {
@@ -49,19 +30,21 @@ const FindFriend = props => {
     const sendFriendRequest = async user_id => {
         try {
             await dispatch(sendFriendRequestAPI({ user_id }))
-            setCancel(true)
+            document.getElementById(`add-${user_id}`).style.display = 'none'
+            document.getElementById(`cancel-${user_id}`).style.display = 'block'
         } catch (err) {
             console.log("Oops! Failed to sendFriendRequest.")
         }
     }
 
-    const handleShowDialog = user => {
-        setOpenDialog(true)
-        setSelectedUser(user)
-    }
-
-    const handleCloseDialog = () => {
-        setOpenDialog(false)
+    const deleteFriendRequest = async user_id => {
+        try {
+            await dispatch(deleteFriendRequestAPI({ user_id }))
+            document.getElementById(`add-${user_id}`).style.display = 'block'
+            document.getElementById(`cancel-${user_id}`).style.display = 'none'
+        } catch (err) {
+            console.log("Oops! Failed to deleteFriendRequest.")
+        }
     }
     
     return (
@@ -94,23 +77,47 @@ const FindFriend = props => {
                     }
                     />
                     <ListItemSecondaryAction>
-                        {user.status === "new" || add && 
-                        <IconButton edge="end" className={classes.icon} onClick={() => sendFriendRequest(user._id)}>
+                        {user.status === "new" && <>
+                        <IconButton 
+                            edge="end" 
+                            className={classes.icon} 
+                            onClick={() => sendFriendRequest(user._id)}
+                            id={`add-${user._id}`}>
                             <Tooltip title="Add friend" placement="bottom" arrow>
                                 <PersonAddTwoToneIcon />
                             </Tooltip>
                         </IconButton>
-                        }
-
-                        {user.status === "sent" || cancel &&
-                        <Tooltip title="Add friend" placement="bottom" arrow>
-                            <Button color="secondary">Cancel</Button>
+                        <Tooltip title="Cancel" placement="bottom" arrow>
+                            <Button 
+                            color="secondary" 
+                            onClick={() => deleteFriendRequest(user._id)}
+                            id={`cancel-${user._id}`}
+                            style={{display: 'none'}}>Cancel</Button>
                         </Tooltip>
-                        }
+                        </>}
+
+                        {user.status === "sent" && <>
+                        <Tooltip title="Cancel" placement="bottom" arrow>
+                            <Button 
+                                color="secondary" 
+                                onClick={() => deleteFriendRequest(user._id)}
+                                id={`cancel-${user._id}`}>Cancel</Button>
+                        </Tooltip>
+                        <IconButton 
+                            edge="end" 
+                            className={classes.icon} 
+                            onClick={() => sendFriendRequest(user._id)}
+                            id={`add-${user._id}`} 
+                            style={{display: 'none'}}>
+                            <Tooltip title="Add friend" placement="bottom" arrow>
+                                <PersonAddTwoToneIcon />
+                            </Tooltip>
+                        </IconButton>
+                        </>}
 
                         {user.status === "friend" &&
                         <IconButton edge="end" className={classes.icon}>
-                            <Tooltip title="Add friend" placement="bottom" arrow>
+                            <Tooltip title="Chat" placement="bottom" arrow>
                                 <TextsmsTwoToneIcon />
                             </Tooltip>
                         </IconButton>
@@ -119,27 +126,6 @@ const FindFriend = props => {
                 </ListItem>
                 )}
             </List>
-            {/* <Dialog
-                open={openDialog}
-                onClose={handleCloseDialog}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">{`Are you sure delete ${selectedUser ? selectedUser.name : ''} from sent requests ?`}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        This action can not be undone.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={() => deleteFriendRequest(selectedUser._id)} color="primary" autoFocus>
-                        OK
-                    </Button>
-                </DialogActions>
-            </Dialog> */}
         </>
     )
 }

@@ -18,7 +18,7 @@ const Parkcuc = props => {
             <Grid item className={classes.mainContent}>
                 <MainContent />
             </Grid>
-            <Grid item className={classes.rightSidebar}>
+            <Grid item className={classes.rightSidebar} id="rightSidebar">
                 <RightSidebar />
             </Grid>
         </Grid>

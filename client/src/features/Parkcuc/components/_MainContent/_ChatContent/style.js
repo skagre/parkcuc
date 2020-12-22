@@ -10,17 +10,17 @@ const useStyles = makeStyles((theme) => ({
     },
     avatar: {
         display: 'flex',
-        alignItems: 'flex-end',
-        height: 'unset',
         overflow: 'unset',
+        width: 40,
+        height: 40,
+        borderRadius: '50%',
         '& > img': {
-            width: 40,
-            height: 40,
             borderRadius: '50%'
         }
     },
     msg: {
         display: 'flex',
+        alignItems: 'flex-end',
         margin: '5px 0'
     },
     msgBody: {
