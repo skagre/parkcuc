@@ -18,6 +18,7 @@ import TextsmsOutlinedIcon from '@material-ui/icons/TextsmsOutlined'
 
 import useStyles from './style'
 import Loading from 'components/_Loading'
+import jwtDecode from 'jwt-decode'
 
 
 const Login = props => {
@@ -45,6 +46,8 @@ const Login = props => {
             } else {
                 setAlert({ state: 'success', msg: 'Logged in successfully!"' })
                 localStorage.setItem('jwt', loginStatus.data.login.token)
+                const decode = jwtDecode(loginStatus.data.login.token)
+                localStorage.setItem('userInfo', JSON.stringify(decode))
                 history.push('/')
             }
         } catch (err) {

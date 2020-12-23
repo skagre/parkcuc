@@ -14,20 +14,7 @@ const authSlice = createSlice({
     name: 'auth',
     initialState: {},
     reducers: {},
-    extraReducers: {
-        [loginAPI.fulfilled]: (state, action) => {
-            state.currentUser = action.payload
-        },
-        [loginAPI.rejected]: (state, action) => {
-            state.error = action.error
-        },
-        [registerAPI.fulfilled]: (state, action) => {
-            state.currentUser = action.payload
-        },
-        [registerAPI.rejected]: (state, action) => {
-            state.error = action.error
-        }
-    }
+    extraReducers: {}
 })
 
 const { reducer: authReducer } = authSlice

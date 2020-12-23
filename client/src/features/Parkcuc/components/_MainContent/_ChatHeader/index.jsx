@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react'
-
-import VideocamTwoToneIcon from '@material-ui/icons/VideocamTwoTone'
+import { Avatar, Typography } from '@material-ui/core'
 import CallTwoToneIcon from '@material-ui/icons/CallTwoTone'
 import MoreVertTwoToneIcon from '@material-ui/icons/MoreVertTwoTone'
 import TuneTwoToneIcon from '@material-ui/icons/TuneTwoTone'
-
-import useStyles from './style';
-import { Avatar, Typography } from '@material-ui/core'
+import VideocamTwoToneIcon from '@material-ui/icons/VideocamTwoTone'
+import React, { useEffect, useState } from 'react'
+import useStyles from './style'
 
 
 const ChatHeader = props => {

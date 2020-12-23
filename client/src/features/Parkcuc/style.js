@@ -7,8 +7,8 @@ const useStyles = makeStyles({
         overflow: 'hidden'
     },
     leftSidebar: {
-        minWidth: '300px',
-        maxWidth: '480px',
+        minWidth: 300,
+        maxWidth: 480,
         flexBasis: '27%',
         display: 'flex'
     },
@@ -18,8 +18,8 @@ const useStyles = makeStyles({
         position: 'relative'
     },
     rightSidebar: {
-        minWidth: '280px',
-        maxWidth: '360px',
+        minWidth: 280,
+        maxWidth: 360,
         flexBasis: '23%'
     }
 })

@@ -30,11 +30,6 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             cursor: 'pointer',
             backgroundColor: green[100]
-        },
-        '&:nth-of-type(3)': {
-            backgroundColor: 'unset',
-            fontSize: 36,
-            padding: 0,
         }
     },
     inputIcon: {
@@ -43,6 +38,15 @@ const useStyles = makeStyles((theme) => ({
             cursor: 'pointer',
             color: green[900],
         },
+    },
+    quickEmoji: {
+        fontSize: 32,
+        lineHeight: '42px',
+        width: 42,
+        height: 42,
+        '&:hover': {
+            cursor: 'pointer'
+        }
     }
 }))
 

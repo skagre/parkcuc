@@ -3,22 +3,6 @@ import axiosClient from './axiosClient'
 
 const url = process.env.REACT_APP_API_URL
 const userApi = {
-    fetchUserInfo: () => {
-        const data = {
-            query: 
-            `query { 
-                fetchUserInfo {
-                    _id
-                    name
-                    email
-                    username
-                    avatar
-                }
-            }`,
-            variables: {}
-        }
-        return axiosClient.post(url, data)
-    },
     uploadAvatar: ({ params }) => {
         const data = params
         return axiosClient.post(process.env.REACT_APP_UPLOAD_URL + '/avatar', data)

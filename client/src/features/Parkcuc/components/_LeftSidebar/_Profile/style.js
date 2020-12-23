@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
         objectFit: 'cover',
         verticalAlign: 'bottom',
         margin: '0 auto',
+        border: '2px solid green',
         position: 'relative',
         '&::before': {
             position: 'absolute',

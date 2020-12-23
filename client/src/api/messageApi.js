@@ -9,16 +9,13 @@ const messageApi = {
             query: 
             `query fetchMessages($user_id: String!, $limit: Int, $offset: Int) {
                 fetchMessages(user_id: $user_id, limit: $limit, offset: $offset) {
-                    _id
                     conversation
-                    sender
-                    body
-                    createdAt
-                    attachments {
+                    data {
                         _id
-                        name
-                        size
-                        type
+                        sender
+                        body
+                        unsend
+                        createdAt
                     }
                 }
             }`,
@@ -30,7 +27,25 @@ const messageApi = {
         }
         return axiosClient.post(url, data)
     },
-    
+    sendMessage: ({ params }) => {
+        const data = {
+            query: 
+            `mutation sendMessage($conversation_id: String!, $body: String!) {
+                sendMessage(conversation_id: $conversation_id, body: $body) {
+                    _id
+                    sender
+                    body
+                    unsend
+                    createdAt
+                }
+            }`,
+            variables: {
+                conversation_id: params.conversation_id,
+                body: params.body,
+            }
+        }
+        return axiosClient.post(url, data)
+    },
 }
 
 export default messageApi

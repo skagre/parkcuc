@@ -62,8 +62,8 @@ const FriendLists = props => {
         }
     }
 
-    const setActiveConversationInfo = id => {
-        dispatch(activeConversationInfo(id))
+    const setActiveConversationInfo = user => {
+        dispatch(activeConversationInfo(user))
     }
 
     const handleShowDialog = user => {
@@ -77,7 +77,7 @@ const FriendLists = props => {
 
     return (
         <>
-            {f.loading && <Loading />}
+            {f.loadingFetchFriendLists && <Loading />}
             {loaded && <>
             <TabHeading text={"My Friends"} subtext={`${friendLists.count} ${friendLists.count > 1 ? 'friends' : 'friend'}`}/>
             <TabHeadingSeach />

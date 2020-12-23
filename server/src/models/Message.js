@@ -12,6 +12,10 @@ const messageSchema = mongoose.Schema({
     body: {
         type: String
     },
+    unsend: {
+        type: String, // everyone || myself
+        default: null
+    },
     attachment: [{
         name: String,
         mime_type: String,

@@ -89,6 +89,9 @@ app.post('/upload/avatar', upload.single('file'), async (req, res) => {
     if (!req.file) return res.status(400).json({
         err: 'Oops! No file upload.'
     })
+    if (req.file.size > 4 * 1024 * 1024) return res.status(400).json({
+        err: 'Oops! Maximum allowed size for uploaded files (4MB).'
+    })
     await User.findOneAndUpdate(
         { _id: req.user._id }, 
         { avatar: req.file.filename }

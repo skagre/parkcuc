@@ -12,6 +12,9 @@ export const fetchConversationListsAPI = createAsyncThunk('conversation/fetchCon
 export const fetchMessagesAPI = createAsyncThunk('message/fetchMessages', async (params, thunkAPI) => {
     return await messageApi.fetchMessages({ params })
 })
+export const sendMessageAPI = createAsyncThunk('message/sendMessage', async (params, thunkAPI) => {
+    return await messageApi.sendMessage({ params })
+})
 
 
 export const findFriendAPI = createAsyncThunk('user/findFriendAPI', async (params, thunkAPI) => {
@@ -19,9 +22,6 @@ export const findFriendAPI = createAsyncThunk('user/findFriendAPI', async (param
 })
 export const uploadAvatarAPI = createAsyncThunk('user/uploadAvatarAPI', async (params, thunkAPI) => {
     return await userApi.uploadAvatar({ params })
-})
-export const fetchUserInfoAPI = createAsyncThunk('user/fetchUserInfoAPI', async (params, thunkAPI) => {
-    return await userApi.fetchUserInfo()
 })
 export const fetchFriendListsAPI = createAsyncThunk('user/fetchFriendLists', async (params, thunkAPI) => {
     return await userApi.fetchFriendLists({ params })
@@ -52,103 +52,74 @@ const parkcucSlice = createSlice({
     reducers: {
         activeConversationInfo: (state, action) => {
             state.activeConversationInfo = action.payload
-        }
+        },
+        activeConversationID: (state, action) => {
+            state.activeConversationID = action.payload
+        },
     },
     extraReducers: {
         [fetchConversationListsAPI.pending]: (state, action) => {
-            state.loading = true
+            state.loadingFetchConversationLists = true
         },
         [fetchConversationListsAPI.fulfilled]: (state, action) => {
             state.conversationLists = action.payload
-            state.loading = false
+            state.loadingFetchConversationLists = false
         },
 
         [fetchMessagesAPI.pending]: (state, action) => {
-            state.loading = true
+            state.loadingFetchMessages = true
         },
         [fetchMessagesAPI.fulfilled]: (state, action) => {
             state.messageLists = action.payload
-            state.loading = false
+            state.loadingFetchMessages = false
+        },
+
+        [sendMessageAPI.fulfilled]: (state, action) => {
+            state.newMessage = action.payload
         },
 
         [findFriendAPI.pending]: (state, action) => {
-            state.loading = true
+            state.loadingFindFriend = true
         },
         [findFriendAPI.fulfilled]: (state, action) => {
             state.findFriend = action.payload
-            state.loading = false
+            state.loadingFindFriend = false
         },
 
         [uploadAvatarAPI.pending]: (state, action) => {
-            state.loading = true
+            state.loadingUploadAvatar = true
         },
         [uploadAvatarAPI.fulfilled]: (state, action) => {
-            state.imgUrl = action.payload
-            state.loading = false
-        },
-
-        [fetchUserInfoAPI.pending]: (state, action) => {
-            state.loading = true
-        },
-        [fetchUserInfoAPI.fulfilled]: (state, action) => {
-            state.UserInfo = action.payload
-            state.loading = false
+            state.imgUrl = action.payload.file.filename
+            state.loadingUploadAvatar = false
         },
 
         [fetchFriendListsAPI.pending]: (state, action) => {
-            state.loading = true
+            state.loadingFetchFriendLists = true
         },
         [fetchFriendListsAPI.fulfilled]: (state, action) => {
             state.friendLists = action.payload
-            state.loading = false
+            state.loadingFetchFriendLists = false
         },
 
         [fetchSentRequestsAPI.pending]: (state, action) => {
-            state.loading = true
+            state.loadingFetchSentRequests = true
         },
         [fetchSentRequestsAPI.fulfilled]: (state, action) => {
             state.sentRequests = action.payload
-            state.loading = false
+            state.loadingFetchSentRequests = false
         },
 
         [fetchPendingRequestsAPI.pending]: (state, action) => {
-            state.loading = true
+            state.loadingFetchPendingRequests = true
         },
         [fetchPendingRequestsAPI.fulfilled]: (state, action) => {
             state.pendingRequests = action.payload
-            state.loading = false
-        },
-
-        [unfriendAPI.pending]: (state, action) => {
-            state.loading = true
-        },
-        [unfriendAPI.fulfilled]: (state, action) => {
-            state.loading = false
-        },
-
-        [deleteFriendRequestAPI.pending]: (state, action) => {
-            state.loading = true
-        },
-        [deleteFriendRequestAPI.fulfilled]: (state, action) => {
-            state.loading = false
-        },
-
-        [sendFriendRequestAPI.pending]: (state, action) => {
-            state.loading = true
-        },
-        [sendFriendRequestAPI.fulfilled]: (state, action) => {
-            state.loading = false
-        },
-
-        [acceptFriendRequestAPI.pending]: (state, action) => {
-            state.loading = true
-        },
-        [acceptFriendRequestAPI.fulfilled]: (state, action) => {
-            state.loading = false
+            state.loadingFetchPendingRequests = false
         }
     }
 })
 
 const { reducer: parkcucReducer, actions } = parkcucSlice
-export const { activeConversationInfo } = actions
+export const { activeConversationInfo, activeConversationID } = actions
 export default parkcucReducer

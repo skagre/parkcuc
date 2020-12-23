@@ -82,7 +82,7 @@ const PendingRequests = props => {
 
     return (
         <>
-            {f.loading && <Loading />}
+            {f.loadingFetchPendingRequests && <Loading />}
             {loaded && <>
             <TabHeading text={"Pending Requests"} subtext={`${pendingRequests.count} pending ${pendingRequests.count > 1 ? 'requests' : 'request'}`}/>
             <List className={`${classes.list} custom-scroll`}>
@@ -98,19 +98,19 @@ const PendingRequests = props => {
                     <Typography variant="body2">1d ago</Typography>
                     <Box className={classes.box}>
                         <Button variant="outlined" onClick={() => acceptFriendRequest(request._id)}>Accept</Button>
-                        <Button variant="outlined" onClick={() => deleteFriendRequest(request._id)}>Cancel</Button>
+                        <Button variant="outlined" onClick={() => handleShowDialog(request)}>Cancel</Button>
                     </Box>
                 </ListItem>
                 )}
             </List>
             </>}
-            {/* <Dialog
+            <Dialog
                 open={openDialog}
                 onClose={handleCloseDialog}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{`Are you sure delete ${selectedUser ? selectedUser.name : ''} from sent requests ?`}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{`Are you sure delete ${selectedUser ? selectedUser.name : ''} from pending requests ?`}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         This action can not be undone.
@@ -124,7 +124,7 @@ const PendingRequests = props => {
                         OK
                     </Button>
                 </DialogActions>
-            </Dialog> */}
+            </Dialog>
         </>
     )
 }

@@ -2,20 +2,12 @@ const Conversation = require('../../models/Conversation')
 const Message = require('../../models/Message')
 
 module.exports = {
-    init: async (args, req) => {
-        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
-
-        const userA = req.user._id
-        console.log('userA:', userA)
-
-        const conversations = await Conversation.find({
-            paticipants: { $in: userA }
-        }).limit(20)
-    },
     sendMessage: async (args, req) => {
         if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
 
         try {
+            if (!args.body) throw new Error('Oops! Body is empty.')
+
             const conversation = await Conversation.findOne({
                 $and: [
                     { $or: [
@@ -36,7 +28,7 @@ module.exports = {
             })
             await message.save()
 
-            return 'success'
+            return message
         } catch (err) {
             throw err
         }
@@ -47,6 +39,10 @@ module.exports = {
         try {
             const userA = req.user._id
             const userB = args.user_id
+            
+            if (userA.toString() === userB.toString())
+                throw new Error('Oops! Can\'t fetch messages.')
+
             const { offset = 0, limit = 20 } = args
             const conversation = await Conversation.findOne({
                 participants: { $all: [userA, userB] }
@@ -57,7 +53,10 @@ module.exports = {
                 conversation: conversation._id
             }).skip(offset).limit(limit)
             
-            return messages
+            return {
+                conversation: conversation._id,
+                data: messages
+            }
         } catch (err) {
             throw err
         }

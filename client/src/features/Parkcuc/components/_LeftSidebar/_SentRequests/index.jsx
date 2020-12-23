@@ -69,7 +69,7 @@ const SentRequests = props => {
 
     return (
         <>
-            {f.loading && <Loading />}
+            {f.loadingFetchSentRequests && <Loading />}
             {loaded && <>
             <TabHeading text={"Sent Requests"} subtext={`${sentRequests.count} sent ${sentRequests.count > 1 ? 'requests' : 'request'}`}/>
             <List className={`${classes.list} custom-scroll`}>

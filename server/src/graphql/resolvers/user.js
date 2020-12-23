@@ -74,21 +74,6 @@ module.exports = {
             throw err
         }
     },
-    imStatus: async (args, req) => {
-        return !req.isAuth ? false : true
-    },
-    fetchUserInfo: async (args, req) => {
-        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
-
-        try {
-            const userInfo = await User.findOne({
-                _id: req.user._id
-            }).select({ _id: 1, email: 1, name: 1, username: 1, avatar: 1 })
-            return userInfo
-        } catch (err) {
-            throw err
-        }
-    },
     sendFriendRequest: async (args, req) => {
         if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
 
