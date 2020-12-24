@@ -27,15 +27,9 @@ module.exports = buildSchema(`
         sender: String
         body: String
         unsend: String
-        attachments: [Attachment]
+        attachment: String
+        mimetype_attachment: String
         createdAt: String
-    }
-
-    type Attachment {
-        _id: ID
-        name: String
-        size: Int
-        type: String
     }
 
     type Conversation {
@@ -88,7 +82,7 @@ module.exports = buildSchema(`
         createConversation(participant_id: [String!]): Conversation
 
 
-        sendMessage(conversation_id: String!, body: String!): Message
+        sendMessage(conversation_id: String!, body: String, attachment: String, mimetype_attachment: String): Message
     }
 
     schema {

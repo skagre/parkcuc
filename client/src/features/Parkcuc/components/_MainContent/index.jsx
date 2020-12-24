@@ -15,7 +15,7 @@ const MainContent = props => {
     useEffect(() => {
         async function fetchMessages() {
             if (f.activeConversationInfo) {
-                const actionResult = await dispatch(fetchMessagesAPI({ user_id: f.activeConversationInfo._id, limit: 20, offset: 0 }))
+                const actionResult = await dispatch(fetchMessagesAPI({ user_id: f.activeConversationInfo._id, limit: 1000, offset: 0 }))
                 const fetchStatus = unwrapResult(actionResult)
                 setMessages(fetchStatus.data.fetchMessages.data)
                 await dispatch(activeConversationID(fetchStatus.data.fetchMessages.conversation))
@@ -23,6 +23,7 @@ const MainContent = props => {
         }
         fetchMessages()
     }, [f.activeConversationInfo])
+
     return (
         <> 
             {f.loadingFetchMessages && <Loading />}

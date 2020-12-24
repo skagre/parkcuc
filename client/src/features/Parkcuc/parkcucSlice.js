@@ -15,6 +15,9 @@ export const fetchMessagesAPI = createAsyncThunk('message/fetchMessages', async 
 export const sendMessageAPI = createAsyncThunk('message/sendMessage', async (params, thunkAPI) => {
     return await messageApi.sendMessage({ params })
 })
+export const uploadAttachmentAPI = createAsyncThunk('message/uploadAttachmentAPI', async (params, thunkAPI) => {
+    return await messageApi.uploadAttachment({ params })
+})
 
 
 export const findFriendAPI = createAsyncThunk('user/findFriendAPI', async (params, thunkAPI) => {
@@ -76,6 +79,14 @@ const parkcucSlice = createSlice({
 
         [sendMessageAPI.fulfilled]: (state, action) => {
             state.newMessage = action.payload
+        },
+
+        [uploadAttachmentAPI.pending]: (state, action) => {
+            state.loadingUploadAttachment = true
+        },
+        [uploadAttachmentAPI.fulfilled]: (state, action) => {
+            state.attachment = action.payload.file
+            state.loadingUploadAttachment = false
         },
 
         [findFriendAPI.pending]: (state, action) => {

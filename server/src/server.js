@@ -11,6 +11,7 @@ const multer = require('multer')
 const GridFsStorage = require('multer-gridfs-storage')
 const Grid = require('gridfs-stream')
 const User = require('./models/User')
+const Message = require('./models/Message')
 
 
 
@@ -96,6 +97,19 @@ app.post('/upload/avatar', upload.single('file'), async (req, res) => {
         { _id: req.user._id }, 
         { avatar: req.file.filename }
     )
+    res.json({ file: req.file })
+})
+
+app.post('/upload/attachment', upload.single('file'), async (req, res) => {
+    if (!req.isAuth) return res.status(401).json({
+        err: 'Oops! Not authorized to access this resource.'
+    })
+    if (!req.file) return res.status(400).json({
+        err: 'Oops! No file upload.'
+    })
+    if (req.file.size > 25 * 1024 * 1024) return res.status(400).json({
+        err: 'Oops! Maximum allowed size for uploaded files (25MB).'
+    })
     res.json({ file: req.file })
 })
 

@@ -1,6 +1,11 @@
 import {
-    Avatar
+    Avatar,
+    GridList,
+    List,
+    GridListTile,
+    ListItem
 } from '@material-ui/core'
+import AttachmentTwoToneIcon from '@material-ui/icons/AttachmentTwoTone'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import useStyles from './style'
@@ -14,17 +19,34 @@ const ChatContent = props => {
 
     useEffect(() => {
         if (f.newMessage) {
-            setNewMsg([...newMsg, f.newMessage.data.sendMessage])
+            setNewMsg([...newMsg, <Message message={f.newMessage.data.sendMessage} userInfo={userInfo} f={f}/>])
         }
     }, [f.newMessage])
+
+    useEffect(() => {
+        setNewMsg([])
+    }, [f.activeConversationID])
+
+    useEffect(() => {
+        gotoBottom()
+    }, [newMsg])
+
+    const gotoBottom = () => {
+        try {
+            let element = document.getElementById("chatWrap")
+            element.scrollTop = element.scrollHeight - element.clientHeight
+        } catch {}
+    }
     
     return (
         <>
         {props.messages &&
-        <ul className={`${classes.chatWrap} custom-scroll`}>
-            {props.messages.map(message => 
+        <ul className={`${classes.chatWrap} custom-scroll`} id="chatWrap">
+            {props.messages.map(message =>
                 <Message message={message} userInfo={userInfo} f={f}/>
             )}
+            {newMsg}
+            {gotoBottom()}
         </ul> 
         }
         </>
@@ -43,36 +65,33 @@ const Message = props => {
                     : `${process.env.REACT_APP_BASE_URL}/image/${f.activeConversationInfo.avatar}`} 
                 alt={userInfo.name}/>
             <ul className={`${classes.msgBody} ${message.sender === userInfo._id ? classes.msgBodyMine : ''}`}>
-                <li>{message.body}</li>
-
-                {/* <li className={`${classes.msgHasDocument} ${classes.msgHasDocumentMine}`}>
-                    <List>
-                        <ListItem>
-                            <AttachmentTwoToneIcon />
-                            <span>Kế-hoạch-đồ-án-tốt-nghiệp-khóa-17.docx</span>
-                        </ListItem>
-                    </List>
-                </li>
-            
-                <li className={`${classes.msgHasMedia} ${classes.msgHasMediaMine}`}>
-                    <GridList cellHeight={200} className={classes.gridList} cols={3} >
-                        <GridListTile cols={1}>
-                            <img src="https://material-ui.com/static/images/grid-list/honey.jpg" alt="alt" />
-                        </GridListTile>
-                        <GridListTile cols={1}>
-                            <img src="https://material-ui.com/static/images/grid-list/honey.jpg" alt="alt" />
-                        </GridListTile>
-                        <GridListTile cols={1}>
-                            <img src="https://material-ui.com/static/images/grid-list/honey.jpg" alt="alt" />
-                        </GridListTile>
-                        <GridListTile cols={1}>
-                            <video className={classes.video}>
-                                <source src="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4" type="video/mp4" />
-                            </video>
-                            <PlayCircleOutlineTwoToneIcon className={classes.icon} />
-                        </GridListTile>
-                    </GridList>
-                </li> */}
+                {message.body && <li>{message.body}</li>}
+                {message.attachment && 
+                    message.mimetype_attachment.includes("image")
+                    ?
+                    <li className={`${classes.msgHasMedia} ${classes.msgHasMediaMine}`}>
+                        <GridList cellHeight={200} className={classes.gridList} cols={3} >
+                            <GridListTile cols={1}>
+                                <img src={`${process.env.REACT_APP_BASE_URL}/image/${message.attachment}`} alt="alt" />
+                            </GridListTile>
+                            {/* <GridListTile cols={1}>
+                                <video className={classes.video}>
+                                    <source src="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4" type="video/mp4" />
+                                </video>
+                                <PlayCircleOutlineTwoToneIcon className={classes.icon} />
+                            </GridListTile> */}
+                        </GridList>
+                    </li>
+                    : 
+                    <li className={`${classes.msgHasDocument} ${classes.msgHasDocumentMine}`}>
+                        <List>
+                            <ListItem>
+                                <AttachmentTwoToneIcon />
+                                <span>Kế-hoạch-đồ-án-tốt-nghiệp-khóa-17.docx</span>
+                            </ListItem>
+                        </List>
+                    </li>
+                }
             </ul>
         </li>
     )

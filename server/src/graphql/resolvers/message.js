@@ -6,7 +6,7 @@ module.exports = {
         if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
 
         try {
-            if (!args.body) throw new Error('Oops! Body is empty.')
+            if (!args.body && !args.attachment) throw new Error('Oops! Body is empty.')
 
             const conversation = await Conversation.findOne({
                 $and: [
@@ -20,11 +20,13 @@ module.exports = {
             })
             
             if (!conversation) throw new Error('Oops! Failed to send message.')
-
+            
             const message = new Message({
                 sender: req.user._id,
                 conversation: args.conversation_id,
-                body: args.body
+                body: args.body,
+                attachment: args.attachment,
+                mimetype_attachment: args.mimetype_attachment
             })
             await message.save()
 
