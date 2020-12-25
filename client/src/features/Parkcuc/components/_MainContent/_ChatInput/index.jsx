@@ -8,8 +8,11 @@ import { sendMessageAPI, uploadAttachmentAPI } from 'features/Parkcuc/parkcucSli
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './style'
+import io from 'socket.io-client'
 
 
+let socket
+socket = io(process.env.REACT_APP_SOCKET_IO)
 const ChatInput = props => {
     const classes = useStyles()
     const dispatch = useDispatch()
@@ -38,6 +41,7 @@ const ChatInput = props => {
         setOpenEmoji(false)
         setMsg("")
         await dispatch(sendMessageAPI({ conversation_id: f.activeConversationID, body: msg}))
+        socket.emit('sendMessage', 'hello')
     }
 
     const onQuickEmojiClick = async emoji => {

@@ -26,6 +26,7 @@ const io = require('socket.io')(httpServer, {
 })
 httpServer.listen(process.env.SOCKET_IO)
 
+
 app.use(isAuth)
 app.use(express.json())
 app.use(cors())
@@ -37,7 +38,19 @@ app.use('/api',isAuth , graphqlHTTP({
 }))
 
 io.on('connection', (socket) => {
-    console.log("shi")
+    socket.on('join', ({ userInfo, conversation }) => {
+        socket.join(conversation)
+        io.to(conversation).emit('message')
+        console.log(userInfo)
+        console.log(conversation)
+    })
+
+    socket.on('sendMessage', (message) => {
+        console.log(message)
+    
+        //io.to(conversation).emit('message', { user: user.name, text: message })
+  
+    })
 
     socket.on('disconnect', () => {
         console.log('disconnect')
@@ -150,7 +163,7 @@ app.get('/files/:filename', (req, res) => {
                 err: 'No file exists'
             })
         }
-        return res.json(file);
+        return res.download(file);
     })
 })
 

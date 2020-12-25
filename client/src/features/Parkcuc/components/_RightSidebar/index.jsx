@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import Header from './_Header'
 import Actions from './_Actions'
@@ -12,15 +12,20 @@ import { useSelector } from 'react-redux'
 
 const RightSidebar = props => {
     const classes = useStyles()
-    //const f = useSelector(state => state.parkcuc)
+    const f = useSelector(state => state.parkcuc)
+
     return (
-        <div className={`${classes.rightSidebar} custom-scroll`}> 
-            <Header />
-            <Actions />
-            <Privacy />
-            <SharedFiles />
-            <SharedMedia />
-        </div>
+        <>
+        {f.activeConversationInfo && 
+            <div className={`${classes.rightSidebar} custom-scroll`}> 
+                <Header ConversationInfo={f.activeConversationInfo}/>
+                <Actions />
+                <Privacy />
+                <SharedFiles />
+                <SharedMedia />
+            </div>
+        }
+        </>
     )
 }
 

@@ -14,10 +14,9 @@ const Header = props => {
         <div className={classes.headerWrap}>
             <Avatar 
                 className={classes.avatar}
-                alt="alt"
-                src="https://material-ui.com/static/images/avatar/1.jpg"
-            />
-            <Typography className={classes.text}>Xuân Bắc</Typography>
+                src={`${process.env.REACT_APP_BASE_URL}/image/${props.ConversationInfo.avatar}`} 
+                alt={props.ConversationInfo.name}/>
+            <Typography className={classes.text}>{props.ConversationInfo.name}</Typography>
             <Typography className={classes.text}>Active</Typography>
             <div className={classes.iconGroup}>
                 <CallTwoToneIcon className={classes.icon} />

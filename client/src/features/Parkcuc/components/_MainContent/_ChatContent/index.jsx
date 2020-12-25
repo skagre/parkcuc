@@ -9,13 +9,29 @@ import AttachmentTwoToneIcon from '@material-ui/icons/AttachmentTwoTone'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import useStyles from './style'
+import io from 'socket.io-client'
 
-
+  
+let socket
 const ChatContent = props => {
     const classes = useStyles()
     const f = useSelector(state => state.parkcuc)
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     const [newMsg, setNewMsg] = useState([])
+
+    useEffect(() => {
+        socket = io(process.env.REACT_APP_SOCKET_IO)
+        if (f.activeConversationID) {
+            socket.emit('join', { userInfo: userInfo, conversation: f.activeConversationID })
+        }
+    }, [process.env.REACT_APP_SOCKET_IO, f.activeConversationID])
+
+    useEffect(() => {
+        socket.on('message', () => {
+            console.log("s")
+        })
+    
+    })
 
     useEffect(() => {
         if (f.newMessage) {
@@ -69,8 +85,8 @@ const Message = props => {
                 {message.attachment && 
                     message.mimetype_attachment.includes("image")
                     ?
-                    <li className={`${classes.msgHasMedia} ${classes.msgHasMediaMine}`}>
-                        <GridList cellHeight={200} className={classes.gridList} cols={3} >
+                    <li className={`${classes.msgHasMedia} ${message.sender === userInfo._id ? classes.msgHasMediaMine : ''}`}>
+                        <GridList cellHeight={200} className={classes.gridList} cols={1} >
                             <GridListTile cols={1}>
                                 <img src={`${process.env.REACT_APP_BASE_URL}/image/${message.attachment}`} alt="alt" />
                             </GridListTile>
@@ -83,11 +99,11 @@ const Message = props => {
                         </GridList>
                     </li>
                     : 
-                    <li className={`${classes.msgHasDocument} ${classes.msgHasDocumentMine}`}>
+                    <li className={`${classes.msgHasDocument} ${message.sender === userInfo._id ? classes.msgHasDocumentMine : ''}`}>
                         <List>
                             <ListItem>
                                 <AttachmentTwoToneIcon />
-                                <span>Kế-hoạch-đồ-án-tốt-nghiệp-khóa-17.docx</span>
+                                <a href={`${process.env.REACT_APP_BASE_URL}/file/${message.attachment}`} target="_blank">{message.attachment}</a>
                             </ListItem>
                         </List>
                     </li>

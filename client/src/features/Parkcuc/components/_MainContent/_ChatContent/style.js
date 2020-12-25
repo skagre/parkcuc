@@ -68,11 +68,15 @@ const useStyles = makeStyles((theme) => ({
                 '& > svg': {
                     marginRight: 10
                 },
-                '&:hover': {
-                    cursor: 'pointer',
-                    color: green[600],
-                    textDecoration: 'underline'
-                },
+                '& > a': {
+                    textDecoration: 'none',
+                    color: '#000',
+                    '&:hover': {
+                        cursor: 'pointer',
+                        color: '#444444',
+                        textDecoration: 'underline'
+                    },
+                }
             },
         },
         
@@ -110,12 +114,15 @@ const useStyles = makeStyles((theme) => ({
             '&:last-child': {
                 borderBottomRightRadius: '1.3em',
                 marginBottom: 0
-            }
+            },
         }
     },
     msgHasDocumentMine: {
-        '& > ul > li:hover': {
-            color: '#ffffff95',
+        '& > ul > li > a': {
+            color: '#fff',
+            '&:hover': {
+                color: '#f4f4f4'
+            }
         }
     },
     msgHasMediaMine: {

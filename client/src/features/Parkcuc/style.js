@@ -20,6 +20,7 @@ const useStyles = makeStyles({
     rightSidebar: {
         minWidth: 280,
         maxWidth: 360,
+        backgroundColor: green[50],
         flexBasis: '23%'
     }
 })

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 
-import io from 'socket.io-client'
 import {
     Avatar, 
     Box,
@@ -20,10 +19,6 @@ import useStyles from './style'
 const Notifications = props => {
     const classes = useStyles()
 
-    let socket
-    useEffect(() => {
-        socket = io(process.env.REACT_APP_SOCKET_IO)
-    }, [process.env.REACT_APP_SOCKET_IO])
     return (
         <>
             <TabHeading text={"Notifications"} subtext={"List of notification"}/>
