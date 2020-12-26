@@ -38,18 +38,13 @@ app.use('/api',isAuth , graphqlHTTP({
 }))
 
 io.on('connection', (socket) => {
-    socket.on('join', ({ userInfo, conversation }) => {
+    socket.on('join', (conversation) => {
         socket.join(conversation)
-        io.to(conversation).emit('message')
-        console.log(userInfo)
-        console.log(conversation)
     })
 
-    socket.on('sendMessage', (message) => {
-        console.log(message)
-    
-        //io.to(conversation).emit('message', { user: user.name, text: message })
-  
+    socket.on('sendMessage', ({ userInfo, conversation, message }) => {
+        //socket.join(conversation)
+        io.to(conversation).emit('message', {userInfo, message})
     })
 
     socket.on('disconnect', () => {

@@ -9,29 +9,12 @@ import AttachmentTwoToneIcon from '@material-ui/icons/AttachmentTwoTone'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import useStyles from './style'
-import io from 'socket.io-client'
 
-  
-let socket
 const ChatContent = props => {
     const classes = useStyles()
     const f = useSelector(state => state.parkcuc)
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     const [newMsg, setNewMsg] = useState([])
-
-    useEffect(() => {
-        socket = io(process.env.REACT_APP_SOCKET_IO)
-        if (f.activeConversationID) {
-            socket.emit('join', { userInfo: userInfo, conversation: f.activeConversationID })
-        }
-    }, [process.env.REACT_APP_SOCKET_IO, f.activeConversationID])
-
-    useEffect(() => {
-        socket.on('message', () => {
-            console.log("s")
-        })
-    
-    })
 
     useEffect(() => {
         if (f.newMessage) {
@@ -59,7 +42,7 @@ const ChatContent = props => {
         {props.messages &&
         <ul className={`${classes.chatWrap} custom-scroll`} id="chatWrap">
             {props.messages.map(message =>
-                <Message message={message} userInfo={userInfo} f={f}/>
+                <Message key={message._id} message={message} userInfo={userInfo} f={f}/>
             )}
             {newMsg}
             {gotoBottom()}
@@ -73,7 +56,7 @@ const Message = props => {
     const classes = useStyles()
     const { message, userInfo, f } = props
     return (
-        <li key={message._id} className={`${classes.msg} ${message.sender === userInfo._id ? classes.msgMine : ''}`}>
+        <li className={`${classes.msg} ${message.sender === userInfo._id ? classes.msgMine : ''}`}>
             <Avatar 
                 className={classes.avatar}
                 src={ message.sender === userInfo._id 

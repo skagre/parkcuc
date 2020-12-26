@@ -24,7 +24,6 @@ const ChatInput = props => {
     useEffect(() => {
         async function sendMessage() {
             if (f.attachment) {
-                console.log(f.attachment)
                 dispatch(sendMessageAPI({ conversation_id: f.activeConversationID, attachment: f.attachment.filename, mimetype_attachment: f.attachment.mimetype}))
             }
         }
@@ -34,14 +33,15 @@ const ChatInput = props => {
     const onEmojiClick = (event, emojiObject) => {
         setMsg(msg + emojiObject.emoji)
     }
-    
+
     const sendMessage = async e => {
         if (e.keyCode !== 13 || msg.trim() === "") return
 
         setOpenEmoji(false)
         setMsg("")
         await dispatch(sendMessageAPI({ conversation_id: f.activeConversationID, body: msg}))
-        socket.emit('sendMessage', 'hello')
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+        socket.emit('sendMessage', { userInfo: userInfo, conversation: f.activeConversationID, message: msg})
     }
 
     const onQuickEmojiClick = async emoji => {
@@ -64,7 +64,7 @@ const ChatInput = props => {
             setAlert(true)
             return
         }
-  
+
         const formData = new FormData()
         formData.append('file', file, file.name)
         await dispatch(uploadAttachmentAPI(formData))
