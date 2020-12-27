@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
 
 import useStyles from './style'
@@ -10,6 +10,10 @@ import RightSidebar from './components/_RightSidebar'
 
 const Parkcuc = props => {
     const classes = useStyles()
+
+    useEffect(() => {
+        
+    }, [])
     return (
         <Grid container className={classes.container}>
             <Grid item className={classes.leftSidebar}>

@@ -15,8 +15,14 @@ export const fetchMessagesAPI = createAsyncThunk('message/fetchMessages', async 
 export const sendMessageAPI = createAsyncThunk('message/sendMessage', async (params, thunkAPI) => {
     return await messageApi.sendMessage({ params })
 })
-export const uploadAttachmentAPI = createAsyncThunk('message/uploadAttachmentAPI', async (params, thunkAPI) => {
-    return await messageApi.uploadAttachment({ params })
+export const uploadAttachmentsAPI = createAsyncThunk('message/uploadAttachmentsAPI', async (params, thunkAPI) => {
+    return await messageApi.uploadAttachments({ params })
+})
+export const fetchAttachmentsAPI = createAsyncThunk('message/fetchAttachments', async (params, thunkAPI) => {
+    return await messageApi.fetchAttachments({ params })
+})
+export const unsendMessageAPI = createAsyncThunk('message/unsendMessage', async (params, thunkAPI) => {
+    return await messageApi.unsendMessage({ params })
 })
 
 
@@ -81,12 +87,20 @@ const parkcucSlice = createSlice({
             state.newMessage = action.payload
         },
 
-        [uploadAttachmentAPI.pending]: (state, action) => {
-            state.loadingUploadAttachment = true
+        [fetchAttachmentsAPI.pending]: (state, action) => {
+            state.loadingFetchAttachments = true
         },
-        [uploadAttachmentAPI.fulfilled]: (state, action) => {
-            state.attachment = action.payload.file
-            state.loadingUploadAttachment = false
+        [fetchAttachmentsAPI.fulfilled]: (state, action) => {
+            state.attachmentLists = action.payload
+            state.loadingFetchAttachments = false
+        },
+
+        [uploadAttachmentsAPI.pending]: (state, action) => {
+            state.loadingUploadAttachments = true
+        },
+        [uploadAttachmentsAPI.fulfilled]: (state, action) => {
+            state.attachments = action.payload
+            state.loadingUploadAttachments = false
         },
 
         [findFriendAPI.pending]: (state, action) => {

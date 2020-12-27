@@ -16,12 +16,7 @@ const messageSchema = mongoose.Schema({
         type: String, // everyone || myself
         default: null
     },
-    attachment: {
-        type: String
-    },
-    mimetype_attachment: {
-        type: String
-    }
+    attachments: []
 }, { timestamps: true })
 
 module.exports = mongoose.model('Message', messageSchema)

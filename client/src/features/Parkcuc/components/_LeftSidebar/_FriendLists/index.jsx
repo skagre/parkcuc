@@ -85,7 +85,7 @@ const FriendLists = props => {
                 {friendLists.data && friendLists.data.map(friend => 
                     <ListItem className={classes.listItem} key={friend._id} onClick={() => setActiveConversationInfo(friend)}>
                         <ListItemAvatar>
-                            <Avatar src={`${process.env.REACT_APP_BASE_URL}/image/${friend.avatar}`} alt={friend.name}/>
+                            <Avatar src={`${process.env.REACT_APP_BASE_URL}/attachment/${friend.avatar}`} alt={friend.name}/>
                         </ListItemAvatar>
                         <ListItemText
                             primary={friend.name}
@@ -120,10 +120,10 @@ const FriendLists = props => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDialog} color="primary">
+                    <Button onClick={handleCloseDialog} color="primary" autoFocus>
                         Cancel
                     </Button>
-                    <Button onClick={() => unfriend(selectedUser._id)} color="primary" autoFocus>
+                    <Button onClick={() => unfriend(selectedUser._id)} color="primary">
                         OK
                     </Button>
                 </DialogActions>

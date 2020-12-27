@@ -55,7 +55,7 @@ const FindFriend = props => {
                 {users && users.map(user => 
                 <ListItem className={classes.listItem} alignItems="flex-start" key={user._id}>
                     <ListItemAvatar>
-                        <Avatar src={`${process.env.REACT_APP_BASE_URL}/image/${user.avatar}`} alt={user.name} />
+                        <Avatar src={`${process.env.REACT_APP_BASE_URL}/attachment/${user.avatar}`} alt={user.name} />
                     </ListItemAvatar>
                     <ListItemText
                         primary={

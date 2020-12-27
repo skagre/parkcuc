@@ -11,7 +11,9 @@ const multer = require('multer')
 const GridFsStorage = require('multer-gridfs-storage')
 const Grid = require('gridfs-stream')
 const User = require('./models/User')
+const { PeerServer } = require('peer');
 const Message = require('./models/Message')
+const peerServer = PeerServer({ port: 9000, path: '/myapp' });
 
 
 
@@ -42,9 +44,8 @@ io.on('connection', (socket) => {
         socket.join(conversation)
     })
 
-    socket.on('sendMessage', ({ userInfo, conversation, message }) => {
-        //socket.join(conversation)
-        io.to(conversation).emit('message', {userInfo, message})
+    socket.on('sendMessage', params => {
+        io.to(params.conversation).emit('message', { message: params.message })
     })
 
     socket.on('disconnect', () => {
@@ -108,17 +109,30 @@ app.post('/upload/avatar', upload.single('file'), async (req, res) => {
     res.json({ file: req.file })
 })
 
-app.post('/upload/attachment', upload.single('file'), async (req, res) => {
+app.post('/upload/attachments', upload.array('file', 25), async (req, res) => {
     if (!req.isAuth) return res.status(401).json({
         err: 'Oops! Not authorized to access this resource.'
     })
-    if (!req.file) return res.status(400).json({
-        err: 'Oops! No file upload.'
+    if (req.files.length === 0) return res.status(400).json({
+        err: 'Oops! No files upload.'
     })
-    if (req.file.size > 25 * 1024 * 1024) return res.status(400).json({
-        err: 'Oops! Maximum allowed size for uploaded files (25MB).'
+
+    const reqFiles = []
+    req.files.forEach(file => {
+        if (file.size > 25 * 1024 * 1024) return res.status(400).json({
+            err: 'Oops! Maximum allowed size for uploaded files (25MB).'
+        })
+        reqFiles.push(file)
     })
-    res.json({ file: req.file })
+
+    const message = new Message({
+        sender: req.user._id,
+        conversation: req.body.conversation,
+        attachments: reqFiles
+    })
+    const result = await message.save()
+    io.to(req.body.conversation).emit('message', { message: result })
+    res.json({ file: req.files })
 })
 
 app.get('/files', (req, res) => {
@@ -132,37 +146,40 @@ app.get('/files', (req, res) => {
     })
 })
 
-app.get('/image/:filename', (req, res) => {
+app.get('/attachment/:filename', (req, res) => {
     gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
         if (!file || file.length === 0) {
             return res.status(404).json({
                 err: 'No file exists'
             })
         }
+        const readstream = gfs.createReadStream(file.filename)
+        readstream.pipe(res)
 
-        if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
-            const readstream = gfs.createReadStream(file.filename)
-            readstream.pipe(res)
-        } else {
-            res.status(404).json({
-                err: 'Not an image'
-            })
-        }
+        // if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+        //     const readstream = gfs.createReadStream(file.filename)
+        //     readstream.pipe(res)
+        // } else {
+        //     res.status(404).json({
+        //         err: 'Not an image'
+        //     })
+        // }
     })
 })
 
-app.get('/files/:filename', (req, res) => {
+app.get('/file/:filename', (req, res) => {
     gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
         if (!file || file.length === 0) {
             return res.status(404).json({
                 err: 'No file exists'
             })
         }
-        return res.download(file);
+        const readstream = gfs.createReadStream(file.filename)
+        readstream.pipe(res)
     })
 })
 
-app.delete('/files/:id', (req, res) => {
+app.delete('/attachment/:id', (req, res) => {
     if (!req.isAuth) return res.status(401).json({
         err: 'Oops! Not authorized to access this resource.'
     })

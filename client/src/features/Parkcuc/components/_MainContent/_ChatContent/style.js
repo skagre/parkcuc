@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
     chatWrap: {
-        padding: '140px 10px 10px 10px',
+        padding: '150px 10px 10px 10px',
         height: 'calc(100vh - 95px)',
         overflowY: 'scroll'
     },
@@ -21,7 +21,10 @@ const useStyles = makeStyles((theme) => ({
     msg: {
         display: 'flex',
         alignItems: 'flex-end',
-        margin: '5px 0'
+        margin: '5px 0',
+        '&:hover > ul > span': {
+            visibility: 'visible'
+        },
     },
     msgBody: {
         listStyle: 'none',
@@ -30,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'flex-start',
         paddingLeft: 10,
         maxWidth: '60%',
+        position: 'relative',
         '& > li': {
             width: 'fit-content',
             padding: '6px 12px 7px',
@@ -45,6 +49,24 @@ const useStyles = makeStyles((theme) => ({
             '&:last-child': {
                 borderBottomLeftRadius: '1.3em',
                 marginBottom: 0
+            },
+        },
+        '& > span': {
+            position: 'absolute',
+            right: -130,
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            display: 'flex',
+            visibility: 'hidden',
+            '& > svg': {
+                fontSize: 32,
+                padding: 5,
+                margin: '0 5px',
+                '&:hover': {
+                    cursor: 'pointer',
+                    backgroundColor: '#00000007',
+                    borderRadius: '50%'
+                }
             }
         }
     },
@@ -81,6 +103,11 @@ const useStyles = makeStyles((theme) => ({
         },
         
     },
+    image: {
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover'
+    },
     video: {
         width: '100%',
         height: '100%',
@@ -115,6 +142,11 @@ const useStyles = makeStyles((theme) => ({
                 borderBottomRightRadius: '1.3em',
                 marginBottom: 0
             },
+        },
+        '& > span': {
+            flexFlow: 'row-reverse',
+            left: -50,
+            right: 'unset'
         }
     },
     msgHasDocumentMine: {
@@ -129,7 +161,12 @@ const useStyles = makeStyles((theme) => ({
         '& > ul': {
             justifyContent: 'flex-end'
         }
-    }
+    },
+    unsend: {
+        backgroundColor: 'transparent !important',
+        border: '1px solid #c4c4c4 !important',
+        color: '#00000080 !important'
+    },
 }))
 
 export default useStyles

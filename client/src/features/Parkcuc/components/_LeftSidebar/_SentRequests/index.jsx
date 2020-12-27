@@ -34,18 +34,17 @@ const SentRequests = props => {
     }, [sentRequests])
 
     useEffect(() => {
+        async function fetchSentRequests() {
+            try {
+                const actionResult = await dispatch(fetchSentRequestsAPI({ limit: 20, offset: 0 }))
+                const fetchStatus = unwrapResult(actionResult)
+                setSentRequests(fetchStatus.data.fetchSentRequests)
+            } catch (err) {
+                console.log("Oops! Failed to fetchSentRequests.")
+            }
+        }
         fetchSentRequests()
     }, [])
-
-    const fetchSentRequests = async () => {
-        try {
-            const actionResult = await dispatch(fetchSentRequestsAPI({ limit: 20, offset: 0 }))
-            const fetchStatus = unwrapResult(actionResult)
-            setSentRequests(fetchStatus.data.fetchSentRequests)
-        } catch (err) {
-            console.log("Oops! Failed to fetchSentRequests.")
-        }
-    }
 
     const deleteFriendRequest = async user_id => {
         try {
@@ -76,7 +75,7 @@ const SentRequests = props => {
                 {sentRequests.data && sentRequests.data.map(request => 
                 <ListItem className={classes.listItem} key={request._id} id={request._id}>
                     <ListItemAvatar>
-                        <Avatar src={`${process.env.REACT_APP_BASE_URL}/image/${request.avatar}`} alt={request.name}/>
+                        <Avatar src={`${process.env.REACT_APP_BASE_URL}/attachment/${request.avatar}`} alt={request.name}/>
                     </ListItemAvatar>
                     <ListItemText
                         primary={request.name}
@@ -102,10 +101,10 @@ const SentRequests = props => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDialog} color="primary">
+                    <Button onClick={handleCloseDialog} color="primary" autoFocus>
                         Cancel
                     </Button>
-                    <Button onClick={() => deleteFriendRequest(selectedUser._id)} color="primary" autoFocus>
+                    <Button onClick={() => deleteFriendRequest(selectedUser._id)} color="primary">
                         OK
                     </Button>
                 </DialogActions>

@@ -13,6 +13,15 @@ const conversationSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
+    emoji: {
+        type: String,
+        default: '👍'
+    },
+    blocker: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: null
+    }
 }, { timestamps: true })
 
 module.exports = mongoose.model('Conversation', conversationSchema)

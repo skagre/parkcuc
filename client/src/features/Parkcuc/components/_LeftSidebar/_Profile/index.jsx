@@ -60,7 +60,7 @@ const Profile = props => {
                     <Avatar
                         id="avatar"
                         className={classes.avatar}
-                        src={f.imgUrl ? `${process.env.REACT_APP_BASE_URL}/image/${f.imgUrl}` : `${process.env.REACT_APP_BASE_URL}/image/${userInfo.avatar}`}
+                        src={f.imgUrl ? `${process.env.REACT_APP_BASE_URL}/attachment/${f.imgUrl}` : `${process.env.REACT_APP_BASE_URL}/attachment/${userInfo.avatar}`}
                         alt={userInfo.name}/>
                     <input type="file" id="file" name="file" accept="image/*" onChange={e => onChangeHandler(e)} />
                     <AddAPhotoTwoToneIcon className={classes.icon}/>

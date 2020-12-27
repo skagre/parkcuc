@@ -14,7 +14,7 @@ const Header = props => {
         <div className={classes.headerWrap}>
             <Avatar 
                 className={classes.avatar}
-                src={`${process.env.REACT_APP_BASE_URL}/image/${props.ConversationInfo.avatar}`} 
+                src={`${process.env.REACT_APP_BASE_URL}/attachment/${props.ConversationInfo.avatar}`} 
                 alt={props.ConversationInfo.name}/>
             <Typography className={classes.text}>{props.ConversationInfo.name}</Typography>
             <Typography className={classes.text}>Active</Typography>

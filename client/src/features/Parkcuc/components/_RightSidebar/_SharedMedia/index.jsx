@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { 
     Accordion, 
@@ -11,47 +11,59 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PlayCircleOutlineTwoToneIcon from '@material-ui/icons/PlayCircleOutlineTwoTone'
 
 import useStyles from './style';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAttachmentsAPI } from 'features/Parkcuc/parkcucSlice';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const SharedMedia = props => {
     const classes = useStyles()
     const [expanded, setExpanded] = useState(true)
+    const f = useSelector(state => state.parkcuc)
+    const dispatch = useDispatch()
+    const [attachmentLists, setAttachmentLists] = useState()
+
+    useEffect(() => {
+        async function fetchAttachments() {
+            try {
+                if (f.activeConversationInfo) {
+                    const actionResult = await dispatch(fetchAttachmentsAPI({ user_id: f.activeConversationInfo._id, limit: 20, offset: 0 }))
+                    const fetchStatus = unwrapResult(actionResult)
+                    setAttachmentLists(fetchStatus.data.fetchAttachments)
+                }
+            } catch (err) {
+                console.log("Oops! Failed to fetchAttachments.")
+            }
+        }
+        fetchAttachments()
+    }, [f.activeConversationInfo])
+    
     return (
+        <>
         <Accordion className={classes.accordion} expanded={expanded}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}  onClick={()=> setExpanded(!expanded)}>
                 <Typography className={classes.heading}>SHARED MEDIA</Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.accordionDetails}>
                 <div className={classes.gallery}>
-                    <div className={classes.media}>
-                        <img src="https://dummyimage.com/200x200/ddd/fff" alt="media" />
-                    </div>
-                    <div className={classes.media}>
-                        <video>
-                            <source src="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4" type="video/mp4" />
-                        </video>
-                        <PlayCircleOutlineTwoToneIcon className={classes.icon} />
-                    </div>
-                    <div className={classes.media}>
-                        <img src="https://dummyimage.com/200x200/ddd/fff" alt="media" />
-                    </div>
-                    <div className={classes.media}>
-                        <video>
-                            <source src="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4" type="video/mp4" />
-                        </video>
-                        <PlayCircleOutlineTwoToneIcon className={classes.icon} />
-                    </div>
-                    <div className={classes.media}>
-                        <img src="https://dummyimage.com/200x200/ddd/fff" alt="media" />
-                    </div>
-                    <div className={classes.media}>
-                        <video>
-                            <source src="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4" type="video/mp4" />
-                        </video>
-                        <PlayCircleOutlineTwoToneIcon className={classes.icon} />
-                    </div>
+                    {attachmentLists && attachmentLists.slice().sort((a, b) => b.uploadDate - a.uploadDate).map(attachment =>
+                        attachment.mimetype.includes('image')
+                        ?
+                        <div className={classes.media}>
+                            <img src={`${process.env.REACT_APP_BASE_URL}/attachment/${attachment.filename}`} alt={attachment.filename} />
+                        </div>
+                        :
+                        attachment.mimetype.includes('video') &&
+                        <div className={classes.media}>
+                            <video>
+                                <source src={`${process.env.REACT_APP_BASE_URL}/attachment/${attachment.filename}`} />
+                            </video>
+                            <PlayCircleOutlineTwoToneIcon className={classes.icon} />
+                        </div>
+                    )}
                 </div>
             </AccordionDetails>
         </Accordion>
+        </>
     )
 }
 

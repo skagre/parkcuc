@@ -1,24 +1,52 @@
 import {
     Avatar,
     GridList,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+    GridListTile, 
     List,
-    GridListTile,
+    Button,
     ListItem
 } from '@material-ui/core'
 import AttachmentTwoToneIcon from '@material-ui/icons/AttachmentTwoTone'
+import PlayCircleOutlineTwoToneIcon from '@material-ui/icons/PlayCircleOutlineTwoTone'
+import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone'
+import ReplyTwoToneIcon from '@material-ui/icons/ReplyTwoTone'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import io from 'socket.io-client'
+import { useDispatch } from 'react-redux'
+import { unsendMessageAPI } from 'features/Parkcuc/parkcucSlice'
 import useStyles from './style'
 
+let socket
+socket = io(process.env.REACT_APP_SOCKET_IO)
 const ChatContent = props => {
     const classes = useStyles()
     const f = useSelector(state => state.parkcuc)
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     const [newMsg, setNewMsg] = useState([])
 
     useEffect(() => {
+        if (f.activeConversationID) {
+            socket.emit('join', f.activeConversationID)
+        }
+    }, [process.env.REACT_APP_SOCKET_IO, f.activeConversationID])
+
+    useEffect(() => {
+        socket.on('message', params => {
+            setNewMsg(newMsg => [...newMsg, <Message key={params.message._id} message={params.message} f={f}/>])
+        })
+    }, [])
+
+    useEffect(() => {
         if (f.newMessage) {
-            setNewMsg([...newMsg, <Message message={f.newMessage.data.sendMessage} userInfo={userInfo} f={f}/>])
+            socket.emit('sendMessage', { 
+                message: f.newMessage.data.sendMessage, 
+                conversation: f.activeConversationID,
+            })
         }
     }, [f.newMessage])
 
@@ -41,8 +69,8 @@ const ChatContent = props => {
         <>
         {props.messages &&
         <ul className={`${classes.chatWrap} custom-scroll`} id="chatWrap">
-            {props.messages.map(message =>
-                <Message key={message._id} message={message} userInfo={userInfo} f={f}/>
+            {props.messages.map((message, i) =>
+                <Message key={message._id} message={message} f={f}/> 
             )}
             {newMsg}
             {gotoBottom()}
@@ -54,45 +82,109 @@ const ChatContent = props => {
 
 const Message = props => {
     const classes = useStyles()
-    const { message, userInfo, f } = props
+    const { message, f } = props
+    const dispatch = useDispatch()
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    const [openDialog, setOpenDialog] = useState(false)
+    const [selectedMessage, setSelectedMessage] = useState(null)
+
+    const unsend = async params => {
+        await dispatch(unsendMessageAPI({ message_id: params, type: params.type }))
+    }
+
+    const handleShowDialog = message => {
+        setOpenDialog(true)
+        setSelectedMessage(message)
+    }
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false)
+    }
+
     return (
-        <li className={`${classes.msg} ${message.sender === userInfo._id ? classes.msgMine : ''}`}>
+        <>
+        <li className={`${classes.msg} ${message.sender === userInfo._id ? classes.msgMine : ''}`} title={new Date(parseInt(message.createdAt)) }>
             <Avatar 
                 className={classes.avatar}
                 src={ message.sender === userInfo._id 
-                    ? `${process.env.REACT_APP_BASE_URL}/image/${userInfo.avatar}`
-                    : `${process.env.REACT_APP_BASE_URL}/image/${f.activeConversationInfo.avatar}`} 
+                    ? `${process.env.REACT_APP_BASE_URL}/attachment/${userInfo.avatar}`
+                    : `${process.env.REACT_APP_BASE_URL}/attachment/${f.activeConversationInfo.avatar}`} 
                 alt={userInfo.name}/>
             <ul className={`${classes.msgBody} ${message.sender === userInfo._id ? classes.msgBodyMine : ''}`}>
-                {message.body && <li>{message.body}</li>}
-                {message.attachment && 
-                    message.mimetype_attachment.includes("image")
+                {message.unsend === 'onlyme' && message.sender === userInfo._id
                     ?
+                    <li className={classes.unsend}>{message.sender === userInfo._id ? 'You' : f.activeConversationInfo.name} unsent a message for you</li>
+                    : 
+                    message.unsend === 'everyone'
+                    ?
+                    <li className={classes.unsend}>{message.sender === userInfo._id ? 'You' : f.activeConversationInfo.name} unsent a message for everyone</li>
+                    :
+                <>
+                {message.body && <li>{message.body}</li>}
+                {message.attachments &&
                     <li className={`${classes.msgHasMedia} ${message.sender === userInfo._id ? classes.msgHasMediaMine : ''}`}>
-                        <GridList cellHeight={200} className={classes.gridList} cols={1} >
-                            <GridListTile cols={1}>
-                                <img src={`${process.env.REACT_APP_BASE_URL}/image/${message.attachment}`} alt="alt" />
-                            </GridListTile>
-                            {/* <GridListTile cols={1}>
-                                <video className={classes.video}>
-                                    <source src="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4" type="video/mp4" />
-                                </video>
-                                <PlayCircleOutlineTwoToneIcon className={classes.icon} />
-                            </GridListTile> */}
+                        <GridList cellHeight={200} className={classes.gridList} cols={message.attachments.length === 1 ? 1 : message.attachments.length === 2 ? 2 : 3}>
+                                {message.attachments.filter(images => images.mimetype.includes('image')).map(image =>
+                                    <GridListTile cols={1}>
+                                        <img className={classes.image} src={`${process.env.REACT_APP_BASE_URL}/attachment/${image.filename}`} alt={image.filename} />
+                                    </GridListTile>
+                                )}
+                                {message.attachments.filter(videos => videos.mimetype.includes('video')).map(video =>
+                                    <GridListTile cols={1}>
+                                        <video className={classes.video}>
+                                            <source src={`${process.env.REACT_APP_BASE_URL}/attachment/${video.filename}`}/>
+                                        </video>
+                                        <PlayCircleOutlineTwoToneIcon className={classes.icon} />
+                                    </GridListTile>
+                                )}
                         </GridList>
                     </li>
-                    : 
-                    <li className={`${classes.msgHasDocument} ${message.sender === userInfo._id ? classes.msgHasDocumentMine : ''}`}>
+                }
+                {message.attachments &&
+                    message.attachments.filter(files => !files.mimetype.includes('image') && !files.mimetype.includes('video')).map(file =>
+                        <li className={`${classes.msgHasDocument} ${message.sender === userInfo._id ? classes.msgHasDocumentMine : ''}`}>
                         <List>
                             <ListItem>
                                 <AttachmentTwoToneIcon />
-                                <a href={`${process.env.REACT_APP_BASE_URL}/file/${message.attachment}`} target="_blank">{message.attachment}</a>
+                                <a href={`${process.env.REACT_APP_BASE_URL}/file/${file.filename}`} target="_blank">{file.originalname}</a>
                             </ListItem>
                         </List>
-                    </li>
+                        </li>
+                    )
+                }
+                <span>
+                    <DeleteTwoToneIcon onClick={() => handleShowDialog(message)}/>
+                    <ReplyTwoToneIcon/>
+                </span>
+                </>
                 }
             </ul>
         </li>
+        <Dialog
+            open={openDialog}
+            onClose={handleCloseDialog}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+            <DialogTitle id="alert-dialog-title">{`Are you sure unsend this message ?`}</DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    This action can not be undone.
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleCloseDialog} color="primary" autoFocus>
+                    Cancel
+                </Button>
+                <Button onClick={() => unsend({ id: message._id, })} color="primary">
+                    Only me
+                </Button>
+                <Button onClick={() => unsend()} color="primary">
+                    Everyone
+                </Button>
+            </DialogActions>
+        </Dialog>
+        </>
     )
 }
 

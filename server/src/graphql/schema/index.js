@@ -27,9 +27,24 @@ module.exports = buildSchema(`
         sender: String
         body: String
         unsend: String
-        attachment: String
-        mimetype_attachment: String
+        attachments: [Attachment]
         createdAt: String
+    }
+
+    type Attachment {
+        fieldname: String,
+        originalname: String,
+        encoding: String,
+        mimetype: String,
+        id: String,
+        filename: String,
+        metadata: String,
+        bucketName: String,
+        chunkSize: String,
+        size: String,
+        md5: String,
+        uploadDate: String,
+        contentType: String
     }
 
     type Conversation {
@@ -56,6 +71,7 @@ module.exports = buildSchema(`
         fetchUserInfo: User
         fetchMessages(user_id: String!, offset: Int, limit: Int): MessageLists
         fetchConversationLists(offset: Int, limit: Int): [Conversation]
+        fetchAttachments(user_id: String!, offset: Int, limit: Int): [Attachment]
 
         fetchFriendLists(offset: Int, limit: Int): FriendLists
         fetchPendingRequests(offset: Int, limit: Int): FriendLists
@@ -77,12 +93,13 @@ module.exports = buildSchema(`
         deleteFriendRequest(user_id: String!): String
         unfriend(user_id: String!): String
 
+        unsend(message_id: String!, type: String!): Message
         
 
         createConversation(participant_id: [String!]): Conversation
 
 
-        sendMessage(conversation_id: String!, body: String, attachment: String, mimetype_attachment: String): Message
+        sendMessage(conversation_id: String!, body: String): Message
     }
 
     schema {

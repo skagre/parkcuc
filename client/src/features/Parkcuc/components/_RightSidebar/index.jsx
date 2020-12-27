@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react'
-
-import Header from './_Header'
+import Loading from 'components/_Loading'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import useStyles from './style'
 import Actions from './_Actions'
+import Header from './_Header'
 import Privacy from './_Privacy'
 import SharedFiles from './_SharedFiles'
 import SharedMedia from './_SharedMedia'
-
-import useStyles from './style'
-import { useSelector } from 'react-redux'
 
 
 const RightSidebar = props => {
@@ -16,13 +15,14 @@ const RightSidebar = props => {
 
     return (
         <>
-        {f.activeConversationInfo && 
+        {f.loadingFetchAttachments && <Loading />}
+        {f.activeConversationInfo &&  
             <div className={`${classes.rightSidebar} custom-scroll`}> 
                 <Header ConversationInfo={f.activeConversationInfo}/>
                 <Actions />
                 <Privacy />
                 <SharedFiles />
-                <SharedMedia />
+                <SharedMedia /> 
             </div>
         }
         </>

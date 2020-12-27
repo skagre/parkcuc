@@ -26,7 +26,7 @@ const ChatHeader = props => {
         <div className={classes.chatHeader}>
             <Avatar 
                 className={classes.avatar}
-                src={`${process.env.REACT_APP_BASE_URL}/image/${props.userInfo.avatar}`} 
+                src={`${process.env.REACT_APP_BASE_URL}/attachment/${props.userInfo.avatar}`} 
                 alt={props.userInfo.name}/>
             <div className={classes.info}>
                 <Typography>{props.userInfo.name}</Typography>

@@ -4,7 +4,7 @@ import EmojiEmotionsTwoToneIcon from '@material-ui/icons/EmojiEmotionsTwoTone'
 import ImageTwoToneIcon from '@material-ui/icons/ImageTwoTone'
 import MuiAlert from '@material-ui/lab/Alert'
 import Picker, { SKIN_TONE_NEUTRAL } from 'emoji-picker-react'
-import { sendMessageAPI, uploadAttachmentAPI } from 'features/Parkcuc/parkcucSlice'
+import { sendMessageAPI, uploadAttachmentsAPI } from 'features/Parkcuc/parkcucSlice'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './style'
@@ -40,8 +40,6 @@ const ChatInput = props => {
         setOpenEmoji(false)
         setMsg("")
         await dispatch(sendMessageAPI({ conversation_id: f.activeConversationID, body: msg}))
-        const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-        socket.emit('sendMessage', { userInfo: userInfo, conversation: f.activeConversationID, message: msg})
     }
 
     const onQuickEmojiClick = async emoji => {
@@ -57,17 +55,21 @@ const ChatInput = props => {
     }
 
     const onChangeHandler = async event => {
-        const file = event.target.files[0]
+        const files = event.target.files
 
-        const size = file.size
-        if (size > 25 * 1024 * 1024) {
-            setAlert(true)
-            return
-        }
+        // const size = file.size
+        // if (size > 25 * 1024 * 1024) {
+        //     setAlert(true)
+        //     return
+        // }
 
         const formData = new FormData()
-        formData.append('file', file, file.name)
-        await dispatch(uploadAttachmentAPI(formData))
+        formData.append('conversation', f.activeConversationID)
+        Array.from(files).forEach(file => {
+            formData.append('file', file, file.name)
+        })
+        
+        await dispatch(uploadAttachmentsAPI(formData))
     }
 
     const handleClose = (event, reason) => {
@@ -98,12 +100,14 @@ const ChatInput = props => {
                 type="file" 
                 id="attachfile" 
                 style={{display: 'none'}}
+                multiple
                 onChange={e => onChangeHandler(e)}/>
             <input 
                 type="file" 
                 id="attachimage" 
                 style={{display: 'none'}}
-                accept="image/*"
+                accept="video/*,image/*"
+                multiple
                 onChange={e => onChangeHandler(e)}/>
             <TextField
                 className={classes.input}

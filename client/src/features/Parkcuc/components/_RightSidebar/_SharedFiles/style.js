@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
     },
     listItem: {
         padding: '8px 16px 16px'
+    },
+    a: {
+        textDecoration: 'none',
+        color: '#000'
     }
 }))
 
