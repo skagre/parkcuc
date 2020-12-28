@@ -93,7 +93,7 @@ module.exports = buildSchema(`
         deleteFriendRequest(user_id: String!): String
         unfriend(user_id: String!): String
 
-        unsend(message_id: String!, type: String!): Message
+        unsendMessage(message_id: String!, type: String!): Message
         
 
         createConversation(participant_id: [String!]): Conversation

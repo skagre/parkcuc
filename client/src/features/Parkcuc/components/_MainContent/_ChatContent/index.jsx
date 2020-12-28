@@ -86,15 +86,14 @@ const Message = props => {
     const dispatch = useDispatch()
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     const [openDialog, setOpenDialog] = useState(false)
-    const [selectedMessage, setSelectedMessage] = useState(null)
 
     const unsend = async params => {
-        await dispatch(unsendMessageAPI({ message_id: params, type: params.type }))
+        await dispatch(unsendMessageAPI({ message_id: params.id, type: params.type }))
+        handleCloseDialog()
     }
 
-    const handleShowDialog = message => {
+    const handleShowDialog = () => {
         setOpenDialog(true)
-        setSelectedMessage(message)
     }
 
     const handleCloseDialog = () => {
@@ -153,7 +152,7 @@ const Message = props => {
                     )
                 }
                 <span>
-                    <DeleteTwoToneIcon onClick={() => handleShowDialog(message)}/>
+                    <DeleteTwoToneIcon onClick={() => handleShowDialog()}/>
                     <ReplyTwoToneIcon/>
                 </span>
                 </>
@@ -176,10 +175,10 @@ const Message = props => {
                 <Button onClick={handleCloseDialog} color="primary" autoFocus>
                     Cancel
                 </Button>
-                <Button onClick={() => unsend({ id: message._id, })} color="primary">
+                <Button onClick={() => unsend({ id: message._id, type: 'onlyme'})} color="primary">
                     Only me
                 </Button>
-                <Button onClick={() => unsend()} color="primary">
+                <Button onClick={() => unsend({ id: message._id, type: 'everyone'})} color="primary">
                     Everyone
                 </Button>
             </DialogActions>

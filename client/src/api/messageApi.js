@@ -98,7 +98,7 @@ const messageApi = {
         const data = {
             query: 
             `mutation unsendMessage($message_id: String!, $type: String!) {
-                unseunsendMessagend(message_id: $message_id, type: $type) {
+                unsendMessage(message_id: $message_id, type: $type) {
                     _id
                     sender
                     body

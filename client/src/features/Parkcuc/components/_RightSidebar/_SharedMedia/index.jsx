@@ -48,12 +48,12 @@ const SharedMedia = props => {
                     {attachmentLists && attachmentLists.slice().sort((a, b) => b.uploadDate - a.uploadDate).map(attachment =>
                         attachment.mimetype.includes('image')
                         ?
-                        <div className={classes.media}>
+                        <div className={classes.media} key={attachment.id}>
                             <img src={`${process.env.REACT_APP_BASE_URL}/attachment/${attachment.filename}`} alt={attachment.filename} />
                         </div>
                         :
                         attachment.mimetype.includes('video') &&
-                        <div className={classes.media}>
+                        <div className={classes.media} key={attachment.id}>
                             <video>
                                 <source src={`${process.env.REACT_APP_BASE_URL}/attachment/${attachment.filename}`} />
                             </video>

@@ -81,7 +81,9 @@ module.exports = {
                 $and: [
                     { $or: [ { conversation: conversation._id } ]},
                     { $or: [ { $nor: [
-                        { attachments: { $size: 0 } }
+                        { attachments: { $size: 0 } },
+                        { unsend: 'everyone' },
+                        { sender: req.user._id, unsend: 'onlyme' },
                     ] } ]  }
                 ]
                 
@@ -101,7 +103,7 @@ module.exports = {
             throw err
         }
     },
-    unsend: async (args, req) => {
+    unsendMessage: async (args, req) => {
         if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
 
         try {

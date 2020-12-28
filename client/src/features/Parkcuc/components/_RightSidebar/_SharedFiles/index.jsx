@@ -46,7 +46,7 @@ const SharedFiles = props => {
                 <List className={classes.list}>
                 {attachmentLists && attachmentLists.slice().sort((a, b) => b.uploadDate - a.uploadDate).map(attachment =>
                     !attachment.mimetype.includes('image') && !attachment.mimetype.includes('video') &&
-                    <ListItem className={classes.listItem} button>
+                    <ListItem className={classes.listItem} button key={attachment.id}>
                             <ListItemText primary={
                                 <a className={classes.a} href={`${process.env.REACT_APP_BASE_URL}/attachment/${attachment.filename}`} target="_blank">
                                     <Typography noWrap>{attachment.originalname}</Typography>
