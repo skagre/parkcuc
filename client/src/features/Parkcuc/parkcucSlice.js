@@ -65,6 +65,9 @@ const parkcucSlice = createSlice({
         activeConversationID: (state, action) => {
             state.activeConversationID = action.payload
         },
+        rerenderAttachments: (state, action) => {
+            state.rerenderAttachments = action.payload
+        }
     },
     extraReducers: {
         [fetchConversationListsAPI.pending]: (state, action) => {
@@ -146,5 +149,5 @@ const parkcucSlice = createSlice({
 })
 
 const { reducer: parkcucReducer, actions } = parkcucSlice
-export const { activeConversationInfo, activeConversationID } = actions
+export const { activeConversationInfo, activeConversationID, rerenderAttachments } = actions
 export default parkcucReducer

@@ -4,7 +4,7 @@ import EmojiEmotionsTwoToneIcon from '@material-ui/icons/EmojiEmotionsTwoTone'
 import ImageTwoToneIcon from '@material-ui/icons/ImageTwoTone'
 import MuiAlert from '@material-ui/lab/Alert'
 import Picker, { SKIN_TONE_NEUTRAL } from 'emoji-picker-react'
-import { sendMessageAPI, uploadAttachmentsAPI } from 'features/Parkcuc/parkcucSlice'
+import { rerenderAttachments, sendMessageAPI, uploadAttachmentsAPI } from 'features/Parkcuc/parkcucSlice'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './style'
@@ -19,7 +19,7 @@ const ChatInput = props => {
     const f = useSelector(state => state.parkcuc)
     const [msg, setMsg] = useState("")
     const [openEmoji, setOpenEmoji] = useState(false)
-    const [alert, setAlert] = useState(false)
+    const [alert, setAlert] = useState({ open: false, text: ''})
 
     useEffect(() => {
         async function sendMessage() {
@@ -56,20 +56,25 @@ const ChatInput = props => {
 
     const onChangeHandler = async event => {
         const files = event.target.files
-
-        // const size = file.size
-        // if (size > 25 * 1024 * 1024) {
-        //     setAlert(true)
-        //     return
-        // }
+        
+        if (files.length > 25) {
+            setAlert({ open: true, text: 'Oops! Oops! Maximum allowed files for uploaded (25 files).'})
+            return
+        } 
 
         const formData = new FormData()
         formData.append('conversation', f.activeConversationID)
         Array.from(files).forEach(file => {
+            const size = file.size
+            if (size > 25 * 1024 * 1024) {
+                setAlert({ open: true, text: 'Oops! Maximum allowed size for uploaded files (25MB).'})
+                return
+            }
             formData.append('file', file, file.name)
         })
         
         await dispatch(uploadAttachmentsAPI(formData))
+        dispatch(rerenderAttachments(true))
     }
 
     const handleClose = (event, reason) => {
@@ -79,10 +84,10 @@ const ChatInput = props => {
 
     return (
         <>
-        {alert &&
+        {alert.open &&
             <Snackbar open autoHideDuration={10000} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
                 <MuiAlert variant="filled" onClose={handleClose} severity="error">
-                    Oops! Maximum allowed size for uploaded files (25MB).
+                    {alert.text}
                 </MuiAlert>
             </Snackbar>
         }

@@ -167,6 +167,17 @@ const useStyles = makeStyles((theme) => ({
         border: '1px solid #c4c4c4 !important',
         color: '#00000080 !important'
     },
+    loading: {
+        listStyle: 'none',
+        color: '#000',
+        position: 'relative',
+        float: 'right',
+        width: 150,
+        height: 50,
+        '& > div': {
+            backgroundColor: 'transparent'
+        }
+    }
 }))
 
 export default useStyles

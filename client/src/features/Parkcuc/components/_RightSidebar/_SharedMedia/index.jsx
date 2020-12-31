@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
-
-import { 
-    Accordion, 
-    AccordionDetails, 
-    AccordionSummary, 
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
     Typography
 } from '@material-ui/core';
-
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import PlayCircleOutlineTwoToneIcon from '@material-ui/icons/PlayCircleOutlineTwoTone'
-
-import useStyles from './style';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchAttachmentsAPI } from 'features/Parkcuc/parkcucSlice';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import PlayCircleOutlineTwoToneIcon from '@material-ui/icons/PlayCircleOutlineTwoTone';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { fetchAttachmentsAPI } from 'features/Parkcuc/parkcucSlice';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import useStyles from './style';
+
+
+
 
 const SharedMedia = props => {
     const classes = useStyles()
@@ -23,19 +23,20 @@ const SharedMedia = props => {
     const [attachmentLists, setAttachmentLists] = useState()
 
     useEffect(() => {
-        async function fetchAttachments() {
-            try {
-                if (f.activeConversationInfo) {
-                    const actionResult = await dispatch(fetchAttachmentsAPI({ user_id: f.activeConversationInfo._id, limit: 20, offset: 0 }))
-                    const fetchStatus = unwrapResult(actionResult)
-                    setAttachmentLists(fetchStatus.data.fetchAttachments)
-                }
-            } catch (err) {
-                console.log("Oops! Failed to fetchAttachments.")
-            }
-        }
         fetchAttachments()
     }, [f.activeConversationInfo])
+
+    const fetchAttachments = async () => {
+        try {
+            if (f.activeConversationInfo) {
+                const actionResult = await dispatch(fetchAttachmentsAPI({ user_id: f.activeConversationInfo._id, limit: 20, offset: 0 }))
+                const fetchStatus = unwrapResult(actionResult)
+                setAttachmentLists(fetchStatus.data.fetchAttachments)
+            }
+        } catch (err) {
+            console.log("Oops! Failed to fetchAttachments.")
+        }
+    }
     
     return (
         <>

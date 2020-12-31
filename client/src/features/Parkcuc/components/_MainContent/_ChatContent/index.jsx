@@ -19,8 +19,9 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import io from 'socket.io-client'
 import { useDispatch } from 'react-redux'
-import { unsendMessageAPI } from 'features/Parkcuc/parkcucSlice'
+import { rerenderAttachments, unsendMessageAPI } from 'features/Parkcuc/parkcucSlice'
 import useStyles from './style'
+import Loading from 'components/_Loading'
 
 let socket
 socket = io(process.env.REACT_APP_SOCKET_IO)
@@ -72,6 +73,7 @@ const ChatContent = props => {
             {props.messages.map((message, i) =>
                 <Message key={message._id} message={message} f={f}/> 
             )}
+            {f.loadingUploadAttachments && <li className={classes.loading}><Loading /></li>}
             {newMsg}
             {gotoBottom()}
         </ul> 
@@ -90,6 +92,12 @@ const Message = props => {
     const unsend = async params => {
         await dispatch(unsendMessageAPI({ message_id: params.id, type: params.type }))
         handleCloseDialog()
+
+        params.type === 'onlyme'
+        ?
+        document.getElementById(params.id).innerHTML = '<li style="background-color:transparent !important;border: 1px solid #c4c4c4 !important;color:#00000080 !important">You unsent a message for you</li>'
+        :
+        document.getElementById(params.id).innerHTML = '<li style="background-color:transparent !important;border: 1px solid #c4c4c4 !important;color:#00000080 !important">You unsent a message for everyone</li>'
     }
 
     const handleShowDialog = () => {
@@ -109,7 +117,7 @@ const Message = props => {
                     ? `${process.env.REACT_APP_BASE_URL}/attachment/${userInfo.avatar}`
                     : `${process.env.REACT_APP_BASE_URL}/attachment/${f.activeConversationInfo.avatar}`} 
                 alt={userInfo.name}/>
-            <ul className={`${classes.msgBody} ${message.sender === userInfo._id ? classes.msgBodyMine : ''}`}>
+            <ul id={message._id} className={`${classes.msgBody} ${message.sender === userInfo._id ? classes.msgBodyMine : ''}`}>
                 {message.unsend === 'onlyme' && message.sender === userInfo._id
                     ?
                     <li className={classes.unsend}>{message.sender === userInfo._id ? 'You' : f.activeConversationInfo.name} unsent a message for you</li>
