@@ -1,27 +1,23 @@
 import {
     Avatar,
-    GridList,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogContentText,
-    DialogActions,
-    GridListTile, 
+    Button, Dialog,
+    DialogActions, DialogContent,
+    DialogContentText, DialogTitle, GridList,
+    GridListTile,
     List,
-    Button,
     ListItem
 } from '@material-ui/core'
 import AttachmentTwoToneIcon from '@material-ui/icons/AttachmentTwoTone'
-import PlayCircleOutlineTwoToneIcon from '@material-ui/icons/PlayCircleOutlineTwoTone'
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone'
+import PlayCircleOutlineTwoToneIcon from '@material-ui/icons/PlayCircleOutlineTwoTone'
 import ReplyTwoToneIcon from '@material-ui/icons/ReplyTwoTone'
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import io from 'socket.io-client'
-import { useDispatch } from 'react-redux'
-import { rerenderAttachments, unsendMessageAPI } from 'features/Parkcuc/parkcucSlice'
-import useStyles from './style'
 import Loading from 'components/_Loading'
+import { rerenderAttachments, unsendMessageAPI } from 'features/Parkcuc/parkcucSlice'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import io from 'socket.io-client'
+import useStyles from './style'
+
 
 let socket
 socket = io(process.env.REACT_APP_SOCKET_IO)
@@ -98,6 +94,8 @@ const Message = props => {
         document.getElementById(params.id).innerHTML = '<li style="background-color:transparent !important;border: 1px solid #c4c4c4 !important;color:#00000080 !important">You unsent a message for you</li>'
         :
         document.getElementById(params.id).innerHTML = '<li style="background-color:transparent !important;border: 1px solid #c4c4c4 !important;color:#00000080 !important">You unsent a message for everyone</li>'
+    
+        dispatch(rerenderAttachments(true))
     }
 
     const handleShowDialog = () => {

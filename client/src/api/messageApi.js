@@ -9,7 +9,13 @@ const messageApi = {
             query: 
             `query fetchMessages($user_id: String!, $limit: Int, $offset: Int) {
                 fetchMessages(user_id: $user_id, limit: $limit, offset: $offset) {
-                    conversation
+                    conversation {
+                        _id
+                        name
+                        conversation_type
+                        emoji
+                        blocker
+                    }
                     data {
                         _id
                         sender
@@ -52,6 +58,21 @@ const messageApi = {
                     body
                     unsend
                     createdAt
+                    attachments {
+                        fieldname
+                        originalname
+                        encoding
+                        mimetype
+                        id
+                        filename
+                        metadata
+                        bucketName
+                        chunkSize
+                        size
+                        md5
+                        uploadDate
+                        contentType
+                    }
                 }
             }`,
             variables: {

@@ -2,18 +2,17 @@ import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
-
     List,
     ListItem,
     ListItemText, Typography
-} from '@material-ui/core';
-import AttachmentTwoToneIcon from '@material-ui/icons/AttachmentTwoTone';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { fetchAttachmentsAPI } from 'features/Parkcuc/parkcucSlice';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import useStyles from './style';
+} from '@material-ui/core'
+import AttachmentTwoToneIcon from '@material-ui/icons/AttachmentTwoTone'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { fetchAttachmentsAPI, rerenderAttachments } from 'features/Parkcuc/parkcucSlice'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import useStyles from './style'
 
 
 const SharedFiles = props => {
@@ -24,19 +23,28 @@ const SharedFiles = props => {
     const [attachmentLists, setAttachmentLists] = useState()
 
     useEffect(() => {
-        async function fetchAttachments() {
-            try {
-                if (f.activeConversationInfo) {
-                    const actionResult = await dispatch(fetchAttachmentsAPI({ user_id: f.activeConversationInfo._id, limit: 20, offset: 0 }))
-                    const fetchStatus = unwrapResult(actionResult)
-                    setAttachmentLists(fetchStatus.data.fetchAttachments)
-                }
-            } catch (err) {
-                console.log("Oops! Failed to fetchAttachments.")
-            }
+        if (f.activeConversationInfo) {
+            fetchAttachments()
         }
-        fetchAttachments()
     }, [f.activeConversationInfo])
+
+    useEffect(() => {
+        if (f.rerenderAttachments) {
+            fetchAttachments()
+        }
+    }, [f.rerenderAttachments])
+
+    const fetchAttachments = async () => {
+        try {
+            const actionResult = await dispatch(fetchAttachmentsAPI({ user_id: f.activeConversationInfo._id, limit: 20, offset: 0 }))
+            const fetchStatus = unwrapResult(actionResult)
+            setAttachmentLists(fetchStatus.data.fetchAttachments)
+            dispatch(rerenderAttachments(false))
+        } catch (err) {
+            console.log("Oops! Failed to fetchAttachments.")
+        }
+    }
+
     return (
         <Accordion className={classes.accordion} expanded={expanded}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}  onClick={()=> setExpanded(!expanded)}>

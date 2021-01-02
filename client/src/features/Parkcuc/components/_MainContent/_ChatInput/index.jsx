@@ -92,11 +92,13 @@ const ChatInput = props => {
             </Snackbar>
         }
         {openEmoji &&
-        <Picker
-            onEmojiClick={onEmojiClick} 
-            disableAutoFocus={true} 
-            skinTone={SKIN_TONE_NEUTRAL}
-            groupNames={{smileys_people:"PEOPLE"}}/>
+        <div id="chat-input">
+            <Picker
+                onEmojiClick={onEmojiClick} 
+                disableAutoFocus={true} 
+                skinTone={SKIN_TONE_NEUTRAL}
+                groupNames={{smileys_people:"PEOPLE"}}/>  
+        </div>
         }
         <div className={classes.chatInput}>
             <AttachFileTwoToneIcon className={classes.icon} onClick={() => onAttachFileClick()}/>
@@ -131,7 +133,7 @@ const ChatInput = props => {
                 onChange={e => setMsg(e.target.value)}
                 onKeyUp={e => sendMessage(e)}
             />
-            <span className={classes.quickEmoji} onClick={() => onQuickEmojiClick('👍')}>👍</span>
+            <span className={classes.quickEmoji} onClick={() => onQuickEmojiClick(props.conversationInfo ? props.conversationInfo.emoji : '👍')}>{props.conversationInfo ? props.conversationInfo.emoji : '👍'}</span>
         </div>
         </>
     )

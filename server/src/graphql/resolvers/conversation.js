@@ -1,4 +1,5 @@
 const Conversation = require('../../models/Conversation')
+const Message = require('../../models/Message')
 const User = require('../../models/User')
 
 module.exports = {
@@ -72,11 +73,46 @@ module.exports = {
 
         try {
             const { offset = 0, limit = 20 } = args
-            const conversationLists = await Conversation.find(
-                { participants: { $in: req.user._id } }
-            ).skip(offset).limit(limit).populate('participants')
-            
-            return conversationLists   
+            const conversationLists = await Conversation.find({ 
+                participants: { $in: req.user._id } 
+            }).skip(offset).limit(limit).populate('participants')
+
+            const arr = await Promise.all(conversationLists.map(async conversation => {
+                const lastMessage = await Message.findOne({
+                    conversation: conversation._id
+                }).sort({ updatedAt : -1 })
+
+                if (!lastMessage) return []
+
+                let contact = null
+                if (conversation.conversation_type === 'chat') {
+                    const info = conversation.participants.filter(participant => participant._id.toString() !== req.user._id.toString())[0]
+                    contact = {
+                        _id: info._id,
+                        email: info.email,
+                        name: info.name,
+                        avatar: info.avatar,
+                        status: info.status
+                    }
+                } 
+
+                
+                let obj = {
+                    conversation: {
+                        name: conversation.name,
+                        conversation_type: conversation.conversation_type,
+                        emoji: conversation.emoji,
+                        blocker: conversation.blocker,
+                        _id: conversation._id,
+                        contact: contact
+                    },
+                    lastMessage
+                }
+                
+                return obj
+            }))
+
+            return arr.sort((a, b) =>  b.lastMessage.createdAt - a.lastMessage.createdAt)
         } catch (err) {
             throw err
         }

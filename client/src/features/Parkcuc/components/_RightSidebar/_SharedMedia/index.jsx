@@ -3,16 +3,14 @@ import {
     AccordionDetails,
     AccordionSummary,
     Typography
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PlayCircleOutlineTwoToneIcon from '@material-ui/icons/PlayCircleOutlineTwoTone';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { fetchAttachmentsAPI } from 'features/Parkcuc/parkcucSlice';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import useStyles from './style';
-
-
+} from '@material-ui/core'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import PlayCircleOutlineTwoToneIcon from '@material-ui/icons/PlayCircleOutlineTwoTone'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { fetchAttachmentsAPI, rerenderAttachments } from 'features/Parkcuc/parkcucSlice'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import useStyles from './style'
 
 
 const SharedMedia = props => {
@@ -23,16 +21,23 @@ const SharedMedia = props => {
     const [attachmentLists, setAttachmentLists] = useState()
 
     useEffect(() => {
-        fetchAttachments()
+        if (f.activeConversationInfo) {
+            fetchAttachments()
+        }
     }, [f.activeConversationInfo])
+
+    useEffect(() => {
+        if (f.rerenderAttachments) {
+            fetchAttachments()
+        }
+    }, [f.rerenderAttachments])
 
     const fetchAttachments = async () => {
         try {
-            if (f.activeConversationInfo) {
-                const actionResult = await dispatch(fetchAttachmentsAPI({ user_id: f.activeConversationInfo._id, limit: 20, offset: 0 }))
-                const fetchStatus = unwrapResult(actionResult)
-                setAttachmentLists(fetchStatus.data.fetchAttachments)
-            }
+            const actionResult = await dispatch(fetchAttachmentsAPI({ user_id: f.activeConversationInfo._id, limit: 20, offset: 0 }))
+            const fetchStatus = unwrapResult(actionResult)
+            setAttachmentLists(fetchStatus.data.fetchAttachments)
+            dispatch(rerenderAttachments(false))
         } catch (err) {
             console.log("Oops! Failed to fetchAttachments.")
         }

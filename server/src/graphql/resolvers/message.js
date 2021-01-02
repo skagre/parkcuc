@@ -54,7 +54,7 @@ module.exports = {
             }).skip(offset).limit(limit)
             
             return {
-                conversation: conversation._id,
+                conversation: conversation,
                 data: messages
             }
         } catch (err) {
@@ -83,7 +83,7 @@ module.exports = {
                     { $or: [ { $nor: [
                         { attachments: { $size: 0 } },
                         { unsend: 'everyone' },
-                        { sender: req.user._id, unsend: 'onlyme' },
+                        { sender: req.user._id, unsend: 'onlyme' }
                     ] } ]  }
                 ]
                 

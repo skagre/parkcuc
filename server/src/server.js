@@ -46,6 +46,7 @@ io.on('connection', (socket) => {
 
     socket.on('sendMessage', params => {
         io.to(params.conversation).emit('message', { message: params.message })
+        io.to(params.conversation).emit('lastMessage', { message: params.message })
     })
 
     socket.on('disconnect', () => {
@@ -132,6 +133,7 @@ app.post('/upload/attachments', upload.array('file', 25), async (req, res) => {
     })
     const result = await message.save()
     io.to(req.body.conversation).emit('message', { message: result })
+    io.to(req.body.conversation).emit('lastMessage', { message: result })
     res.json({ file: req.files })
 })
 

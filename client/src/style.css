@@ -23,8 +23,8 @@
   box-shadow: inset 0 0 6px #eff1f2;
 }
 
-aside.emoji-picker-react {
-    position: absolute !important;
-    bottom: 95px;
-    right: 0;
+#chat-input aside.emoji-picker-react {
+  position: absolute !important;
+  bottom: 95px;
+  right: 0;
 }

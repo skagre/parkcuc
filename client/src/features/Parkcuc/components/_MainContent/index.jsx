@@ -13,14 +13,20 @@ const MainContent = props => {
     const f = useSelector(state => state.parkcuc)
     const dispatch = useDispatch()
     const [messages, setMessages] = useState([])
+    const [conversationInfo, setConversationInfo] = useState(null)
 
     useEffect(() => {
         async function fetchMessages() {
             if (f.activeConversationInfo) {
-                const actionResult = await dispatch(fetchMessagesAPI({ user_id: f.activeConversationInfo._id, limit: 1000, offset: 0 }))
-                const fetchStatus = unwrapResult(actionResult)
-                setMessages(fetchStatus.data.fetchMessages.data)
-                await dispatch(activeConversationID(fetchStatus.data.fetchMessages.conversation))
+                try {
+                    const actionResult = await dispatch(fetchMessagesAPI({ user_id: f.activeConversationInfo._id, limit: 1000, offset: 0 }))
+                    const fetchStatus = unwrapResult(actionResult)
+                    setMessages(fetchStatus.data.fetchMessages.data)
+                    setConversationInfo(fetchStatus.data.fetchMessages.conversation)
+                    await dispatch(activeConversationID(fetchStatus.data.fetchMessages.conversation._id))
+                } catch {
+                    console.log("Oops! Failed to fetchMessages.")
+                }
             }
         }
         fetchMessages()
@@ -31,8 +37,13 @@ const MainContent = props => {
             {f.loadingFetchMessages && <Loading />}
             {f.activeConversationInfo && <>
                 <ChatHeader userInfo={f.activeConversationInfo}/>
-                <ChatContent avatar={f.activeConversationInfo.avatar} messages={messages} />
-                <ChatInput />
+                <ChatContent avatar={f.activeConversationInfo.avatar} messages={messages}/>
+                {conversationInfo 
+                ?
+                <ChatInput conversationInfo={conversationInfo}/>
+                :
+                <ChatInput/>
+                }
             </>}
         </>
     )

@@ -9,13 +9,29 @@ const conversationApi = {
             query: 
             `query fetchConversationLists($limit: Int, $offset: Int) {
                 fetchConversationLists(limit: $limit, offset: $offset) {
-                    _id
-                    name
-                    conversation_type
-                    participants {
+                    conversation {
                         _id
                         name
-                        email
+                        conversation_type
+                        emoji
+                        blocker
+                        contact {
+                            _id
+                            name
+                            email
+                            avatar
+                            status
+                        }
+                    }
+                    lastMessage {
+                        _id
+                        sender
+                        body
+                        unsend
+                        attachments {
+                            id
+                        }
+                        createdAt
                     }
                 }
             }`,
