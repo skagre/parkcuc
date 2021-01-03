@@ -74,6 +74,12 @@ const useStyles = makeStyles((theme) => ({
         '& > svg': {
             verticalAlign: 'text-bottom'
         }
+    },
+    list: {
+        '& > li:not(:first-child):hover': {
+            backgroundColor: '#00000007',
+            cursor: 'pointer'
+        }
     }
 }))
 

@@ -18,17 +18,15 @@ const ChatInput = props => {
     const dispatch = useDispatch()
     const f = useSelector(state => state.parkcuc)
     const [msg, setMsg] = useState("")
+    const [emoji, setEmoji] = useState("")
     const [openEmoji, setOpenEmoji] = useState(false)
     const [alert, setAlert] = useState({ open: false, text: ''})
 
     useEffect(() => {
-        async function sendMessage() {
-            if (f.attachment) {
-                dispatch(sendMessageAPI({ conversation_id: f.activeConversationID, attachment: f.attachment.filename, mimetype_attachment: f.attachment.mimetype}))
-            }
+        if (f.changeEmoji) {
+            setEmoji(f.changeEmoji.data.changeEmoji.emoji)
         }
-        sendMessage()
-    }, [f.attachment])
+    }, [f.changeEmoji])
 
     const onEmojiClick = (event, emojiObject) => {
         setMsg(msg + emojiObject.emoji)
@@ -39,11 +37,11 @@ const ChatInput = props => {
 
         setOpenEmoji(false)
         setMsg("")
-        await dispatch(sendMessageAPI({ conversation_id: f.activeConversationID, body: msg}))
+        await dispatch(sendMessageAPI({ conversation_id: f.activeConversationID, body: msg }))
     }
 
     const onQuickEmojiClick = async emoji => {
-        await dispatch(sendMessageAPI({ conversation_id: f.activeConversationID, body: emoji}))
+        await dispatch(sendMessageAPI({ conversation_id: f.activeConversationID, body: emoji }))
     }
 
     const onAttachFileClick = () => {
@@ -133,7 +131,7 @@ const ChatInput = props => {
                 onChange={e => setMsg(e.target.value)}
                 onKeyUp={e => sendMessage(e)}
             />
-            <span className={classes.quickEmoji} onClick={() => onQuickEmojiClick(props.conversationInfo ? props.conversationInfo.emoji : '👍')}>{props.conversationInfo ? props.conversationInfo.emoji : '👍'}</span>
+            <span className={classes.quickEmoji} onClick={() => onQuickEmojiClick(emoji ? emoji : props.conversationInfo ? props.conversationInfo.emoji : '👍')}>{emoji ? emoji : props.conversationInfo ? props.conversationInfo.emoji : '👍'}</span>
         </div>
         </>
     )

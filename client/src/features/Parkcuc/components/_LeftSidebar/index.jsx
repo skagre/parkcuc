@@ -10,6 +10,7 @@ import RecordVoiceOverTwoToneIcon from '@material-ui/icons/RecordVoiceOverTwoTon
 import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone'
 import SettingsTwoToneIcon from '@material-ui/icons/SettingsTwoTone'
 import SmsTwoToneIcon from '@material-ui/icons/SmsTwoTone'
+import PowerSettingsNewTwoToneIcon from '@material-ui/icons/PowerSettingsNewTwoTone'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import useStyles from './style'
@@ -103,9 +104,6 @@ const LeftSidebar = props => {
                 <Tooltip title="Find Friends" placement="right" arrow>
                     <Tab className={classes.tab} icon={<SearchTwoToneIcon className={classes.icon} />} {...a11yProps(6)} />
                 </Tooltip>
-                <Tooltip title="Settings" placement="right" arrow>
-                    <Tab className={classes.tab} icon={<SettingsTwoToneIcon className={classes.icon} />} {...a11yProps(7)} />
-                </Tooltip>
             </Tabs>
             <TabPanel value={value} index={0}>
                 <Profile />
@@ -127,9 +125,6 @@ const LeftSidebar = props => {
             </TabPanel>
             <TabPanel value={value} index={6}>
                 <FindFriend />
-            </TabPanel>
-            <TabPanel value={value} index={7}>
-                Settings
             </TabPanel>
         </>
     )

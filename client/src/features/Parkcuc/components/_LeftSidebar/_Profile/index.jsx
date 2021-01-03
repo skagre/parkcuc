@@ -1,10 +1,13 @@
 import {
     Avatar,
     LinearProgress,
-    Snackbar, Typography
+    List, ListItem, ListItemIcon, ListItemText, ListSubheader, Snackbar, Typography
 } from '@material-ui/core'
 import AddAPhotoTwoToneIcon from '@material-ui/icons/AddAPhotoTwoTone'
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone'
+import VpnKeyTwoToneIcon from '@material-ui/icons/VpnKeyTwoTone'
+import ExitToAppTwoToneIcon from '@material-ui/icons/ExitToAppTwoTone'
+import PowerSettingsNewTwoToneIcon from '@material-ui/icons/PowerSettingsNewTwoTone'
 import MuiAlert from '@material-ui/lab/Alert'
 import { uploadAvatarAPI } from 'features/Parkcuc/parkcucSlice'
 import React, { useEffect, useState } from 'react'
@@ -76,6 +79,46 @@ const Profile = props => {
                     <EditTwoToneIcon fontSize="small"/>
                 </Typography>
             </div>
+            <List subheader={<ListSubheader>Information</ListSubheader>} className={classes.list}>
+                <ListItem>
+                    <ListItemIcon>
+                        <VpnKeyTwoToneIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Change password" />
+                </ListItem>
+                <ListItem>
+                    <ListItemIcon>
+                        <PowerSettingsNewTwoToneIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Logout" />
+                </ListItem>
+                <ListItem>
+                    <ListItemIcon>
+                        <ExitToAppTwoToneIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Logout all session" />
+                </ListItem>
+            </List>
+            <List subheader={<ListSubheader>Settings</ListSubheader>} className={classes.list}>
+                <ListItem>
+                    <ListItemIcon>
+                        <VpnKeyTwoToneIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Change password" />
+                </ListItem>
+                <ListItem>
+                    <ListItemIcon>
+                        <PowerSettingsNewTwoToneIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Logout" />
+                </ListItem>
+                <ListItem>
+                    <ListItemIcon>
+                        <ExitToAppTwoToneIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Logout all session" />
+                </ListItem>
+            </List>
             </> }
         </>
     )

@@ -7,6 +7,9 @@ import messageApi from 'api/messageApi'
 export const fetchConversationListsAPI = createAsyncThunk('conversation/fetchConversationLists', async (params, thunkAPI) => {
     return await conversationApi.fetchConversationLists({ params })
 })
+export const changeEmojiAPI = createAsyncThunk('conversation/changeEmoji', async (params, thunkAPI) => {
+    return await conversationApi.changeEmoji({ params })
+})
 
 
 export const fetchMessagesAPI = createAsyncThunk('message/fetchMessages', async (params, thunkAPI) => {
@@ -76,6 +79,10 @@ const parkcucSlice = createSlice({
         [fetchConversationListsAPI.fulfilled]: (state, action) => {
             state.conversationLists = action.payload
             state.loadingFetchConversationLists = false
+        },
+
+        [changeEmojiAPI.fulfilled]: (state, action) => {
+            state.changeEmoji = action.payload
         },
 
         [fetchMessagesAPI.pending]: (state, action) => {

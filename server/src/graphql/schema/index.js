@@ -104,6 +104,7 @@ module.exports = buildSchema(`
         
 
         createConversation(participant_id: [String!]): Conversation
+        changeEmoji(conversation_id: String!, emoji: String!): Conversation
 
 
         sendMessage(conversation_id: String!, body: String): Message

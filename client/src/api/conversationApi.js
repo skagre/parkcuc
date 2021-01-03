@@ -41,6 +41,25 @@ const conversationApi = {
             }
         }
         return axiosClient.post(url, data)
+    },
+    changeEmoji: ({ params }) => {
+        const data = {
+            query: 
+            `mutation changeEmoji($conversation_id: String!, $emoji: String!) {
+                changeEmoji(conversation_id: $conversation_id, emoji: $emoji) {
+                    _id
+                    name
+                    conversation_type
+                    emoji
+                    blocker
+                }
+            }`,
+            variables: {
+                conversation_id: params.conversation_id,
+                emoji: params.emoji
+            }
+        }
+        return axiosClient.post(url, data)
     }
 }
 

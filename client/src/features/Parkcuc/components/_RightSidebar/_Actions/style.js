@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     },
     listItem: {
         padding: '8px 16px 16px'
+    },
+    inputNickname: {
+        width: '100%'
     }
 }))
 
