@@ -37,7 +37,7 @@ const MainContent = props => {
             {f.loadingFetchMessages && <Loading />}
             {f.activeConversationInfo && <>
                 <ChatHeader userInfo={f.activeConversationInfo}/>
-                <ChatContent avatar={f.activeConversationInfo.avatar} messages={messages}/>
+                <ChatContent avatar={f.activeConversationInfo.avatar} messages={messages} />
                 {conversationInfo 
                 ?
                 <ChatInput conversationInfo={conversationInfo}/>

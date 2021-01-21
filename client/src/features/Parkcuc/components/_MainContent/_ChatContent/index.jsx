@@ -65,7 +65,7 @@ const ChatContent = props => {
     return (
         <>
         {props.messages &&
-        <ul className={`${classes.chatWrap} custom-scroll`} id="chatWrap">
+        <ul className={`${classes.chatWrap} custom-scroll`} id="chatWrap" style={{backgroundColor: '#e8f5e9'}}>
             {props.messages.map((message, i) =>
                 <Message key={message._id} message={message} f={f}/> 
             )}

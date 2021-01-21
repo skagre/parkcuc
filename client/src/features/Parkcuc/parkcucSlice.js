@@ -29,6 +29,10 @@ export const unsendMessageAPI = createAsyncThunk('message/unsendMessage', async 
 })
 
 
+export const logoutAPI = createAsyncThunk('user/logoutAPI', async (params, thunkAPI) => {
+    return await userApi.logout()
+})
+
 export const findFriendAPI = createAsyncThunk('user/findFriendAPI', async (params, thunkAPI) => {
     return await userApi.findFriend({ params })
 })

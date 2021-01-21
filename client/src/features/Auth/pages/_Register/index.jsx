@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { registerAPI } from 'features/Auth/authSlice'
 
@@ -24,7 +24,14 @@ const Register = props => {
     const classes = useStyles()
     const { register, handleSubmit, formState: { isSubmitting } } = useForm()
     const dispatch = useDispatch()
+    const history = useHistory()
     const [alert, setAlert] = useState(null)
+
+    useEffect(() => {
+        if (localStorage.getItem("jwt") !== null) {
+            history.push('/')
+        }
+    }, [])
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') return

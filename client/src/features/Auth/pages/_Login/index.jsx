@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { Link, useHistory } from 'react-router-dom'
@@ -27,6 +27,12 @@ const Login = props => {
     const history = useHistory()
     const dispatch = useDispatch()
     const [alert, setAlert] = useState(null)
+
+    useEffect(() => {
+        if (localStorage.getItem("jwt") !== null) {
+            history.push('/')
+        }
+    }, [])
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') return

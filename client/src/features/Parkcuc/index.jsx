@@ -11,9 +11,6 @@ import RightSidebar from './components/_RightSidebar'
 const Parkcuc = props => {
     const classes = useStyles()
 
-    useEffect(() => {
-        
-    }, [])
     return (
         <Grid container className={classes.container}>
             <Grid item className={classes.leftSidebar}>

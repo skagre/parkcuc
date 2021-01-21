@@ -142,6 +142,16 @@ const userApi = {
         }
         return axiosClient.post(url, data)
     },
+    logout: () => {
+        const data = {
+            query: 
+            `mutation logout {
+                logout
+            }`,
+            variables: {}
+        }
+        return axiosClient.post(url, data)
+    },
 }
 
 export default userApi

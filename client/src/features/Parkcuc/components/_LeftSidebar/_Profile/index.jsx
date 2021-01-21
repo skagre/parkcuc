@@ -1,17 +1,18 @@
 import {
     Avatar,
-    LinearProgress,
+    Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress,
     List, ListItem, ListItemIcon, ListItemText, ListSubheader, Snackbar, Typography
 } from '@material-ui/core'
 import AddAPhotoTwoToneIcon from '@material-ui/icons/AddAPhotoTwoTone'
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone'
-import VpnKeyTwoToneIcon from '@material-ui/icons/VpnKeyTwoTone'
 import ExitToAppTwoToneIcon from '@material-ui/icons/ExitToAppTwoTone'
 import PowerSettingsNewTwoToneIcon from '@material-ui/icons/PowerSettingsNewTwoTone'
+import VpnKeyTwoToneIcon from '@material-ui/icons/VpnKeyTwoTone'
 import MuiAlert from '@material-ui/lab/Alert'
-import { uploadAvatarAPI } from 'features/Parkcuc/parkcucSlice'
+import { uploadAvatarAPI, logoutAPI } from 'features/Parkcuc/parkcucSlice'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link, useHistory } from 'react-router-dom'
 import useStyles from './style'
 
 const Profile = props => {
@@ -19,6 +20,8 @@ const Profile = props => {
     const dispatch = useDispatch()
     const f = useSelector(state => state.parkcuc)
     const [alert, setAlert] = useState(false)
+    const history = useHistory()
+    const [openLogoutDialog, setOpenLogoutDialog] = useState(false)
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     
     useEffect(() => {
@@ -46,6 +49,12 @@ const Profile = props => {
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') return
         setAlert(false)
+    }
+
+    const logout = async () => {
+        await dispatch(logoutAPI())
+        localStorage.clear()
+        history.push('/login')
     }
 
     return (
@@ -106,7 +115,7 @@ const Profile = props => {
                     </ListItemIcon>
                     <ListItemText primary="Change password" />
                 </ListItem>
-                <ListItem>
+                <ListItem onClick={() => setOpenLogoutDialog(true)}>
                     <ListItemIcon>
                         <PowerSettingsNewTwoToneIcon />
                     </ListItemIcon>
@@ -120,6 +129,28 @@ const Profile = props => {
                 </ListItem>
             </List>
             </> }
+            <Dialog
+                open={openLogoutDialog}
+                keepMounted
+                onClose={() => setOpenLogoutDialog(false)}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle id="alert-dialog-slide-title">{"Notification"}</DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                    <Typography>Are you sure you want to logout?</Typography>
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={() => logout()} color="primary">
+                    OK
+                </Button>
+                <Button onClick={() => setOpenLogoutDialog(false)} color="primary">
+                    Cancel
+                </Button>
+                </DialogActions>
+            </Dialog>
         </>
     )
 }
