@@ -131,5 +131,20 @@ module.exports = {
         } catch (err) {
             throw err
         }
+    },
+    blockMessages: async (args, req) => {
+        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
+
+        try {
+            const conversation = await Conversation.findOneAndUpdate(
+                { _id: args.conversation_id },
+                { blocker: req.user._id },
+                { new: true }
+            )
+            
+            return conversation
+        } catch (err) {
+            throw err
+        }
     }
 }
