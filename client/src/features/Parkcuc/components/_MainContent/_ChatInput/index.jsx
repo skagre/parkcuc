@@ -72,6 +72,7 @@ const ChatInput = props => {
             formData.append('file', file, file.name)
         })
         
+        console.log("as")
         await dispatch(uploadAttachmentsAPI(formData))
         dispatch(rerenderAttachments(true))
     }

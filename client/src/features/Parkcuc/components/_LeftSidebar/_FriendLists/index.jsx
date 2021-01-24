@@ -16,7 +16,7 @@ import { unwrapResult } from '@reduxjs/toolkit'
 import Loading from 'components/_Loading'
 import TabHeading from 'components/_TabHeading'
 import TabHeadingSeach from 'components/_TabHeadingSearch'
-import { fetchFriendListsAPI, unfriendAPI, activeConversationInfo } from 'features/Parkcuc/parkcucSlice'
+import { fetchFriendListsAPI, unfriendAPI, activeConversationInfo, createConversationAPI, activeConversationID } from 'features/Parkcuc/parkcucSlice'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './style'
@@ -62,8 +62,11 @@ const FriendLists = props => {
         }
     }
 
-    const setActiveConversationInfo = user => {
-        dispatch(activeConversationInfo(user))
+    const setActiveConversationInfo = async user => {
+        await dispatch(activeConversationInfo(user))
+        const rs = await dispatch(createConversationAPI({ participant_id: [user._id] }))
+        const status = unwrapResult(rs)
+        await dispatch(activeConversationID(status.data.createConversation._id))
     }
 
     const handleShowDialog = user => {

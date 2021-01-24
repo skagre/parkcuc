@@ -19,7 +19,9 @@ export const unblockMessagesAPI = createAsyncThunk('conversation/unblockMessages
 export const fetchConversationInfoAPI = createAsyncThunk('conversation/fetchConversationInfo', async (params, thunkAPI) => {
     return await conversationApi.fetchConversationInfo({ params })
 })
-
+export const createConversationAPI = createAsyncThunk('conversation/createConversation', async (params, thunkAPI) => {
+    return await conversationApi.createConversation({ params })
+})
 
 export const fetchMessagesAPI = createAsyncThunk('message/fetchMessages', async (params, thunkAPI) => {
     return await messageApi.fetchMessages({ params })
