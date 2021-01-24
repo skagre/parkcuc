@@ -70,6 +70,20 @@ const userSchema = mongoose.Schema({
             ref: 'User'
         }]
     },
+    notifications: [{
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        no_type: {
+            type: String,
+            required: true
+        },
+        has_read: {
+            type: Boolean,
+            default: false
+        }
+    }],
     tokens: [{
         _id: false,
         token: {

@@ -6,13 +6,14 @@ import {
 import AddAPhotoTwoToneIcon from '@material-ui/icons/AddAPhotoTwoTone'
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone'
 import ExitToAppTwoToneIcon from '@material-ui/icons/ExitToAppTwoTone'
+import PermIdentityTwoToneIcon from '@material-ui/icons/PermIdentityTwoTone'
 import PowerSettingsNewTwoToneIcon from '@material-ui/icons/PowerSettingsNewTwoTone'
 import VpnKeyTwoToneIcon from '@material-ui/icons/VpnKeyTwoTone'
 import MuiAlert from '@material-ui/lab/Alert'
-import { uploadAvatarAPI, logoutAPI } from 'features/Parkcuc/parkcucSlice'
+import { logoutAPI, uploadAvatarAPI } from 'features/Parkcuc/parkcucSlice'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import useStyles from './style'
 
 const Profile = props => {
@@ -91,21 +92,9 @@ const Profile = props => {
             <List subheader={<ListSubheader>Information</ListSubheader>} className={classes.list}>
                 <ListItem>
                     <ListItemIcon>
-                        <VpnKeyTwoToneIcon />
+                        <PermIdentityTwoToneIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Change password" />
-                </ListItem>
-                <ListItem>
-                    <ListItemIcon>
-                        <PowerSettingsNewTwoToneIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Logout" />
-                </ListItem>
-                <ListItem>
-                    <ListItemIcon>
-                        <ExitToAppTwoToneIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Logout all session" />
+                    <ListItemText primary="Change your information" />
                 </ListItem>
             </List>
             <List subheader={<ListSubheader>Settings</ListSubheader>} className={classes.list}>

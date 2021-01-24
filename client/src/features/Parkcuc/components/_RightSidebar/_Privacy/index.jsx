@@ -10,14 +10,24 @@ import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import RemoveCircleTwoToneIcon from '@material-ui/icons/RemoveCircleTwoTone';
 import VisibilityOffTwoToneIcon from '@material-ui/icons/VisibilityOffTwoTone';
+import { blockMessagesAPI } from 'features/Parkcuc/parkcucSlice';
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import useStyles from './style';
 
 
 const Privacy = props => {
     const classes = useStyles()
+    const dispatch = useDispatch()
+    const f = useSelector(state => state.parkcuc)
     const [expanded, setExpanded] = useState(true)
     const [openBlockDialog, setOpenBlockDialog] = useState(false)
+
+    const blockMessages = async () => {
+        await dispatch(blockMessagesAPI({ conversation_id: f.activeConversationID }))
+        setOpenBlockDialog(false)
+    }
+
     return (
         <>
         <Accordion className={classes.accordion} expanded={expanded}>
@@ -56,7 +66,7 @@ const Privacy = props => {
             </DialogContentText>
             </DialogContent>
             <DialogActions>
-            <Button onClick={() => setOpenBlockDialog(false)} color="secondary">
+            <Button onClick={() => blockMessages()} color="secondary">
                 Block
             </Button>
             <Button onClick={() => setOpenBlockDialog(false)} color="primary">

@@ -10,7 +10,7 @@ import PersonAddTwoToneIcon from '@material-ui/icons/PersonAddTwoTone'
 import TextsmsTwoToneIcon from '@material-ui/icons/TextsmsTwoTone'
 import TabHeading from 'components/_TabHeading'
 import TabHeadingSeach from 'components/_TabHeadingSearch'
-import { deleteFriendRequestAPI, sendFriendRequestAPI } from 'features/Parkcuc/parkcucSlice'
+import { deleteFriendRequestAPI, sendFriendRequestAPI, activeConversationInfo } from 'features/Parkcuc/parkcucSlice'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './style'
@@ -116,7 +116,7 @@ const FindFriend = props => {
                         </>}
 
                         {user.status === "friend" &&
-                        <IconButton edge="end" className={classes.icon}>
+                        <IconButton edge="end" className={classes.icon} onClick={() => dispatch(activeConversationInfo(user))}>
                             <Tooltip title="Chat" placement="bottom" arrow>
                                 <TextsmsTwoToneIcon />
                             </Tooltip>

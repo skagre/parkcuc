@@ -108,6 +108,11 @@ module.exports = {
                 { $addToSet: { 'friends.pending': userA } }
             )
 
+            await User.findOneAndUpdate(
+                { _id: userB }, 
+                { $addToSet: { 'notifications.unread.pending': userA } }
+            )
+
             return 'success'
         } catch (err) {
             throw err
@@ -152,6 +157,11 @@ module.exports = {
                 { $addToSet: { 'friends.accepted': userA } }
             )
 
+            await User.findOneAndUpdate(
+                { _id: userB }, 
+                { $addToSet: { 'notifications.user': userA } }
+            )
+                
             return 'success'
         } catch (err) {
             throw err
@@ -322,4 +332,19 @@ module.exports = {
             throw err
         }
     },
+    fetchNotifications: async (args, req) => {
+        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
+
+        try {
+            const { offset = 0, limit = 20 } = args
+            const notifications = await User.findOne(
+                { _id: req.user._id },
+            ).select({ _id: 0, notifications: 1 }).skip(offset).limit(limit)
+
+            console.log(notifications)
+            return notifications
+        } catch (err) {
+            throw err
+        }
+    }
 }

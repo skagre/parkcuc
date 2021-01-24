@@ -74,10 +74,13 @@ module.exports = buildSchema(`
         status: String
     }
 
+
+
     type RootQuery {
         fetchUserInfo: User
         fetchMessages(user_id: String!, offset: Int, limit: Int): MessageLists
         fetchConversationLists(offset: Int, limit: Int): [ConversationLists]
+        fetchConversationInfo(user_id: String!): Conversation
         fetchAttachments(user_id: String!, offset: Int, limit: Int): [Attachment]
 
         fetchFriendLists(offset: Int, limit: Int): FriendLists
@@ -86,7 +89,7 @@ module.exports = buildSchema(`
 
         findFriend(search: String!, offset: Int, limit: Int): [Friend]
 
-        init: String
+        fetchNotifications(offset: Int, limit: Int): String
     }
 
     type RootMutation {
@@ -106,6 +109,7 @@ module.exports = buildSchema(`
         createConversation(participant_id: [String!]): Conversation
         changeEmoji(conversation_id: String!, emoji: String!): Conversation
         blockMessages(conversation_id: String!): Conversation
+        unblockMessages(conversation_id: String!): Conversation
 
         sendMessage(conversation_id: String!, body: String): Message
     }

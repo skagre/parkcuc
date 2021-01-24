@@ -10,6 +10,15 @@ export const fetchConversationListsAPI = createAsyncThunk('conversation/fetchCon
 export const changeEmojiAPI = createAsyncThunk('conversation/changeEmoji', async (params, thunkAPI) => {
     return await conversationApi.changeEmoji({ params })
 })
+export const blockMessagesAPI = createAsyncThunk('conversation/blockMessages', async (params, thunkAPI) => {
+    return await conversationApi.blockMessages({ params })
+})
+export const unblockMessagesAPI = createAsyncThunk('conversation/unblockMessages', async (params, thunkAPI) => {
+    return await conversationApi.unblockMessages({ params })
+})
+export const fetchConversationInfoAPI = createAsyncThunk('conversation/fetchConversationInfo', async (params, thunkAPI) => {
+    return await conversationApi.fetchConversationInfo({ params })
+})
 
 
 export const fetchMessagesAPI = createAsyncThunk('message/fetchMessages', async (params, thunkAPI) => {
@@ -77,6 +86,30 @@ const parkcucSlice = createSlice({
         }
     },
     extraReducers: {
+        [blockMessagesAPI.pending]: (state, action) => {
+            state.loadingBlockMessages = true
+        },
+        [blockMessagesAPI.fulfilled]: (state, action) => {
+            state.blockMessages = action.payload
+            state.loadingBlockMessages = false
+        },
+
+        [unblockMessagesAPI.pending]: (state, action) => {
+            state.loadingUnblockMessages = true
+        },
+        [unblockMessagesAPI.fulfilled]: (state, action) => {
+            state.unblockMessages = action.payload
+            state.loadingUnblockMessages = false
+        },
+        
+        [fetchConversationInfoAPI.pending]: (state, action) => {
+            state.loadingFetchConversationInfo = true
+        },
+        [fetchConversationInfoAPI.fulfilled]: (state, action) => {
+            state.conversationInfo = action.payload
+            state.loadingFetchConversationInfo = false
+        },
+
         [fetchConversationListsAPI.pending]: (state, action) => {
             state.loadingFetchConversationLists = true
         },

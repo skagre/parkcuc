@@ -1,10 +1,10 @@
-import { InputAdornment, Snackbar, TextField } from '@material-ui/core'
+import { Button, InputAdornment, Snackbar, TextField, Typography } from '@material-ui/core'
 import AttachFileTwoToneIcon from '@material-ui/icons/AttachFileTwoTone'
 import EmojiEmotionsTwoToneIcon from '@material-ui/icons/EmojiEmotionsTwoTone'
 import ImageTwoToneIcon from '@material-ui/icons/ImageTwoTone'
 import MuiAlert from '@material-ui/lab/Alert'
 import Picker, { SKIN_TONE_NEUTRAL } from 'emoji-picker-react'
-import { rerenderAttachments, sendMessageAPI, uploadAttachmentsAPI } from 'features/Parkcuc/parkcucSlice'
+import { rerenderAttachments, sendMessageAPI, unblockMessagesAPI, uploadAttachmentsAPI } from 'features/Parkcuc/parkcucSlice'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './style'
@@ -21,6 +21,7 @@ const ChatInput = props => {
     const [emoji, setEmoji] = useState("")
     const [openEmoji, setOpenEmoji] = useState(false)
     const [alert, setAlert] = useState({ open: false, text: ''})
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
 
     useEffect(() => {
         if (f.changeEmoji) {
@@ -80,6 +81,14 @@ const ChatInput = props => {
         setAlert(false)
     }
 
+    const unblockMessages = async () => {
+        try {
+            await dispatch(unblockMessagesAPI({ conversation_id: f.activeConversationID }))
+        } catch {
+            console.log('Oops! Failed to unblock messages.')
+        }
+    }
+
     return (
         <>
         {alert.open &&
@@ -98,41 +107,52 @@ const ChatInput = props => {
                 groupNames={{smileys_people:"PEOPLE"}}/>  
         </div>
         }
-        <div className={classes.chatInput}>
-            <AttachFileTwoToneIcon className={classes.icon} onClick={() => onAttachFileClick()}/>
-            <ImageTwoToneIcon className={classes.icon} onClick={() => onAttachImageClick()}/>
-            <input 
-                type="file" 
-                id="attachfile" 
-                style={{display: 'none'}}
-                multiple
-                onChange={e => onChangeHandler(e)}/>
-            <input 
-                type="file" 
-                id="attachimage" 
-                style={{display: 'none'}}
-                accept="video/*,image/*"
-                multiple
-                onChange={e => onChangeHandler(e)}/>
-            <TextField
-                className={classes.input}
-                placeholder="Write your message..."
-                InputProps={{
-                    endAdornment: 
-                        <InputAdornment position="end">
-                            <EmojiEmotionsTwoToneIcon 
-                                className={classes.inputIcon} 
-                                onClick={() => setOpenEmoji(!openEmoji)}
-                            />
-                        </InputAdornment>,
-                    disableUnderline: true
-                }}
-                value={msg}
-                onChange={e => setMsg(e.target.value)}
-                onKeyUp={e => sendMessage(e)}
-            />
-            <span className={classes.quickEmoji} onClick={() => onQuickEmojiClick(emoji ? emoji : props.conversationInfo ? props.conversationInfo.emoji : '👍')}>{emoji ? emoji : props.conversationInfo ? props.conversationInfo.emoji : '👍'}</span>
-        </div>
+        {props.blocker
+            ?
+            <div className={classes.chatInput}>
+                <Typography>You can't message or call them in this chat, and you won't receive their messages or calls.</Typography>
+                {props.blocker.toString() === userInfo._id.toString() &&
+                    <Button color="secondary" onClick={() => unblockMessages()}>Unblock</Button>
+                }
+            </div>
+            :
+            <div className={classes.chatInput}>
+                <AttachFileTwoToneIcon className={classes.icon} onClick={() => onAttachFileClick()}/>
+                <ImageTwoToneIcon className={classes.icon} onClick={() => onAttachImageClick()}/>
+                {console.log(userInfo._id)}
+                <input 
+                    type="file" 
+                    id="attachfile" 
+                    style={{display: 'none'}}
+                    multiple
+                    onChange={e => onChangeHandler(e)}/>
+                <input 
+                    type="file" 
+                    id="attachimage" 
+                    style={{display: 'none'}}
+                    accept="video/*,image/*"
+                    multiple
+                    onChange={e => onChangeHandler(e)}/>
+                <TextField
+                    className={classes.input}
+                    placeholder="Write your message..."
+                    InputProps={{
+                        endAdornment: 
+                            <InputAdornment position="end">
+                                <EmojiEmotionsTwoToneIcon 
+                                    className={classes.inputIcon} 
+                                    onClick={() => setOpenEmoji(!openEmoji)}
+                                />
+                            </InputAdornment>,
+                        disableUnderline: true
+                    }}
+                    value={msg}
+                    onChange={e => setMsg(e.target.value)}
+                    onKeyUp={e => sendMessage(e)}
+                />
+                <span className={classes.quickEmoji} onClick={() => onQuickEmojiClick(emoji ? emoji : props.conversationInfo ? props.conversationInfo.emoji : '👍')}>{emoji ? emoji : props.conversationInfo ? props.conversationInfo.emoji : '👍'}</span>
+            </div>
+        }
         </>
     )
 }

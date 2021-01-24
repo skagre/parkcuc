@@ -146,5 +146,36 @@ module.exports = {
         } catch (err) {
             throw err
         }
+    },
+    unblockMessages: async (args, req) => {
+        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
+
+        try {
+            const conversation = await Conversation.findOneAndUpdate(
+                { _id: args.conversation_id },
+                { blocker: null },
+                { new: true }
+            )
+            
+            return conversation
+        } catch (err) {
+            throw err
+        }
+    },
+    fetchConversationInfo: async (args, req) => {
+        if (!req.isAuth) throw new Error('Oops! Not authorized to access this resource.')
+
+        try {
+            const userA = req.user._id
+            const userB = args.user_id
+
+            const conversation = await Conversation.findOne({
+                participants: { $all: [userA, userB] }
+            })
+
+            return conversation
+        } catch (err) {
+            throw err
+        }
     }
 }

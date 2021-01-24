@@ -6,7 +6,7 @@ const conversationSchema = mongoose.Schema({
         default: null
     },
     conversation_type: {
-        type: String, // chat | group | myself
+        type: String, // chat | group | self
         required: true
     },
     participants: [{

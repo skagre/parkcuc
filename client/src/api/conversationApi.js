@@ -60,6 +60,81 @@ const conversationApi = {
             }
         }
         return axiosClient.post(url, data)
+    },
+    blockMessages: ({ params }) => {
+        const data = {
+            query: 
+            `mutation blockMessages($conversation_id: String!) {
+                blockMessages(conversation_id: $conversation_id) {
+                    _id
+                    name
+                    conversation_type
+                    emoji
+                    blocker
+                    contact {
+                        _id
+                        name
+                        email
+                        avatar
+                        status
+                    }
+                }
+            }`,
+            variables: {
+                conversation_id: params.conversation_id
+            }
+        }
+        return axiosClient.post(url, data)
+    },
+    unblockMessages: ({ params }) => {
+        const data = {
+            query: 
+            `mutation unblockMessages($conversation_id: String!) {
+                unblockMessages(conversation_id: $conversation_id) {
+                    _id
+                    name
+                    conversation_type
+                    emoji
+                    blocker
+                    contact {
+                        _id
+                        name
+                        email
+                        avatar
+                        status
+                    }
+                }
+            }`,
+            variables: {
+                conversation_id: params.conversation_id
+            }
+        }
+        return axiosClient.post(url, data)
+    },
+    fetchConversationInfo: ({ params }) => {
+        const data = {
+            query: 
+            `query fetchConversationInfo($user_id: String!) {
+                fetchConversationInfo(user_id: $user_id) {
+                    _id
+                    name
+                    conversation_type
+                    emoji
+                    blocker
+                    contact {
+                        _id
+                        name
+                        email
+                        avatar
+                        status
+                    }
+                }
+            }`,
+            variables: {
+                user_id: params.user_id
+            }
+        }
+        return axiosClient.post(url, data)
     }
 }
 
